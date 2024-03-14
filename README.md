@@ -8,5 +8,8 @@ Compiled with [vitejs](https://vitejs.dev/).
 - Easy communication between active Pieces.
 - Dynamic CSS import 
 - Common and global CSS import management
-- Reactive 
+
+### 2 types of Pieces 
+#### With dynamic attributes (reactive)
+#### With static content
 

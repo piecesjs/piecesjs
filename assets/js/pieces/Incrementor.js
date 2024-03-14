@@ -12,7 +12,6 @@ export class Incrementor extends Piece {
 	mount() {
 		super.mount();
 		this.$button = this.$('button');
-		// this.$button.addEventListener('click',this.click);
 
 		this.addEvent('click',this.$button,this.click)
 	}
