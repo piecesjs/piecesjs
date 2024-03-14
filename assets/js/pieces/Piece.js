@@ -118,7 +118,7 @@ export default class Piece extends HTMLElement {
 	// Dynamically load styles in the page
 	async loadStyles() {
 		if(this.styles != undefined) {
-			const importedStyle = await import(this.styles);
+			const importedStyle = await import(/* @vite-ignore */this.styles);
 		}
 	}
 
