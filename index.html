@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PiecesJS</title>
+  </head>
+  <body>
+
+	<!-- Piece without reactive interaction, rendering directly in HTML -->
+	<p-header class="p-header">
+		<h1>Hello world 🫶</h1>
+		<a href="/page.html">Page</a>
+	</p-header>
+
+	<!-- Piece with reactive interaction, rendering in JS -->
+	<p-incrementor class="p-incrementor" value="0"></p-incrementor>
+	<p-incrementor class="p-incrementor" value="0"></p-incrementor>
+
+    <script type="module" src="/assets/js/app.js"></script>
+	
+	<!-- Common and global styles -->
+    <script type="module" src="/assets/js/styles.js"></script>
+  </body>
+</html>

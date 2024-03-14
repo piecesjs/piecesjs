@@ -1,0 +1,8 @@
+html {
+	font-family: Arial;
+	color: var(--black);
+}
+
+a {
+	color: currentColor;
+}
