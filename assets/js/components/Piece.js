@@ -119,6 +119,11 @@ export default class Piece extends HTMLElement {
 		el.removeEventListener(type,func.bind(this))
 	}
 
+	// Call function anywhere
+	call(func,params,piece) {
+		
+	}
+
 	// Dynamically load styles in the page
 	async loadStyles() {
 		if(this.styles != undefined) {

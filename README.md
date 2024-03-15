@@ -27,8 +27,6 @@ Compiled with [vitejs](https://vitejs.dev/).
 ```
 
 ```js
-import { paths } from  "/piecesconfig.json"  assert { type:  "json" };
-
 export  class  More  extends  Piece {
 	constructor() {
 		super();

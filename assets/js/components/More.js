@@ -31,6 +31,7 @@ export class More extends Piece {
 
 	click() {
 		this.value = parseInt(this.value) + 1;
+		this.call('click',{},'More')
 	}
 
 	set value(value) {
