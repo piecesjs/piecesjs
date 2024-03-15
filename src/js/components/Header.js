@@ -1,12 +1,11 @@
-import { paths } from "/piecesconfig.json" assert { type: "json" };
-import { default as Piece } from './Piece.js'
+import { Piece } from './Piece.js'
 
 export class Header extends Piece {
 	constructor() {
 		super();
 
 		this.name = 'Header';
-		this.styles = `/assets/css/components/more.css`;
+		this.styles = `/src/css/components/header.css`;
 	}
 }
 

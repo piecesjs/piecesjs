@@ -34,7 +34,7 @@ export class More extends Piece {
 		super();
 
 		this.name = 'More';
-		this.styles = `/assets/css/components/more.css`;
+		this.styles = `/src/css/components/more.css`;
 	}
 
 	mount() {
@@ -96,7 +96,7 @@ export class Header extends Piece {
     this.name = "Header";
 
     //Encapsulated styles
-    this.styles = `/assets/css/components/more.css`;
+    this.styles = `/src/css/components/more.css`;
   }
 }
 // Register the custom element
@@ -138,15 +138,23 @@ params: (eventName, HTMLElement, func)
 this.removeEvent('click', this.$button, this.click);
 ```
 
-## PiecesManager
+Call a function of any components, from any components
+```js
+this.call(functionName,args,pieceName[,pieceId])
+```
+If no pieceId are specified, all occuerences of the component will be called.
+A pieceId can be set directly with an attribute
+```html
+<c-button pid="myButtonUId"></c-button>
+```
 
-Used to manage all active Pieces.
-To access to the current components visible in the page:
+## PiecesManager
+Used to manage all active components.
+To access to the current components active in the page:
 
 ```js
 import { piecesManager } from '../PiecesManager';
-
-console.log(piecesManager.currentPieces);
+//piecesManager.currentPieces;
 ```
 
 ## Utils

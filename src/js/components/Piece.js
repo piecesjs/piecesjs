@@ -1,7 +1,7 @@
 
 import { piecesManager } from "../PiecesManager";
 
-export default class Piece extends HTMLElement {
+export class Piece extends HTMLElement {
 	constructor() {
 		super();
 
@@ -124,13 +124,21 @@ export default class Piece extends HTMLElement {
 	}
 
 	// Call function anywhere
-	call(func,params,pieceName) {
+	call(func,args,pieceName, pieceId) {
 
 		Object.keys(piecesManager.currentPieces).forEach(name => {
 			if(name == pieceName) {
 				Object.keys(piecesManager.currentPieces[name]).forEach(id => {
-					let piece = piecesManager.currentPieces[name][id].piece
-					piece[func]();
+
+					if(pieceId != undefined) {
+						if(id == pieceId) {
+							let piece = piecesManager.currentPieces[name][id].piece;
+							piece[func](args);
+						}
+					} else {
+						let piece = piecesManager.currentPieces[name][id].piece;
+						piece[func](args);
+					}
 				});
 			}
 		});

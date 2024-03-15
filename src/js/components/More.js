@@ -1,24 +1,24 @@
-import { default as Piece } from './Piece.js'
+import { Piece } from './Piece.js'
 
 export class More extends Piece {
 	constructor() {
 		super();
 
 		this.name = 'More';
-		this.styles = `/assets/css/components/more.css`;
+		this.styles = `/src/css/components/more.css`;
 	}
 
 	mount() {
 		super.mount();
 		this.$button = this.$('button');
 
-		this.addEvent('click', this.$button, this.click)
+		this.addEvent('click', this.$button, this.increment)
 	}
 
 	unMount() {
 		super.unMount();
 
-		this.removeEvent('click', this.$button, this.click)
+		this.removeEvent('click', this.$button, this.increment)
 	}
 	
 	render() {
@@ -29,13 +29,7 @@ export class More extends Piece {
 		`;
 	}
 
-	click() {
-		this.increment();
-		this.call('increment',{},'More')
-	}
-
 	increment() {
-		console.log('call !!',this.id);
 		this.value = parseInt(this.value) + 1;
 	}
 
