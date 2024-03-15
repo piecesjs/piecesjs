@@ -1,8 +1,11 @@
+import { addDynamicallyElements } from './utils/addDynamicallyElements.js';
+import piecesconfig from "/piecesconfig.json" assert { type: "json" };
+const { paths } = piecesconfig;
+
 // 
 // IMPORT pieces
 // 
 // ------------------------------------------------------------
-// import { Example } from './pieces/Example.js';
-import { Incrementor } from './pieces/Incrementor.js';
-import { Header } from './pieces/Header.js';
+addDynamicallyElements('c-more', `${paths.js.components}/More.js`);
+addDynamicallyElements('c-header', `${paths.js.components}/Header.js`);
 // ------------------------------------------------------------

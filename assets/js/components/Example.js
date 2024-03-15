@@ -4,7 +4,7 @@ export class Example extends Piece {
 	constructor() {
 		super();
 
-		this.name = 'Header';
+		this.name = 'Example';
 	}
 
 	render() {

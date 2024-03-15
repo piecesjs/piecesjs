@@ -1,0 +1,11 @@
+{
+	"paths": {
+		"css": {
+			"root": "/assets/css/",
+			"components" : "/assets/css/components"
+		},
+		"js": {
+			"components" : "/assets/js/components"
+		}
+	}
+}

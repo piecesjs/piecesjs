@@ -68,7 +68,6 @@ export default class Piece extends HTMLElement {
 		if(this.log) {
 			console.log('🔨 mount', this.name);
 		}
-
 	}
 
 	// Step 2
@@ -101,7 +100,12 @@ export default class Piece extends HTMLElement {
 
 	// Simple query to return an HTMLElement
 	$(query) {
-		return this.querySelector(query);
+		if(this.querySelectorAll(query).length > 1) {
+			return this.querySelectorAll(query);
+		} else {
+			return this.querySelector(query);
+
+		}
 	}
 
 	// 
@@ -130,5 +134,13 @@ export default class Piece extends HTMLElement {
 		return Object.values(this.attributes)
 			.map(a => `${a.name}="${a.value}"`)
 			.join(' ');
+	}
+
+	get attributesList() {
+		return Object.values(this.attributes).map(a => `${a.name}`)
+	}
+
+	static get observedAttributes() { 
+		return this.attributesList;
 	}
 }

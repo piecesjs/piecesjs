@@ -1,3 +1,4 @@
+import { paths } from "/piecesconfig.json" assert { type: "json" };
 import { default as Piece } from './Piece.js'
 
 export class Header extends Piece {
@@ -5,9 +6,9 @@ export class Header extends Piece {
 		super();
 
 		this.name = 'Header';
-		this.styles = '../../css/pieces/header.css';
+		this.styles = `${paths.css.components}/header.css`;
 	}
 }
 
 // Register the custom element
-customElements.define('p-header', Header);
+customElements.define('c-header', Header);

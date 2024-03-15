@@ -1,6 +1,7 @@
+import { paths } from "/piecesconfig.json" assert { type: "json" };
 
 // Import a folder
-import.meta.glob('../css/settings/*.css', {eager: true});
+import.meta.glob(`/assets/css/settings/*.css`, {eager: true});
 
 // Import a file
-import '../css/global.css';
+import '/assets/css/global.css';

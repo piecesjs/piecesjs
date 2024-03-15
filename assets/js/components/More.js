@@ -1,29 +1,32 @@
 import { default as Piece } from './Piece.js'
+import { paths } from "/piecesconfig.json" assert { type: "json" };
 
-export class Incrementor extends Piece {
+export class More extends Piece {
 	constructor() {
 		super();
 
-		this.name = 'Incrementor';
-
-		this.styles = '../../css/pieces/incrementor.css';
+		this.name = 'More';
+		this.styles = `${paths.css.components}/more.css`;
 	}
 
 	mount() {
+		console.log(this.attributesList);
+
 		super.mount();
 		this.$button = this.$('button');
 
-		this.addEvent('click',this.$button,this.click)
+		this.addEvent('click', this.$button, this.click)
 	}
 
-	unmount() {
-		super.unmount();
-		this.removeEvent('click',this.$button,this.click)
+	unMount() {
+		super.unMount();
+
+		this.removeEvent('click', this.$button, this.click)
 	}
 	
 	render() {
 		return `
-			<h2>Incrementor Piece</h2>
+			<h2>More component</h2>
 			<p>Value: ${this.value}</p>
 			<button type="button">Increment</button>
 		`;
@@ -40,13 +43,7 @@ export class Incrementor extends Piece {
 	get value() {
 		return this.getAttribute('value');
 	}
-
-	// Important to observe all changing attributes
-	static get observedAttributes() { 
-		return ['value'];
-	}
-
 }
 
 // Register the custom element
-customElements.define('p-incrementor', Incrementor);
+customElements.define('c-more', More);
