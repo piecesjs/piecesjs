@@ -7,7 +7,8 @@ A Piece is a component. A component is a piece of your page, which can live anyw
 
 Compiled with [vitejs](https://vitejs.dev/).
 
-### Features
+
+## Features
 
 - Scoped event manager
 - Easy access to all elements inside a component with a `this.$(yourQuery)`
@@ -15,25 +16,23 @@ Compiled with [vitejs](https://vitejs.dev/).
 - Dynamic JS & CSS import
 - Common and global CSS import management
 
+---
 
-### 2 types of Components
+## 2 types of Components
 
-#### With dynamic attributes (reactive)
-HTML
+### With dynamic attributes (reactive)
 ```html
 <c-more  class="c-more" value="0"></c-more>
 ```
 
-#### With static content
+### With static content
 
-HTML
 ```html
 <c-header class="c-header">
 	<h1>Hello world 🫶</h1>
 </c-header>
 ```
 
-JS
 ```js
 import { default  as Piece } from  './Piece.js'
 import { paths } from  "/piecesconfig.json"  assert { type:  "json" };
@@ -87,8 +86,7 @@ export  class  More  extends  Piece {
 customElements.define('c-more',  More);
 ```
 
-
-JS 
+ 
 ```js
 import { paths } from  "/piecesconfig.json"  assert { type:  "json" };
 import { default  as Piece } from  './Piece.js'
@@ -108,8 +106,8 @@ export  class  Header  extends  Piece {
 // Register the custom element
 customElements.define('c-header',  Header);
 ```
-
-### Lifecycle
+---
+## Lifecycle
 ```js
 	preMount(){}
 	mount(){}
@@ -117,7 +115,7 @@ customElements.define('c-header',  Header);
 	update(){} //Called if an attribute is changed
 ```
 
-### Events
+## Events
 Register an event
 ```js
 /* 
@@ -136,16 +134,16 @@ You can remove the event listener in the unMount().
 this.removeEvent('click', this.$button, this.click)
 ```
 
-### Utils
+## Utils
 
-#### Logs
+### Logs
 You can log the lifecycle of your component with an attribute `log`
 
 ```html
 <c-header log>Hello</c-header>
 ```
 
-#### Query with this.$
+### Query with this.$
 Shortcut to query an element
 ```js
 	// return the element if there is just 1 element, otherwise it returns an array of elements
