@@ -1,36 +1,30 @@
 
 # piecesjs
 
-piecesjs is a tiny Javascript framework built on the top of native custom elements with a bunch of tools and utilities.
+#### piecesjs is a tiny Javascript framework built on the top of native custom elements with a bunch of tools and utilities.
 
 A Piece is a component. A component is a piece of your page, which can live anywhere in your website, with its own encapsulated styles.
+
+piecesjs is a simple and lightweight framework that aims to make native custom elements accessible, with several utilities and tools for website and app development.
+Like modern frameworks, it dynamically imports the JS and CSS that the page needs, for better optimization. Without being limited to a big headless infrastructure.
 
 Compiled with [vitejs](https://vitejs.dev/).
 
 
 ## Features
 
-- Scoped event manager
-- Easy access to all elements inside a component with a `this.$(yourQuery)`
+- Dynamic JS & CSS import.
+- Scoped event manager.
+- Easy access to all elements inside a component with a `this.$(yourQuery)`.
 - Communication between active components.
-- Dynamic JS & CSS import
-- Common and global CSS import management
-
----
+- Common and global CSS import management.
+- A PiecesManager to access to all active components.
 
 ## 2 types of Components
 
 ### With dynamic attributes (reactive)
 ```html
 <c-more  class="c-more" value="0"></c-more>
-```
-
-### With static content
-
-```html
-<c-header class="c-header">
-	<h1>Hello world 🫶</h1>
-</c-header>
 ```
 
 ```js
@@ -86,6 +80,13 @@ export  class  More  extends  Piece {
 customElements.define('c-more',  More);
 ```
 
+### With static content
+
+```html
+<c-header class="c-header">
+	<h1>Hello world 🫶</h1>
+</c-header>
+```
  
 ```js
 import { paths } from  "/piecesconfig.json"  assert { type:  "json" };
@@ -109,10 +110,10 @@ customElements.define('c-header',  Header);
 ---
 ## Lifecycle
 ```js
-	preMount(){}
-	mount(){}
-	unMount(){}
-	update(){} //Called if an attribute is changed
+preMount(){}
+mount(){}
+unMount(){}
+update(){} //Called if an attribute is changed
 ```
 
 ## Events
@@ -121,16 +122,17 @@ Register an event
 /* 
 You can add an event in the mount(). 
 The called function is automatically binded to this
+params: (eventName, HTMLElement, func)
 */
-// eventName, HTMLElement, func
+
 this.addEvent('click', this.$button, this.click)
 ```
 Unregister the event
 ```js
 /* 
 You can remove the event listener in the unMount(). 
+params: (eventName, HTMLElement, func)
 */
-// eventName, HTMLElement, func
 this.removeEvent('click', this.$button, this.click)
 ```
 
@@ -146,6 +148,6 @@ You can log the lifecycle of your component with an attribute `log`
 ### Query with this.$
 Shortcut to query an element
 ```js
-	// return the element if there is just 1 element, otherwise it returns an array of elements
-	this.$('button'); 
+// return the element if there is just 1 element, otherwise it returns an array of elements
+this.$('button'); 
 ```
