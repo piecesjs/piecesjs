@@ -20,11 +20,11 @@ Compiled with [vitejs](https://vitejs.dev/).
 - Common and global CSS import management.
 - A PiecesManager to access to all active components.
 
-## 2 types of Components
+## 2 types of components
 
 ### With dynamic attributes (reactive)
 ```html
-<c-more  class="c-more" value="0"></c-more>
+<c-more class="c-more" value="0"></c-more>
 ```
 
 ```js
@@ -32,48 +32,48 @@ import { default  as Piece } from  './Piece.js'
 import { paths } from  "/piecesconfig.json"  assert { type:  "json" };
 
 export  class  More  extends  Piece {
-	constructor() {
-		super();
-			this.name =  'More';
-			this.styles =  `${paths.css.components}/more.css`;
-		}
+constructor() {
+	super();
+		this.name =  'More';
+		this.styles =  `${paths.css.components}/more.css`;
+	}
+
+mount() {
+	super.mount();	
 	
-	mount() {
-		super.mount();	
-		
-		// Add scoped event listener
-		this.$button =  this.$('button');
-		this.addEvent('click',this.$button,this.click)
-	}
-	
-	unMount() {
-		super.unMount();
-		//Remove event listener
-		this.removeEvent('click',this.$button,this.click)
-	}
-	
-	render() {
-		return  `
-			<h2>More component</h2>
-			<p>Value: ${this.value}</p>
-			<button type="button">Increment</button>
-		`;
-	}
-	click() {
-		this.value =  parseInt(this.value) +  1;
-	}
-	
-	set  value(value) {
-		return  this.setAttribute('value',  value);
-	}
-	get  value() {
-		return  this.getAttribute('value');
-	}
-	
-	// Important to observe all changing attributes
-	static  get  observedAttributes() {
-		return ['value'];
-	}
+	// Add scoped event listener
+	this.$button =  this.$('button');
+	this.addEvent('click',this.$button,this.click)
+}
+
+unMount() {
+	super.unMount();
+	//Remove event listener
+	this.removeEvent('click',this.$button,this.click)
+}
+
+render() {
+	return  `
+		<h2>More component</h2>
+		<p>Value: ${this.value}</p>
+		<button type="button">Increment</button>
+	`;
+}
+click() {
+	this.value =  parseInt(this.value) +  1;
+}
+
+set  value(value) {
+	return  this.setAttribute('value',  value);
+}
+get  value() {
+	return  this.getAttribute('value');
+}
+
+// Important to observe all changing attributes
+static  get  observedAttributes() {
+	return ['value'];
+}
 }
 
 // Register the custom element
@@ -84,7 +84,7 @@ customElements.define('c-more',  More);
 
 ```html
 <c-header class="c-header">
-	<h1>Hello world 🫶</h1>
+<h1>Hello world 🫶</h1>
 </c-header>
 ```
  
@@ -93,16 +93,14 @@ import { paths } from  "/piecesconfig.json"  assert { type:  "json" };
 import { default  as Piece } from  './Piece.js'
   
 export  class  Header  extends  Piece {
+constructor() {
+	super();
+	this.name =  'Header';
+	
+	//Encapsulated styles
+	this.styles =  `${paths.css.components}/header.css`;
 
-	constructor() {
-		super();
-		this.name =  'Header';
-		
-		//Encapsulated styles
-		this.styles =  `${paths.css.components}/header.css`;
-
-	}
-
+}
 }
 // Register the custom element
 customElements.define('c-header',  Header);
@@ -134,6 +132,15 @@ You can remove the event listener in the unMount().
 params: (eventName, HTMLElement, func)
 */
 this.removeEvent('click', this.$button, this.click)
+```
+
+## PiecesManager
+Used to manage all active Pieces. 
+To access to the current components visible in the page:
+```js
+import { piecesManager } from "../PiecesManager";
+
+console.log(piecesManager.currentPieces);
 ```
 
 ## Utils

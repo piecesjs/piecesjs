@@ -1,6 +1,5 @@
 import { addDynamicallyElements } from './utils/addDynamicallyElements.js';
-import piecesconfig from "/piecesconfig.json" assert { type: "json" };
-const { paths } = piecesconfig;
+import { paths } from "/piecesconfig.json" assert { type: "json" };
 
 // 
 // IMPORT pieces

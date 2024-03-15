@@ -10,8 +10,6 @@ export class More extends Piece {
 	}
 
 	mount() {
-		console.log(this.attributesList);
-
 		super.mount();
 		this.$button = this.$('button');
 
@@ -42,6 +40,10 @@ export class More extends Piece {
 
 	get value() {
 		return this.getAttribute('value');
+	}
+
+	static get observedAttributes() { 
+		return ['value'];
 	}
 }
 

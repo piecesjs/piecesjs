@@ -135,12 +135,4 @@ export default class Piece extends HTMLElement {
 			.map(a => `${a.name}="${a.value}"`)
 			.join(' ');
 	}
-
-	get attributesList() {
-		return Object.values(this.attributes).map(a => `${a.name}`)
-	}
-
-	static get observedAttributes() { 
-		return this.attributesList;
-	}
 }
