@@ -28,52 +28,51 @@ Compiled with [vitejs](https://vitejs.dev/).
 ```
 
 ```js
-import { default  as Piece } from  './Piece.js'
 import { paths } from  "/piecesconfig.json"  assert { type:  "json" };
 
 export  class  More  extends  Piece {
-constructor() {
-	super();
+	constructor() {
+		super();
 		this.name =  'More';
-		this.styles =  `${paths.css.components}/more.css`;
+		this.styles = `/assets/css/components/more.css`;
 	}
 
-mount() {
-	super.mount();	
-	
-	// Add scoped event listener
-	this.$button =  this.$('button');
-	this.addEvent('click',this.$button,this.click)
-}
+	mount() {
+		super.mount();	
+		
+		// Add scoped event listener
+		this.$button =  this.$('button');
+		this.addEvent('click',this.$button,this.click)
+	}
 
-unMount() {
-	super.unMount();
-	//Remove event listener
-	this.removeEvent('click',this.$button,this.click)
-}
+	unMount() {
+		super.unMount();
+		//Remove event listener
+		this.removeEvent('click',this.$button,this.click)
+	}
 
-render() {
-	return  `
-		<h2>More component</h2>
-		<p>Value: ${this.value}</p>
-		<button type="button">Increment</button>
-	`;
-}
-click() {
-	this.value =  parseInt(this.value) +  1;
-}
+	render() {
+		return  `
+			<h2>More component</h2>
+			<p>Value: ${this.value}</p>
+			<button type="button">Increment</button>
+		`;
+	}
+	click() {
+		this.value =  parseInt(this.value) +  1;
+	}
 
-set  value(value) {
-	return  this.setAttribute('value',  value);
-}
-get  value() {
-	return  this.getAttribute('value');
-}
+	set  value(value) {
+		return  this.setAttribute('value',  value);
+	}
+	get  value() {
+		return  this.getAttribute('value');
+	}
 
-// Important to observe all changing attributes
-static  get  observedAttributes() {
-	return ['value'];
-}
+	// Important to observe all changing attributes
+	static  get  observedAttributes() {
+		return ['value'];
+	}
 }
 
 // Register the custom element
@@ -89,7 +88,6 @@ customElements.define('c-more',  More);
 ```
  
 ```js
-import { paths } from  "/piecesconfig.json"  assert { type:  "json" };
 import { default  as Piece } from  './Piece.js'
   
 export  class  Header  extends  Piece {
@@ -98,7 +96,7 @@ constructor() {
 	this.name =  'Header';
 	
 	//Encapsulated styles
-	this.styles =  `${paths.css.components}/header.css`;
+		this.styles = `/assets/css/components/more.css`;
 
 }
 }

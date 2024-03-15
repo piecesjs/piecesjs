@@ -1,12 +1,11 @@
 import { default as Piece } from './Piece.js'
-import { paths } from "/piecesconfig.json" assert { type: "json" };
 
 export class More extends Piece {
 	constructor() {
 		super();
 
 		this.name = 'More';
-		this.styles = `${paths.css.components}/more.css`;
+		this.styles = `/assets/css/components/more.css`;
 	}
 
 	mount() {

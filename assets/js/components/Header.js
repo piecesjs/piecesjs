@@ -6,7 +6,7 @@ export class Header extends Piece {
 		super();
 
 		this.name = 'Header';
-		this.styles = `${paths.css.components}/header.css`;
+		this.styles = `/assets/css/components/more.css`;
 	}
 }
 
