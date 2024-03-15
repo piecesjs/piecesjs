@@ -123,7 +123,7 @@ The called function is automatically binded to this
 params: (eventName, HTMLElement, func)
 */
 
-this.addEvent("click", this.$button, this.click);
+this.addEvent('click', this.$button, this.click);
 ```
 
 Unregister the event
@@ -133,7 +133,7 @@ Unregister the event
 You can remove the event listener in the unMount(). 
 params: (eventName, HTMLElement, func)
 */
-this.removeEvent("click", this.$button, this.click);
+this.removeEvent('click', this.$button, this.click);
 ```
 
 ## PiecesManager
@@ -142,7 +142,7 @@ Used to manage all active Pieces.
 To access to the current components visible in the page:
 
 ```js
-import { piecesManager } from "../PiecesManager";
+import { piecesManager } from '../PiecesManager';
 
 console.log(piecesManager.currentPieces);
 ```
@@ -163,5 +163,5 @@ Shortcut to query an element
 
 ```js
 // return the element if there is just 1 element, otherwise it returns an array of elements
-this.$("button");
+this.$('button');
 ```

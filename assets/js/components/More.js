@@ -30,8 +30,13 @@ export class More extends Piece {
 	}
 
 	click() {
+		this.increment();
+		this.call('increment',{},'More')
+	}
+
+	increment() {
+		console.log('call !!',this.id);
 		this.value = parseInt(this.value) + 1;
-		this.call('click',{},'More')
 	}
 
 	set value(value) {

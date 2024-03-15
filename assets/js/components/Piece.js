@@ -21,7 +21,11 @@ export default class Piece extends HTMLElement {
 	connectedCallback(firstHit = true) {
 		if(firstHit) {
 			// Add the piece to the PiecesManager
-			this.id =`p${piecesManager.piecesCount++}`;
+			if(typeof this.cid == 'string') {
+				this.id = this.cid;
+			} else {
+				this.id =`c${piecesManager.piecesCount++}`;
+			}
 			
 			piecesManager.addPiece({
 				name: this.name,
@@ -120,8 +124,16 @@ export default class Piece extends HTMLElement {
 	}
 
 	// Call function anywhere
-	call(func,params,piece) {
-		
+	call(func,params,pieceName) {
+
+		Object.keys(piecesManager.currentPieces).forEach(name => {
+			if(name == pieceName) {
+				Object.keys(piecesManager.currentPieces[name]).forEach(id => {
+					let piece = piecesManager.currentPieces[name][id].piece
+					piece[func]();
+				});
+			}
+		});
 	}
 
 	// Dynamically load styles in the page
@@ -133,6 +145,10 @@ export default class Piece extends HTMLElement {
 
 	get log() {
 		return typeof this.getAttribute('log') == 'string';
+	}
+
+	get cid() {
+		return this.getAttribute('cid')
 	}
 
 	get properties() {
