@@ -6,7 +6,7 @@
 
 A Piece is a component. A component is a piece of your page, which can live anywhere in your website, with its own encapsulated styles.
 
-piecesjs is a simple and lightweight framework that aims to make native custom elements accessible, with several utilities and tools for website and app development.
+piecesjs is a simple and lightweight front-end framework that aims to make native custom elements accessible, with several utilities and tools for website and app development.
 Like modern frameworks, it dynamically imports the JS and CSS that the page needs, for better optimization. Without being limited to a big headless infrastructure.
 
 Compiled with [vitejs](https://vitejs.dev/).
@@ -32,49 +32,49 @@ Compiled with [vitejs](https://vitejs.dev/).
 import { default as Piece } from './Piece.js'
 
 export class More extends Piece {
-	constructor() {
-		super();
+  constructor() {
+    super();
 
-		this.name = 'More';
-		this.styles = `/src/css/components/more.css`;
-	}
+    this.name = 'More';
+    this.styles = `/src/css/components/more.css`;
+  }
 
-	mount() {
-		super.mount();
-		this.$button = this.$('button');
+  mount() {
+    super.mount();
+    this.$button = this.$('button');
 
-		this.addEvent('click', this.$button, this.click)
-	}
+    this.addEvent('click', this.$button, this.click)
+  }
 
-	unMount() {
-		super.unMount();
+  unMount() {
+    super.unMount();
 
-		this.removeEvent('click', this.$button, this.click)
-	}
-	
-	render() {
-		return `
-			<h2>More component</h2>
-			<p>Value: ${this.value}</p>
-			<button type="button">Increment</button>
-		`;
-	}
+    this.removeEvent('click', this.$button, this.click)
+  }
+  
+  render() {
+    return `
+      <h2>More component</h2>
+      <p>Value: ${this.value}</p>
+      <button type="button">Increment</button>
+    `;
+  }
 
-	click() {
-		this.value = parseInt(this.value) + 1;
-	}
+  click() {
+    this.value = parseInt(this.value) + 1;
+  }
 
-	set value(value) {
-		return this.setAttribute('value', value);
-	}
+  set value(value) {
+    return this.setAttribute('value', value);
+  }
 
-	get value() {
-		return this.getAttribute('value');
-	}
+  get value() {
+    return this.getAttribute('value');
+  }
 
-	static get observedAttributes() { 
-		return ['value'];
-	}
+  static get observedAttributes() { 
+    return ['value'];
+  }
 }
 
 // Register the custom element
