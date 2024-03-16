@@ -1,4 +1,4 @@
-import { Piece } from '../../../src/index.js'
+import { Piece } from 'piecesjs'
 
 export class Button extends Piece {
 	constructor() {

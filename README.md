@@ -1,9 +1,8 @@
 ![Piecesjs logo](https://github.com/quentinhocde/piecesjs/blob/main/assets/logo.png?raw=true)
 
-[alpha]
+[alpha] - Just another front-end js framework.
 
 ### piecesjs is a tiny Javascript framework built on the top of native custom elements with a bunch of tools and utilities.
-Just another front-end js framework.
 
 A Piece is a component. A component is a piece of your page, which can live anywhere in your website, with its own encapsulated styles.
 
@@ -21,7 +20,7 @@ Compiled with [vitejs](https://vitejs.dev/).
 - Common and global CSS import management.
 - A PiecesManager to access to all active components.
 
-## 2 types of components
+## Create your first component
 
 ### With dynamic attributes (reactive)
 
@@ -30,7 +29,7 @@ Compiled with [vitejs](https://vitejs.dev/).
 ```
 
 ```js
-import { default as Piece } from './Piece.js'
+import { default as Piece } from 'piecesjs'
 
 export class More extends Piece {
   constructor() {
@@ -92,7 +91,7 @@ customElements.define('c-more', More);
 ```
 
 ```js
-import { default as Piece } from "./Piece.js";
+import { default as Piece } from 'piecesjs'
 
 export class Header extends Piece {
   constructor() {
@@ -105,6 +104,14 @@ export class Header extends Piece {
 }
 // Register the custom element
 customElements.define("c-header", Header);
+```
+
+### Register and load dynamically your component
+```js
+import { loadDynamically } from 'piecesjs';
+
+loadDynamically('c-button', `/assets/js/components/Button.js`);
+// ------------------------------------------------------------
 ```
 
 ---
@@ -157,7 +164,7 @@ Used to manage all active components.
 To access to the current components active in the page:
 
 ```js
-import { piecesManager } from '../PiecesManager';
+import { piecesManager } from 'piecesjs';
 //piecesManager.currentPieces;
 ```
 

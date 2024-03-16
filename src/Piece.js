@@ -119,7 +119,7 @@ export class Piece extends HTMLElement {
 		el.addEventListener(type,func.bind(this))
 	}
 
-	removeEvent(type, el) {
+	removeEvent(type, el, func) {
 		el.removeEventListener(type,func.bind(this))
 	}
 

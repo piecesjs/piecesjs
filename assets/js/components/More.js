@@ -1,4 +1,4 @@
-import { Piece } from '../../../src/index.js'
+import { Piece } from 'piecesjs'
 
 export class More extends Piece {
 	constructor() {
@@ -10,7 +10,7 @@ export class More extends Piece {
 
 	mount() {
 		super.mount();
-		this.$button = this.$('button');
+		this.$button = this.$('c-button');
 
 		this.addEvent('click', this.$button, this.increment)
 	}
@@ -25,7 +25,7 @@ export class More extends Piece {
 		return `
 			<h2>More component</h2>
 			<p>Value: ${this.value}</p>
-			<button type="button">Increment</button>
+			<c-button class="c-button">Increment</c-button>
 		`;
 	}
 
