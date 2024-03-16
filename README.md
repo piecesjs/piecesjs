@@ -44,7 +44,7 @@ export class More extends Piece {
     this.styles = `/src/css/components/more.css`;
   }
 
-  addEvents() {
+  initEvents() {
     this.$button = this.$('button');
     this.addEvent('click', this.$button, this.click)
   }
@@ -149,7 +149,7 @@ The called function is automatically binded to this
 params: (eventName, HTMLElement, func)
 */
 addEvents() {
-	this.addEvent('click', this.$button, this.click);
+  this.addEvent('click', this.$button, this.click);
 }
 ```
 
@@ -161,7 +161,7 @@ You can remove the event listener in the removeEvents().
 params: (eventName, HTMLElement, func)
 */
 removeEvents() {
-	this.removeEvent('click', this.$button, this.click);
+  this.removeEvent('click', this.$button, this.click);
 }
 ```
 
