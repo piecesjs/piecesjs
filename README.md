@@ -61,7 +61,7 @@ export class More extends Piece {
     return `
       <h2>More component</h2>
       <p>Value: ${this.value}</p>
-      <button type="button">Increment</button>
+			<c-button class="c-button">Increment</c-button>
     `;
   }
 
