@@ -2,7 +2,7 @@
   "name": "piecesjs",
 	"description":"Front-end JS framework based on native custom elements.",
 	"author":"Quentin Hocdé (https://github.com/quentinhocde)",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
 	"exports": "./src/index.js",
 	"main": "./src/index.js",
@@ -16,9 +16,9 @@
   "devDependencies": {
     "vite": "^5.1.0"
   },
-	"files": [
-		"./src/index.js"
-	],
+	"directories":{
+		"src": "src"
+	},
 	"keywords": [
 		"piecesjs",
 		"custom elements",
