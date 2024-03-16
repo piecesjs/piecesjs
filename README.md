@@ -73,7 +73,7 @@ export class More extends Piece {
     return this.getAttribute('value');
   }
   
-	// Important to automatically call the update function if attribute is changing
+  // Important to automatically call the update function if attribute is changing
   static get observedAttributes() { 
     return ['value'];
   }
@@ -100,7 +100,7 @@ export class Header extends Piece {
     this.name = "Header";
 
     //Encapsulated styles
-    this.styles = `/src/css/components/more.css`;
+    this.styles = `/src/css/components/header.css`;
   }
 }
 // Register the custom element
@@ -112,7 +112,6 @@ customElements.define("c-header", Header);
 import { loadDynamically } from 'piecesjs';
 
 loadDynamically('c-button', `/assets/js/components/Button.js`);
-// ------------------------------------------------------------
 ```
 
 ---
