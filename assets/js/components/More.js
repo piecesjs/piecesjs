@@ -41,6 +41,7 @@ export class More extends Piece {
 		return this.getAttribute('value');
 	}
 
+	// Important to automatically call the update function if attribute is changing
 	static get observedAttributes() { 
 		return ['value'];
 	}

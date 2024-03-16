@@ -1,8 +1,9 @@
-# piecesjs
-
 ![Piecesjs logo](https://github.com/quentinhocde/piecesjs/blob/main/assets/logo.png?raw=true)
 
-#### piecesjs is a tiny Javascript framework built on the top of native custom elements with a bunch of tools and utilities.
+[alpha]
+
+### piecesjs is a tiny Javascript framework built on the top of native custom elements with a bunch of tools and utilities.
+Just another front-end js framework.
 
 A Piece is a component. A component is a piece of your page, which can live anywhere in your website, with its own encapsulated styles.
 
@@ -71,7 +72,8 @@ export class More extends Piece {
   get value() {
     return this.getAttribute('value');
   }
-
+  
+	// Important to automatically call the update function if attribute is changing
   static get observedAttributes() { 
     return ['value'];
   }
