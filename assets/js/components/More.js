@@ -1,11 +1,11 @@
-import { Piece } from './Piece.js'
+import { Piece } from '../../../src/index.js'
 
 export class More extends Piece {
 	constructor() {
 		super();
 
 		this.name = 'More';
-		this.styles = `/src/css/components/more.css`;
+		this.styles = `/assets/css/components/more.css`;
 	}
 
 	mount() {

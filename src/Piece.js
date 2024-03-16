@@ -1,5 +1,5 @@
 
-import { piecesManager } from "../PiecesManager";
+import { piecesManager } from "./piecesManager.js";
 
 export class Piece extends HTMLElement {
 	constructor() {

@@ -1,11 +1,11 @@
-import { Piece } from './Piece.js'
+import { Piece } from '../../../src/index.js'
 
 export class Header extends Piece {
 	constructor() {
 		super();
 
 		this.name = 'Header';
-		this.styles = `/src/css/components/header.css`;
+		this.styles = `/assets/css/components/header.css`;
 	}
 }
 

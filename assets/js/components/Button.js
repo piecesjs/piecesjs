@@ -1,11 +1,11 @@
-import { Piece } from './Piece.js'
+import { Piece } from '../../../src/index.js'
 
 export class Button extends Piece {
 	constructor() {
 		super();
 
 		this.name = 'Button';
-		this.styles = `/src/css/components/button.css`;
+		this.styles = `/assets/css/components/button.css`;
 	}
 
 	mount() {

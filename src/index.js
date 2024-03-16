@@ -1,1 +1,3 @@
-export { addDynamicallyElements } from '/js/utils/addDynamicallyElements.js';
+export { addDynamicallyElements } from './addDynamicallyElements.js';
+export { piecesManager } from './piecesManager.js';
+export { Piece } from './Piece.js';
