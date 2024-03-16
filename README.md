@@ -44,16 +44,12 @@ export class More extends Piece {
     this.styles = `/src/css/components/more.css`;
   }
 
-  mount() {
-    super.mount();
+  addEvents() {
     this.$button = this.$('button');
-
     this.addEvent('click', this.$button, this.click)
   }
 
-  unMount() {
-    super.unMount();
-
+  removeEvents() {
     this.removeEvent('click', this.$button, this.click)
   }
   
@@ -61,7 +57,7 @@ export class More extends Piece {
     return `
       <h2>More component</h2>
       <p>Value: ${this.value}</p>
-			<c-button class="c-button">Increment</c-button>
+			<button class="c-button">Increment</button>
     `;
   }
 
@@ -126,8 +122,11 @@ loadDynamically('c-button', `/assets/js/components/Button.js`);
 ```js
 preMount(){}
 mount(){}
+addEvents()
 unMount(){}
-update(){} //Called if an attribute is changed
+removeEvents()
+
+update(){} //Called if an attribute is changed, lifecycle restart
 ```
 
 ### Query with this.$
@@ -145,21 +144,25 @@ Register an event
 
 ```js
 /* 
-You can add an event in the mount(). 
+You can add an event in the addEvents(). 
 The called function is automatically binded to this
 params: (eventName, HTMLElement, func)
 */
-this.addEvent('click', this.$button, this.click);
+addEvents() {
+	this.addEvent('click', this.$button, this.click);
+}
 ```
 
 Unregister the event
 
 ```js
 /* 
-You can remove the event listener in the unMount(). 
+You can remove the event listener in the removeEvents(). 
 params: (eventName, HTMLElement, func)
 */
-this.removeEvent('click', this.$button, this.click);
+removeEvents() {
+	this.removeEvent('click', this.$button, this.click);
+}
 ```
 
 Call a function of any components, from any components

@@ -8,16 +8,12 @@ export class More extends Piece {
 		this.styles = `/assets/css/components/more.css`;
 	}
 
-	mount() {
-		super.mount();
-		this.$button = this.$('c-button');
-
+	initEvents() {
+		this.$button = this.$('button');
 		this.addEvent('click', this.$button, this.increment)
 	}
 
-	unMount() {
-		super.unMount();
-
+	removeEvents() {
 		this.removeEvent('click', this.$button, this.increment)
 	}
 	
@@ -25,11 +21,12 @@ export class More extends Piece {
 		return `
 			<h2>More component</h2>
 			<p>Value: ${this.value}</p>
-			<c-button class="c-button">Increment</c-button>
+			<button class="c-button">Increment</button>
 		`;
 	}
 
 	increment() {
+		console.log('increment');
 		this.value = parseInt(this.value) + 1;
 	}
 

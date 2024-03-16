@@ -32,6 +32,8 @@ export class Piece extends HTMLElement {
 				id: this.id,
 				piece: this
 			});
+		} else {
+				this.removeEvents();
 		}
 
 		this.preMount();
@@ -40,6 +42,7 @@ export class Piece extends HTMLElement {
 		this.appendChild(this.template.cloneNode(true).content);
 		
 		this.mount();
+		this.initEvents();
 	}
 
 	render() {
@@ -90,6 +93,8 @@ export class Piece extends HTMLElement {
 			id: this.id
 		});
 
+		this.removeEvents();
+
 		if(this.log) {
 			console.log('👋 unMount', this.name);
 		}
@@ -122,6 +127,10 @@ export class Piece extends HTMLElement {
 	removeEvent(type, el, func) {
 		el.removeEventListener(type,func.bind(this))
 	}
+
+	initEvents(){}
+
+	removeEvents(){}
 
 	// Call function anywhere
 	call(func,args,pieceName, pieceId) {
