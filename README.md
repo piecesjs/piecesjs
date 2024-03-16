@@ -20,6 +20,11 @@ Compiled with [vitejs](https://vitejs.dev/).
 - Common and global CSS import management.
 - A PiecesManager to access to all active components.
 
+## Installation
+```
+npm i piecesjs
+```
+
 ## Create your first component
 
 ### With dynamic attributes (reactive)
