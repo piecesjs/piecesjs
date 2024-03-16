@@ -130,6 +130,15 @@ unMount(){}
 update(){} //Called if an attribute is changed
 ```
 
+### Query with this.$
+
+Shortcut to query an element
+
+```js
+// return the element if there is just 1 element, otherwise it returns an array of elements
+this.$('button');
+```
+
 ## Events
 
 Register an event
@@ -140,7 +149,6 @@ You can add an event in the mount().
 The called function is automatically binded to this
 params: (eventName, HTMLElement, func)
 */
-
 this.addEvent('click', this.$button, this.click);
 ```
 
@@ -181,13 +189,4 @@ You can log the lifecycle of your component with an attribute `log`
 
 ```html
 <c-header log>Hello</c-header>
-```
-
-### Query with this.$
-
-Shortcut to query an element
-
-```js
-// return the element if there is just 1 element, otherwise it returns an array of elements
-this.$('button');
 ```
