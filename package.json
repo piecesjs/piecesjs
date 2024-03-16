@@ -2,7 +2,7 @@
   "name": "piecesjs",
 	"description":"",
 	"author":"Quentin Hocdé (https://github.com/quentinhocde)",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
 	"exports": "./src/index.js",
 	"main": "./src/index.js",
@@ -14,5 +14,18 @@
   },
   "devDependencies": {
     "vite": "^5.1.0"
-  }
+  },
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"piecesjs",
+		"custom elements",
+		"web components",
+		"components",
+		"library",
+		"framework",
+		"js",
+		"javascript"
+	]
 }
