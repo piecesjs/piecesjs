@@ -1,176 +1,172 @@
-
 import { piecesManager } from "./piecesManager.js";
 
 export class Piece extends HTMLElement {
-	constructor() {
-		super();
+  constructor() {
+    super();
 
-		this.name = 'Piece';
-		this.template = document.createElement('template');
+    this.name = "Piece";
+    this.template = document.createElement("template");
 
-		if(this.innerHTML != ' ') {
-			this.baseHTML = this.innerHTML;
-		}
+    if (this.innerHTML != " ") {
+      this.baseHTML = this.innerHTML;
+    }
 
-		this.events = {};
-	}
+    this.events = {};
+  }
 
-	// 
-	// Basic Custom Elements functions
-	// 
-	connectedCallback(firstHit = true) {
-		if(firstHit) {
-			// Add the piece to the PiecesManager
-			if(typeof this.cid == 'string') {
-				this.id = this.cid;
-			} else {
-				this.id =`c${piecesManager.piecesCount++}`;
-			}
-			
-			piecesManager.addPiece({
-				name: this.name,
-				id: this.id,
-				piece: this
-			});
-		} else {
-				this.removeEvents();
-		}
+  //
+  // Basic Custom Elements functions
+  //
+  connectedCallback(firstHit = true) {
+    if (firstHit) {
+      // Add the piece to the PiecesManager
+      if (typeof this.cid == "string") {
+        this.id = this.cid;
+      } else {
+        this.id = `c${piecesManager.piecesCount++}`;
+      }
 
-		this.preMount();
+      piecesManager.addPiece({
+        name: this.name,
+        id: this.id,
+        piece: this,
+      });
+    } else {
+      this.removeEvents();
+    }
 
-		this.template.innerHTML = this.render();
-		this.appendChild(this.template.cloneNode(true).content);
-		
-		this.mount();
-		this.initEvents();
-	}
+    this.preMount();
 
-	render() {
-		if(this.baseHTML != undefined) {
-			return this.baseHTML;
-		}
-	}
+    this.template.innerHTML = this.render();
+    this.appendChild(this.template.cloneNode(true).content);
 
-	disconnectedCallback() {
-		this.unMount();
-	}
+    this.mount();
+    this.initEvents();
+  }
 
-	adoptedCallback() {
-		this.adopted();
-	}
+  render() {
+    if (this.baseHTML != undefined) {
+      return this.baseHTML;
+    }
+  }
 
-	// Step 0
-	preMount() {
-		this.innerHTML = '';
+  disconnectedCallback() {
+    this.unMount();
+  }
 
-		if(this.log) {
-			console.log('🚧 preMount', this.name);
-		}
+  adoptedCallback() {
+    this.adopted();
+  }
 
-		this.loadStyles();
-	}
+  // Step 0
+  preMount() {
+    this.innerHTML = "";
 
-	// Step 1
-	mount() {
-		if(this.log) {
-			console.log('🔨 mount', this.name);
-		}
-	}
+    if (this.log) {
+      console.log("🚧 preMount", this.name);
+    }
 
-	// Step 2
-	update() {
-		if(this.log) {
-			console.log('🔃 update', this.name);
-		}
+    this.loadStyles();
+  }
 
-		this.connectedCallback(false);
-	}
+  // Step 1
+  mount() {
+    if (this.log) {
+      console.log("🔨 mount", this.name);
+    }
+  }
 
-	// Step 3
-	unMount() {
-		piecesManager.removePiece({
-			name: this.name,
-			id: this.id
-		});
+  // Step 2
+  update() {
+    if (this.log) {
+      console.log("🔃 update", this.name);
+    }
 
-		this.removeEvents();
+    this.connectedCallback(false);
+  }
 
-		if(this.log) {
-			console.log('👋 unMount', this.name);
-		}
-	}
-	
-	attributeChangedCallback(property, oldValue, newValue) {
-		if (oldValue === newValue) return;
-		this[property] = newValue;
+  // Step 3
+  unMount() {
+    piecesManager.removePiece({
+      name: this.name,
+      id: this.id,
+    });
 
-		this.update();
-	}
+    this.removeEvents();
 
-	// Simple query to return an HTMLElement
-	$(query) {
-		if(this.querySelectorAll(query).length > 1) {
-			return this.querySelectorAll(query);
-		} else {
-			return this.querySelector(query);
+    if (this.log) {
+      console.log("👋 unMount", this.name);
+    }
+  }
 
-		}
-	}
+  attributeChangedCallback(property, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this[property] = newValue;
 
-	// 
-	// Event Managment
-	//
-	addEvent(type,el,func) {
-		el.addEventListener(type,func.bind(this))
-	}
+    this.update();
+  }
 
-	removeEvent(type, el, func) {
-		el.removeEventListener(type,func.bind(this))
-	}
+  // Simple query to return an HTMLElement
+  $(query) {
+    if (this.querySelectorAll(query).length > 1) {
+      return this.querySelectorAll(query);
+    } else {
+      return this.querySelector(query);
+    }
+  }
 
-	initEvents(){}
+  //
+  // Event Managment
+  //
+  addEvent(type, el, func) {
+    el.addEventListener(type, func.bind(this));
+  }
 
-	removeEvents(){}
+  removeEvent(type, el, func) {
+    el.removeEventListener(type, func.bind(this));
+  }
 
-	// Call function anywhere
-	call(func,args,pieceName, pieceId) {
+  initEvents() {}
 
-		Object.keys(piecesManager.currentPieces).forEach(name => {
-			if(name == pieceName) {
-				Object.keys(piecesManager.currentPieces[name]).forEach(id => {
+  removeEvents() {}
 
-					if(pieceId != undefined) {
-						if(id == pieceId) {
-							let piece = piecesManager.currentPieces[name][id].piece;
-							piece[func](args);
-						}
-					} else {
-						let piece = piecesManager.currentPieces[name][id].piece;
-						piece[func](args);
-					}
-				});
-			}
-		});
-	}
+  // Call function anywhere
+  call(func, args, pieceName, pieceId) {
+    Object.keys(piecesManager.currentPieces).forEach((name) => {
+      if (name == pieceName) {
+        Object.keys(piecesManager.currentPieces[name]).forEach((id) => {
+          if (pieceId != undefined) {
+            if (id == pieceId) {
+              let piece = piecesManager.currentPieces[name][id].piece;
+              piece[func](args);
+            }
+          } else {
+            let piece = piecesManager.currentPieces[name][id].piece;
+            piece[func](args);
+          }
+        });
+      }
+    });
+  }
 
-	// Dynamically load styles in the page
-	async loadStyles() {
-		if(this.styles != undefined) {
-			const importedStyle = await import(/* @vite-ignore */this.styles);
-		}
-	}
+  // Dynamically load styles in the page
+  async loadStyles() {
+    if (this.styles != undefined) {
+      const importedStyle = await import(/* @vite-ignore */ this.styles);
+    }
+  }
 
-	get log() {
-		return typeof this.getAttribute('log') == 'string';
-	}
+  get log() {
+    return typeof this.getAttribute("log") == "string";
+  }
 
-	get cid() {
-		return this.getAttribute('cid')
-	}
+  get cid() {
+    return this.getAttribute("cid");
+  }
 
-	get properties() {
-		return Object.values(this.attributes)
-			.map(a => `${a.name}="${a.value}"`)
-			.join(' ');
-	}
+  get properties() {
+    return Object.values(this.attributes)
+      .map((a) => `${a.name}="${a.value}"`)
+      .join(" ");
+  }
 }
