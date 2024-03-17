@@ -2,7 +2,7 @@
 	<img src="https://github.com/quentinhocde/piecesjs/blob/main/assets/logo.png?raw=true" witdh="160" height="57" alt="piecesjs">
   <br>
 	<p>
-		[alpha] - [<a href="https://bundlephobia.com/package/piecesjs@0.0.10">1.1kb</a>] - Another front-end js framework, using native web components.
+		[alpha] - [<a href="https://bundlephobia.com/package/piecesjs@0.0.10">1.1kb</a>] - Front-end js framework, using native web components.
 	</p>
 </div>
 
