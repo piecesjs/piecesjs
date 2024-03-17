@@ -1,4 +1,4 @@
-import { piecesManager } from "./piecesManager.js";
+import { piecesManager } from "./piecesManager";
 
 export class Piece extends HTMLElement {
   constructor() {
@@ -10,8 +10,6 @@ export class Piece extends HTMLElement {
     if (this.innerHTML != " ") {
       this.baseHTML = this.innerHTML;
     }
-
-    this.events = {};
   }
 
   //

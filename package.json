@@ -1,13 +1,13 @@
 {
   "name": "piecesjs",
-	"description":"Front-end JS framework based on native web components.",
-	"author":"Quentin Hocdé (https://github.com/quentinhocde)",
-  "version": "0.0.12",
+  "description": "Front-end JS framework based on native web components.",
+  "author": "Quentin Hocdé (https://github.com/quentinhocde)",
+  "version": "0.0.13",
   "type": "module",
-	"exports": "./src/index.js",
-	"main": "./src/index.js",
-	"module": "./src/index.js",
-	"license": "MIT",
+  "exports": "./src/index.js",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -16,15 +16,20 @@
   "devDependencies": {
     "vite": "^5.1.0"
   },
-	"files": ["./src/"],
-	"keywords": [
-		"piecesjs",
-		"custom elements",
-		"web components",
-		"components",
-		"library",
-		"framework",
-		"js",
-		"javascript"
-	]
+  "files": [
+    "./src/"
+  ],
+  "keywords": [
+    "piecesjs",
+    "custom elements",
+    "web components",
+    "components",
+    "library",
+    "framework",
+    "js",
+    "javascript"
+  ],
+  "dependencies": {
+    "piecesjs": "^0.0.11"
+  }
 }
