@@ -9,7 +9,7 @@ export class Add extends Piece {
 	}
 
 	initEvents() {
-		this.$button = this.$('button');
+		this.$button = this.$('button')[0];
 		this.addEvent('click', this.$button, this.increment)
 	}
 

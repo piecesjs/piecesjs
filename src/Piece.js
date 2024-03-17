@@ -106,11 +106,7 @@ export class Piece extends HTMLElement {
 
   // Simple query to return an HTMLElement
   $(query) {
-    if (this.querySelectorAll(query).length > 1) {
-      return this.querySelectorAll(query);
-    } else {
-      return this.querySelector(query);
-    }
+    return this.querySelectorAll(query);
   }
 
   //

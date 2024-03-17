@@ -52,7 +52,7 @@ export class Add extends Piece {
   }
 
   initEvents() {
-    this.$button = this.$('button');
+    this.$button = this.$('button')[0];
     this.addEvent('click', this.$button, this.click)
   }
 
@@ -140,7 +140,7 @@ update(){} //Called if an attribute is changed, lifecycle restart
 Shortcut to query an element
 
 ```js
-// return the element if there is just 1 element, otherwise it returns an array of elements
+// return an array of elements
 this.$('button');
 ```
 

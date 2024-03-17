@@ -9,7 +9,7 @@ export class Button extends Piece {
 	}
 
 	initEvents() {
-		this.$button = this.$('button');
+		this.$button = this.$('button')[0];
 		this.addEvent('click', this, this.click)
 	}
 
