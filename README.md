@@ -1,14 +1,15 @@
 <div align="center">
 	<img src="https://github.com/quentinhocde/piecesjs/blob/main/assets/logo.png?raw=true" alt="piecesjs">
+	<p>
+		[alpha, <a href="https://bundlephobia.com/package/piecesjs@0.0.10">1kb</a>] - Another front-end js framework, using native web component.
+	</p>
 </div>
 
-[alpha] - Just another front-end js framework.
-
-[1.1kb](https://bundlephobia.com/package/piecesjs@0.0.10)
-
-### piecesjs is a tiny Javascript framework built on the top of native web components with a bunch of tools and utilities.
-
+## Introduction
+piecesjs is a tiny Javascript framework built on the top of native web components with a bunch of tools and utilities.
 A Piece is a component. A component is a piece of your page, which can live anywhere in your website, with its own encapsulated styles.
+
+## Why ?
 
 piecesjs is a simple and lightweight front-end framework that aims to make native web components accessible, with several utilities and tools for website and app development.
 Like modern frameworks, it dynamically imports the JS and CSS that the page needs, for better optimization. Without being limited to a big headless infrastructure.
