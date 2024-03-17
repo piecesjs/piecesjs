@@ -114,13 +114,26 @@ export class Piece extends HTMLElement {
   //
   addEvent(type, el, func) {
     if(el != null) {
-      el.addEventListener(type, func.bind(this));
+      if(el.length > 0) {
+        el.forEach(item => {
+          item.addEventListener(type, func.bind(this));
+        });
+      } else {
+        el.addEventListener(type, func.bind(this));
+      }
+      
     }
   }
 
   removeEvent(type, el, func) {
     if(el != null) {
-      el.removeEventListener(type, func.bind(this));
+      if(el.length > 0) {
+        el.forEach(item => {
+          item.removeEventListener(type, func.bind(this));
+        });
+      } else {
+        el.removeEventListener(type, func.bind(this));
+      }
     }
   }
 
