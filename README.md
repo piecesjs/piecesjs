@@ -1,8 +1,9 @@
-<div style="text-align: center">
-![Piecesjs logo](https://github.com/quentinhocde/piecesjs/blob/main/assets/logo.png?raw=true)
+<div align="center">
+	<img src="https://github.com/quentinhocde/piecesjs/blob/main/assets/logo.png?raw=true" alt="piecesjs">
 </div>
 
-[alpha - 1.1kb] - Just another front-end js framework.
+[alpha] - Just another front-end js framework.
+
 [1.1kb](https://bundlephobia.com/package/piecesjs@0.0.10)
 
 ### piecesjs is a tiny Javascript framework built on the top of native web components with a bunch of tools and utilities.
