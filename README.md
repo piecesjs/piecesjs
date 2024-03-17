@@ -30,18 +30,18 @@ npm i piecesjs
 ### With dynamic attributes (reactive)
 
 ```html
-<c-more class="c-more" value="0"></c-more>
+<c-add class="c-add" value="0"></c-add>
 ```
 
 ```js
 import { default as Piece } from 'piecesjs'
 
-export class More extends Piece {
+export class Add extends Piece {
   constructor() {
     super();
 
-    this.name = 'More';
-    this.styles = `/src/css/components/more.css`;
+    this.name = 'Add';
+    this.styles = `/src/css/components/add.css`;
   }
 
   initEvents() {
@@ -57,7 +57,7 @@ export class More extends Piece {
     return `
       <h2>More component</h2>
       <p>Value: ${this.value}</p>
-			<button class="c-button">Increment</button>
+      <button class="c-button">Increment</button>
     `;
   }
 
@@ -80,7 +80,7 @@ export class More extends Piece {
 }
 
 // Register the custom element
-customElements.define('c-more', More);
+customElements.define('c-add', Add);
 ```
 
 ### With static content

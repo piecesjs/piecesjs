@@ -1,11 +1,11 @@
 import { Piece } from 'piecesjs'
 
-export class More extends Piece {
+export class Add extends Piece {
 	constructor() {
 		super();
 
 		this.name = 'More';
-		this.styles = `/assets/css/components/more.css`;
+		this.styles = `/assets/css/components/add.css`;
 	}
 
 	initEvents() {
@@ -45,4 +45,4 @@ export class More extends Piece {
 }
 
 // Register the custom element
-customElements.define('c-more', More);
+customElements.define('c-add', Add);
