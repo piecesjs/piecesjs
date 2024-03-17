@@ -1,22 +1,24 @@
+<div style="text-align: center">
 ![Piecesjs logo](https://github.com/quentinhocde/piecesjs/blob/main/assets/logo.png?raw=true)
+</div>
 
-[alpha] - Just another front-end js framework.
+[alpha - `1.1kb`] - Just another front-end js framework.
 
-### piecesjs is a tiny Javascript framework built on the top of native custom elements with a bunch of tools and utilities.
+### piecesjs is a tiny Javascript framework built on the top of native web components with a bunch of tools and utilities.
 
 A Piece is a component. A component is a piece of your page, which can live anywhere in your website, with its own encapsulated styles.
 
-piecesjs is a simple and lightweight front-end framework that aims to make native custom elements accessible, with several utilities and tools for website and app development.
+piecesjs is a simple and lightweight front-end framework that aims to make native web components accessible, with several utilities and tools for website and app development.
 Like modern frameworks, it dynamically imports the JS and CSS that the page needs, for better optimization. Without being limited to a big headless infrastructure.
 
 Compiled with [vitejs](https://vitejs.dev/).
 
-## Features
+## Main features
 
 - Dynamic JS & CSS import.
 - Scoped event manager.
 - Easy access to all elements inside a component with a `this.$(yourQuery)`.
-- Communication between active components.
+- Easy communication between active components.
 - Common and global CSS import management.
 - A PiecesManager to access to all active components.
 
@@ -166,8 +168,10 @@ removeEvents() {
 
 Call a function of any components, from any components
 ```js
-this.call(functionName,args,pieceName[,pieceId])
+// (functionName,args,pieceName[,pieceId])
+this.call('increment',{},'Add','uIdAddComponenent');
 ```
+
 If no pieceId are specified, all occuerences of the component will be called.
 A pieceId can be set directly with an attribute
 ```html

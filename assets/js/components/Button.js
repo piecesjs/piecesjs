@@ -8,16 +8,12 @@ export class Button extends Piece {
 		this.styles = `/assets/css/components/button.css`;
 	}
 
-	mount() {
-		super.mount();
+	initEvents() {
 		this.$button = this.$('button');
-
 		this.addEvent('click', this, this.click)
 	}
 
-	unMount() {
-		super.unMount();
-
+	removeEvents() {
 		this.removeEvent('click', this, this.click)
 	}
 
