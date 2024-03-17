@@ -19,14 +19,14 @@ export class Piece extends HTMLElement {
     if (firstHit) {
       // Add the piece to the PiecesManager
       if (typeof this.cid == "string") {
-        this.id = this.cid;
+        this.cid = this.cid;
       } else {
-        this.id = `c${piecesManager.piecesCount++}`;
+        this.cid = `c${piecesManager.piecesCount++}`;
       }
 
       piecesManager.addPiece({
         name: this.name,
-        id: this.id,
+        id: this.cid,
         piece: this,
       });
     } else {
@@ -87,7 +87,7 @@ export class Piece extends HTMLElement {
   unMount() {
     piecesManager.removePiece({
       name: this.name,
-      id: this.id,
+      id: this.cid,
     });
 
     this.removeEvents();
@@ -160,6 +160,10 @@ export class Piece extends HTMLElement {
 
   get cid() {
     return this.getAttribute("cid");
+  }
+
+  set cid() {
+    return this.setAttribute("cid");
   }
 
   get properties() {
