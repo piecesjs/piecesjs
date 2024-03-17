@@ -162,8 +162,8 @@ export class Piece extends HTMLElement {
     return this.getAttribute("cid");
   }
 
-  set cid() {
-    return this.setAttribute("cid");
+  set cid(cid) {
+    return this.setAttribute("cid", cid);
   }
 
   get properties() {
