@@ -4,7 +4,7 @@ export class Add extends Piece {
 	constructor() {
 		super();
 
-		this.name = 'More';
+		this.name = 'Add';
 		this.styles = `/assets/css/components/add.css`;
 	}
 
@@ -19,7 +19,7 @@ export class Add extends Piece {
 	
 	render() {
 		return `
-			<h2>More component</h2>
+			<h2>${this.name} component</h2>
 			<p>Value: ${this.value}</p>
 			<button class="c-button">Increment</button>
 		`;

@@ -16,7 +16,7 @@
   "devDependencies": {
     "vite": "^5.1.0"
   },
-	"files": ["./src"],
+	"files": ["./src/"],
 	"keywords": [
 		"piecesjs",
 		"custom elements",

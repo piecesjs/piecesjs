@@ -22,7 +22,7 @@ export class Button extends Piece {
 	}
 
 	click() {
-		this.call('increment',{},'More','uIdMoreComponenent');
+		this.call('increment',{},'Add','uIdAddComponenent');
 	}
 }
 
