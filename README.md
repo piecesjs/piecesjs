@@ -168,7 +168,9 @@ unmount() {
 
 Call a function of any components, from any components
 ```js
-// (functionName,args,pieceName[,pieceId])
+/*
+params: (functionName, args, pieceName [,pieceId])
+*/
 this.call('increment',{},'Add','myAddComponentId');
 ```
 
