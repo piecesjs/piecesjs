@@ -1,11 +1,13 @@
 import { piecesManager } from "./piecesManager";
 
 export class Piece extends HTMLElement {
-  constructor() {
+  constructor(name,args) {
     super();
 
-    this.name = "Piece";
+    this.name = name;
+    this.styles = args.styles;
     this.template = document.createElement("template");
+    this.piecesManager = piecesManager;
 
     if (this.innerHTML != " ") {
       this.baseHTML = this.innerHTML;
@@ -21,25 +23,25 @@ export class Piece extends HTMLElement {
       if (typeof this.cid == "string") {
         this.cid = this.cid;
       } else {
-        this.cid = `c${piecesManager.piecesCount++}`;
+        this.cid = `c${this.piecesManager.piecesCount++}`;
       }
 
-      piecesManager.addPiece({
+      this.piecesManager.addPiece({
         name: this.name,
         id: this.cid,
         piece: this,
       });
-    } else {
-      this.removeEvents();
+      console.log(this.piecesManager.currentPieces);
     }
 
-    this.preMount();
+    this.privatePremount();
 
-    this.template.innerHTML = this.render();
-    this.appendChild(this.template.cloneNode(true).content);
+    if(this.baseHTML != " ") {
+      this.template.innerHTML = this.render();
+      this.appendChild(this.template.cloneNode(true).content);
+    }
 
-    this.mount();
-    this.initEvents();
+    this.privateMount();
   }
 
   render() {
@@ -49,59 +51,72 @@ export class Piece extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.unMount();
+    this.privateUnmount();
   }
 
   adoptedCallback() {
     this.adopted();
   }
 
-  // Step 0
-  preMount() {
+  // Lifecycle - step : 0
+  privatePremount() {
     this.innerHTML = "";
 
     if (this.log) {
-      console.log("🚧 preMount", this.name);
+      console.log("🚧 premount", this.name);
     }
 
     this.loadStyles();
+    this.premount();
   }
 
-  // Step 1
-  mount() {
+  premount(){}
+
+  // Lifecycle - step : 1
+  privateMount() {
     if (this.log) {
       console.log("🔨 mount", this.name);
     }
+
+    this.mount();
   }
 
-  // Step 2
-  update() {
+  mount() {}
+
+  // Lifecycle - step : 2
+  privateUpdate() {
     if (this.log) {
       console.log("🔃 update", this.name);
     }
 
+    this.privateUnmount(true);
     this.connectedCallback(false);
   }
+  update() {}
 
-  // Step 3
-  unMount() {
-    piecesManager.removePiece({
-      name: this.name,
-      id: this.cid,
-    });
-
-    this.removeEvents();
+  // Lifecycle - step : 3
+  privateUnmount(update = false) {
+    if(!update) {
+      this.piecesManager.removePiece({
+        name: this.name,
+        id: this.cid,
+      });
+    }
 
     if (this.log) {
-      console.log("👋 unMount", this.name);
+      console.log("👋 unmount", this.name);
     }
+    this.unmount();
   }
 
+  unmount() {}
+
+  // Check for update
   attributeChangedCallback(property, oldValue, newValue) {
     if (oldValue === newValue) return;
     this[property] = newValue;
 
-    this.update();
+    this.privateUpdate();
   }
 
   // Simple query to return an HTMLElement
@@ -114,11 +129,11 @@ export class Piece extends HTMLElement {
   //
   addEvent(type, el, func) {
     if(el != null) {
-      if(el.length > 1) {
+      if(el.length > 0) {
         el.forEach(item => {
           item.addEventListener(type, func.bind(this));
         });
-      } else if (el.length == 1) {
+      } else {
         el.addEventListener(type, func.bind(this));
       }
       
@@ -137,22 +152,19 @@ export class Piece extends HTMLElement {
     }
   }
 
-  initEvents() {}
-
-  removeEvents() {}
-
   // Call function anywhere
   call(func, args, pieceName, pieceId) {
-    Object.keys(piecesManager.currentPieces).forEach((name) => {
+    Object.keys(this.piecesManager.currentPieces).forEach((name) => {
+
       if (name == pieceName) {
-        Object.keys(piecesManager.currentPieces[name]).forEach((id) => {
+        Object.keys(this.piecesManager.currentPieces[name]).forEach((id) => {
           if (pieceId != undefined) {
             if (id == pieceId) {
-              let piece = piecesManager.currentPieces[name][id].piece;
+              let piece = this.piecesManager.currentPieces[name][id].piece;
               piece[func](args);
             }
           } else {
-            let piece = piecesManager.currentPieces[name][id].piece;
+            let piece = this.piecesManager.currentPieces[name][id].piece;
             piece[func](args);
           }
         });

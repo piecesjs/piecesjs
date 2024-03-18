@@ -1,10 +1,8 @@
 import { default as Piece } from './Piece.js'
 
-export class Example extends Piece {
+class Example extends Piece {
 	constructor() {
-		super();
-
-		this.name = 'Example';
+		super('Example');
 	}
 
 	render() {

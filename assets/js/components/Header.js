@@ -1,11 +1,10 @@
 import { Piece } from 'piecesjs'
 
-export class Header extends Piece {
+class Header extends Piece {
 	constructor() {
-		super();
-
-		this.name = 'Header';
-		this.styles = `/assets/css/components/header.css`;
+		super('Header', {
+				styles: '/assets/css/components/header.css' 
+		});
 	}
 }
 

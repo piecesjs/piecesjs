@@ -1,24 +1,23 @@
 import { Piece } from 'piecesjs'
 
-export class Button extends Piece {
+class Button extends Piece {
 	constructor() {
-		super();
-
-		this.name = 'Button';
-		this.styles = `/assets/css/components/button.css`;
+		super('Button', {
+			styles: '/assets/css/components/button.css'
+		});
 	}
 
-	initEvents() {
-		this.$button = this.$('button')[0];
-		this.addEvent('click', this, this.click)
+	mount() {
+		this.pieces
+		this.addEvent('click', this, this.click);
 	}
 
-	removeEvents() {
-		this.removeEvent('click', this, this.click)
+	unmount() {
+		this.removeEvent('click', this, this.click);
 	}
 
 	click() {
-		this.call('increment',{},'Add','uIdAddComponenent');
+		this.call('increment',{},'Add','myAddComponentId');
 	}
 }
 

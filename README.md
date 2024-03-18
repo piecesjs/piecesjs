@@ -45,18 +45,17 @@ import { default as Piece } from 'piecesjs'
 
 export class Add extends Piece {
   constructor() {
-    super();
-
-    this.name = 'Add';
-    this.styles = `/src/css/components/add.css`;
+    super('add', {
+      styles: '/src/css/components/header.css'
+    });
   }
 
-  initEvents() {
+  mount() {
     this.$button = this.$('button')[0];
     this.addEvent('click', this.$button, this.click)
   }
 
-  removeEvents() {
+  unmount() {
     this.removeEvent('click', this.$button, this.click)
   }
   
@@ -101,13 +100,12 @@ customElements.define('c-add', Add);
 ```js
 import { default as Piece } from 'piecesjs'
 
-export class Header extends Piece {
+class Header extends Piece {
   constructor() {
-    super();
-    this.name = "Header";
-
-    //Encapsulated styles
-    this.styles = `/src/css/components/header.css`;
+    // Set the name of your component and stylesheets directly with the super();
+    super('Header', {
+      styles: '/src/css/components/header.css'
+    });
   }
 }
 // Register the custom element
@@ -116,9 +114,9 @@ customElements.define("c-header", Header);
 
 ### Register and load dynamically your component
 ```js
-import { loadDynamically } from 'piecesjs';
+import { load } from 'piecesjs';
 
-loadDynamically('c-button', `/assets/js/components/Button.js`);
+load('c-button', `/assets/js/components/Button.js`);
 ```
 
 ---
@@ -126,13 +124,10 @@ loadDynamically('c-button', `/assets/js/components/Button.js`);
 ## Lifecycle
 
 ```js
-preMount(){}
+premount(){}
 mount(){}
-addEvents()
-unMount(){}
-removeEvents()
-
-update(){} //Called if an attribute is changed, lifecycle restart
+update(){} //Called if an attribute is changed : unmount(), premount(), mount()
+unmount(){}
 ```
 
 ### Query with this.$
@@ -150,11 +145,11 @@ Register an event
 
 ```js
 /* 
-You can add an event in the addEvents(). 
+You can add an event in the mount(). 
 The called function is automatically binded to this
-params: (eventName, HTMLElement, func)
+params: (eventName, HTMLElement or array of HTMLElement, func)
 */
-addEvents() {
+mount() {
   this.addEvent('click', this.$button, this.click);
 }
 ```
@@ -163,10 +158,10 @@ Unregister the event
 
 ```js
 /* 
-You can remove the event listener in the removeEvents(). 
-params: (eventName, HTMLElement, func)
+You can remove the event listener in the unmount(). 
+params: (eventName, HTMLElement or array of HTMLElement, func)
 */
-removeEvents() {
+unmount() {
   this.removeEvent('click', this.$button, this.click);
 }
 ```
@@ -174,13 +169,13 @@ removeEvents() {
 Call a function of any components, from any components
 ```js
 // (functionName,args,pieceName[,pieceId])
-this.call('increment',{},'Add','uIdAddComponenent');
+this.call('increment',{},'Add','myAddComponentId');
 ```
 
 If no pieceId are specified, all occuerences of the component will be called.
 A pieceId can be set directly with an attribute
 ```html
-<c-button pid="myButtonUId"></c-button>
+<c-button cid="myButtonUId"></c-button>
 ```
 
 ## PiecesManager
@@ -190,6 +185,36 @@ To access to the current components active in the page:
 ```js
 import { piecesManager } from 'piecesjs';
 //piecesManager.currentPieces;
+/*
+{
+  Add: {
+    c0: {
+      name: 'Add',
+      id: 'c0',
+      piece: HTMLElement
+    },
+    myAddComponentId: {
+      name: 'Add',
+      id: 'myAddComponentId',
+      piece: HTMLElement
+    }
+  }, 
+  Button: {
+    c2: {
+      name: 'Button',
+      id: 'c2',
+      piece: HTMLElement
+    }
+  }, 
+  Header: {
+    c1: {
+      name: 'Header',
+      id: 'c1',
+      piece: HTMLElement
+    }
+  }
+}
+*/
 ```
 
 ## Utils

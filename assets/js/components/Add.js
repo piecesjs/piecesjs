@@ -1,20 +1,19 @@
 import { Piece } from 'piecesjs'
 
-export class Add extends Piece {
+class Add extends Piece {
 	constructor() {
-		super();
-
-		this.name = 'Add';
-		this.styles = `/assets/css/components/add.css`;
+		super('Add', {
+			styles: '/assets/css/components/add.css'
+		});
 	}
 
-	initEvents() {
+	mount() {
 		this.$button = this.$('button')[0];
-		this.addEvent('click', this.$button, this.increment)
+		this.addEvent('click', this.$button, this.increment);
 	}
 
-	removeEvents() {
-		this.removeEvent('click', this.$button, this.increment)
+	unmount() {
+		this.removeEvent('click', this.$button, this.increment);
 	}
 	
 	render() {
@@ -26,7 +25,6 @@ export class Add extends Piece {
 	}
 
 	increment() {
-		console.log('increment');
 		this.value = parseInt(this.value) + 1;
 	}
 
