@@ -114,11 +114,11 @@ export class Piece extends HTMLElement {
   //
   addEvent(type, el, func) {
     if(el != null) {
-      if(el.length > 0) {
+      if(el.length > 1) {
         el.forEach(item => {
           item.addEventListener(type, func.bind(this));
         });
-      } else {
+      } else if (el.length == 1) {
         el.addEventListener(type, func.bind(this));
       }
       
