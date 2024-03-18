@@ -186,8 +186,18 @@ To access to the current components active in the page:
 
 ```js
 import { piecesManager } from 'piecesjs';
-//piecesManager.currentPieces;
+console.log(piecesManager.currentPieces);
+
+// or in a Piece
+console.log(this.piecesManager);
+class Header extends Piece {
+  mount() {
+    console.log(this.piecesManager.currentPieces);
+  }
+}
+
 /*
+
 {
   Add: {
     c0: {

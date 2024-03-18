@@ -5,7 +5,7 @@ export class Piece extends HTMLElement {
     super();
 
     this.name = name;
-    this.styles = typeof args.styles == 'string' ? args.styles : null;
+    this.styles = typeof args == 'object' ? (typeof args.styles == 'string' ? args.styles : null) : null;
     this.template = document.createElement("template");
     this.piecesManager = piecesManager;
 
@@ -31,7 +31,6 @@ export class Piece extends HTMLElement {
         id: this.cid,
         piece: this,
       });
-      console.log(this.piecesManager.currentPieces);
     }
 
     this.privatePremount();
