@@ -5,7 +5,7 @@ export class Piece extends HTMLElement {
     super();
 
     this.name = name;
-    this.styles = args.styles;
+    this.styles = typeof args.styles == 'string' ? args.styles : null;
     this.template = document.createElement("template");
     this.piecesManager = piecesManager;
 
@@ -174,7 +174,7 @@ export class Piece extends HTMLElement {
 
   // Dynamically load styles in the page
   async loadStyles() {
-    if (this.styles != undefined) {
+    if (this.styles != null) {
       const importedStyle = await import(/* @vite-ignore */ this.styles);
     }
   }
