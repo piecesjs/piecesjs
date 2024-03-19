@@ -31,7 +31,7 @@ Compiled with [vitejs](https://vitejs.dev/).
 ## Installation
 
 ```
-npm i piecesjs
+npm i piecesjs --save
 ```
 
 ## Create your first component
@@ -150,10 +150,10 @@ Register an event
 /*
 You can add an event in the mount().
 The called function is automatically binded to this
-params: (eventName, HTMLElement or array of HTMLElement, func)
+params: (eventName, HTMLElement or array of HTMLElement, func [,parameters])
 */
 mount() {
-  this.addEvent('click', this.$button, this.click);
+  this.addEvent('click', this.$button, this.click, {hello: 'world'});
 }
 ```
 

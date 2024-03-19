@@ -82,10 +82,10 @@ class u extends HTMLElement {
   //
   // Event Managment
   //
-  addEvent(e, t, i) {
-    t != null && (t.length > 0 ? t.forEach((s) => {
-      s.addEventListener(e, i.bind(this));
-    }) : t.addEventListener(e, i.bind(this)));
+  addEvent(e, t, i, s = null) {
+    t != null && (t.length > 0 ? t.forEach((n) => {
+      n.addEventListener(e, i.bind(this, s));
+    }) : t.addEventListener(e, i.bind(this, s)));
   }
   removeEvent(e, t, i) {
     t != null && (t.length > 0 ? t.forEach((s) => {
@@ -95,8 +95,8 @@ class u extends HTMLElement {
   // Call function anywhere
   call(e, t, i, s) {
     Object.keys(this.piecesManager.currentPieces).forEach((n) => {
-      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((a) => {
-        s != null ? a == s && this.piecesManager.currentPieces[n][a].piece[e](t) : this.piecesManager.currentPieces[n][a].piece[e](t);
+      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((c) => {
+        s != null ? c == s && this.piecesManager.currentPieces[n][c].piece[e](t) : this.piecesManager.currentPieces[n][c].piece[e](t);
       });
     });
   }

@@ -13,14 +13,15 @@ class Button extends Piece {
 
 	mount() {
 		this.pieces
-		this.addEvent('click', this, this.click);
+		this.addEvent('click', this, this.click, {test: 'test'});
 	}
 
 	unmount() {
 		this.removeEvent('click', this, this.click);
 	}
 
-	click() {
+	click(params, e) {
+		console.log(params);
 		this.call('increment',{},'Add','myAddComponentId');
 	}
 }
