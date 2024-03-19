@@ -7,6 +7,7 @@
 </div>
 
 ## Introduction
+
 piecesjs is a tiny Javascript framework built on the top of native web components with a bunch of tools and utilities.
 
 A Piece is a component. A component is a piece of your page, which can live anywhere in your website, with its own encapsulated styles.
@@ -28,6 +29,7 @@ Compiled with [vitejs](https://vitejs.dev/).
 - A PiecesManager to access to all active components.
 
 ## Installation
+
 ```
 npm i piecesjs
 ```
@@ -41,24 +43,24 @@ npm i piecesjs
 ```
 
 ```js
-import { default as Piece } from 'piecesjs'
+import { default as Piece } from "piecesjs";
 
 export class Add extends Piece {
   constructor() {
-    super('add', {
-      styles: '/src/css/components/header.css'
+    super("add", {
+      stylesheets: [() => import("/assets/css/components/add.css")],
     });
   }
 
   mount() {
-    this.$button = this.$('button')[0];
-    this.addEvent('click', this.$button, this.click)
+    this.$button = this.$("button")[0];
+    this.addEvent("click", this.$button, this.click);
   }
 
   unmount() {
-    this.removeEvent('click', this.$button, this.click)
+    this.removeEvent("click", this.$button, this.click);
   }
-  
+
   render() {
     return `
       <h2>${this.name} component</h2>
@@ -72,21 +74,21 @@ export class Add extends Piece {
   }
 
   set value(value) {
-    return this.setAttribute('value', value);
+    return this.setAttribute("value", value);
   }
 
   get value() {
-    return this.getAttribute('value');
+    return this.getAttribute("value");
   }
-  
+
   // Important to automatically call the update function if attribute is changing
-  static get observedAttributes() { 
-    return ['value'];
+  static get observedAttributes() {
+    return ["value"];
   }
 }
 
 // Register the custom element
-customElements.define('c-add', Add);
+customElements.define("c-add", Add);
 ```
 
 ### With static content
@@ -98,16 +100,14 @@ customElements.define('c-add', Add);
 ```
 
 ```js
-import { default as Piece } from 'piecesjs'
+import { default as Piece } from "piecesjs";
 
 class Header extends Piece {
   constructor() {
     // Set the name of your component and stylesheets directly with the super();
-    super('Header', {
-			stylesheets: [
-				() => import('/assets/css/components/header.css')
-			]
-		});
+    super("Header", {
+      stylesheets: [() => import("/assets/css/components/header.css")],
+    });
   }
 }
 // Register the custom element
@@ -115,10 +115,11 @@ customElements.define("c-header", Header);
 ```
 
 ### Register and load dynamically your component
-```js
-import { load } from 'piecesjs';
 
-load('c-button', () => import(`/assets/js/components/Button.js`));
+```js
+import { load } from "piecesjs";
+
+load("c-button", () => import(`/assets/js/components/Button.js`));
 ```
 
 ---
@@ -138,7 +139,7 @@ Shortcut to query an element
 
 ```js
 // return an array of elements
-this.$('button');
+this.$("button");
 ```
 
 ## Events
@@ -146,8 +147,8 @@ this.$('button');
 Register an event
 
 ```js
-/* 
-You can add an event in the mount(). 
+/*
+You can add an event in the mount().
 The called function is automatically binded to this
 params: (eventName, HTMLElement or array of HTMLElement, func)
 */
@@ -159,8 +160,8 @@ mount() {
 Unregister the event
 
 ```js
-/* 
-You can remove the event listener in the unmount(). 
+/*
+You can remove the event listener in the unmount().
 params: (eventName, HTMLElement or array of HTMLElement, func)
 */
 unmount() {
@@ -169,25 +170,28 @@ unmount() {
 ```
 
 Call a function of any components, from any components
+
 ```js
 /*
 params: (functionName, args, pieceName [,pieceId])
 */
-this.call('increment',{},'Add','myAddComponentId');
+this.call("increment", {}, "Add", "myAddComponentId");
 ```
 
 If no pieceId are specified, all occuerences of the component will be called.
 A pieceId can be set directly with an attribute
+
 ```html
 <c-button cid="myButtonUId"></c-button>
 ```
 
 ## PiecesManager
+
 Used to manage all active components.
 To access to the current components active in the page:
 
 ```js
-import { piecesManager } from 'piecesjs';
+import { piecesManager } from "piecesjs";
 console.log(piecesManager.currentPieces);
 
 // or in a Piece
