@@ -1,0 +1,16 @@
+{
+  "name": "piecesjs-test",
+  "description": "Front-end JS framework based on native web components.",
+  "author": "Quentin Hocdé (https://github.com/quentinhocde)",
+  "version": "0.0.1",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.1.0"
+  }
+}

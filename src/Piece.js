@@ -1,17 +1,22 @@
 import { piecesManager } from "./piecesManager";
 
 export class Piece extends HTMLElement {
-  constructor(name,args) {
+  constructor(name,{ stylesheets = [] } = {}) {
     super();
 
     this.name = name;
-    this.styles = typeof args == 'object' ? (typeof args.styles == 'string' ? args.styles : null) : null;
     this.template = document.createElement("template");
     this.piecesManager = piecesManager;
+
+    this.stylesheets = stylesheets;
 
     if (this.innerHTML != " ") {
       this.baseHTML = this.innerHTML;
     }
+  }
+
+  registerStylesheet(loadStylesheet) {
+    this.stylesheets.push(loadStylesheet);
   }
 
   //
@@ -173,8 +178,8 @@ export class Piece extends HTMLElement {
 
   // Dynamically load styles in the page
   async loadStyles() {
-    if (this.styles != null) {
-      const importedStyle = await import(/* @vite-ignore */ this.styles);
+    for (let i = 0; i < this.stylesheets.length; i++) {
+      await this.stylesheets[i]();
     }
   }
 

@@ -3,7 +3,9 @@ import { Piece } from 'piecesjs'
 class Header extends Piece {
 	constructor() {
 		super('Header', {
-				styles: '/assets/css/components/header.css' 
+			stylesheets: [
+				() => import('/assets/css/components/header.css')
+			]
 		});
 	}
 }

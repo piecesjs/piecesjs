@@ -3,7 +3,9 @@ import { Piece } from 'piecesjs'
 class Add extends Piece {
 	constructor() {
 		super('Add', {
-			styles: '/assets/css/components/add.css'
+			stylesheets: [
+				() => import('/assets/css/components/add.css')
+			]
 		});
 	}
 

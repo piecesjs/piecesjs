@@ -3,8 +3,12 @@ import { Piece } from 'piecesjs'
 class Button extends Piece {
 	constructor() {
 		super('Button', {
-			styles: '/assets/css/components/button.css'
+			stylesheets: [
+				() => import('/assets/css/components/button.css')
+			]
 		});
+
+		// this.registerStylesheet(() => import('/assets/css/components/button.css'));
 	}
 
 	mount() {

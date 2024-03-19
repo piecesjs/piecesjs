@@ -1,11 +1,5 @@
-export const load = (name, src) => {
+export const load = async (name, loadModule) => {
   if (document.getElementsByTagName(name).length > 0) {
-    
-    // console.log(name)
-    dynamicLoad(src)
+    await loadModule();
   }
 };
-
-async function dynamicLoad(src) {
-  await import(src);
-}
