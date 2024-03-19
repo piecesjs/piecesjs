@@ -10,9 +10,10 @@ export class Piece extends HTMLElement {
 
     this.stylesheets = stylesheets;
 
-    if (this.innerHTML != " ") {
+    if (this.innerHTML != "") {
       this.baseHTML = this.innerHTML;
     }
+
   }
 
   registerStylesheet(loadStylesheet) {
@@ -39,8 +40,10 @@ export class Piece extends HTMLElement {
     }
 
     this.privatePremount();
+    
 
-    if(this.baseHTML != undefined) {
+    if(this.baseHTML == undefined) {
+      this.innerHTML = "";
       this.template.innerHTML = this.render();
       this.appendChild(this.template.cloneNode(true).content);
     }
@@ -64,8 +67,10 @@ export class Piece extends HTMLElement {
 
   // Lifecycle - step : 0
   privatePremount() {
-    this.innerHTML = "";
-
+    if(this.baseHTML == undefined) {
+      this.innerHTML = "";
+    }
+    
     if (this.log) {
       console.log("🚧 premount", this.name);
     }

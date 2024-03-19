@@ -19,7 +19,7 @@ class h {
 let o = new h();
 class u extends HTMLElement {
   constructor(e, { stylesheets: t = [] } = {}) {
-    super(), this.name = e, this.template = document.createElement("template"), this.piecesManager = o, this.stylesheets = t, this.innerHTML != " " && (this.baseHTML = this.innerHTML);
+    super(), this.name = e, this.template = document.createElement("template"), this.piecesManager = o, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML);
   }
   registerStylesheet(e) {
     this.stylesheets.push(e);
@@ -32,7 +32,7 @@ class u extends HTMLElement {
       name: this.name,
       id: this.cid,
       piece: this
-    })), this.privatePremount(), this.baseHTML != null && (this.template.innerHTML = this.render(), this.appendChild(this.template.cloneNode(!0).content)), this.privateMount();
+    })), this.privatePremount(), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render(), this.appendChild(this.template.cloneNode(!0).content)), this.privateMount();
   }
   render() {
     if (this.baseHTML != null)
@@ -45,7 +45,7 @@ class u extends HTMLElement {
   }
   // Lifecycle - step : 0
   privatePremount() {
-    this.innerHTML = "", this.log && console.log("🚧 premount", this.name), this.loadStyles(), this.premount();
+    this.baseHTML == null && (this.innerHTML = ""), this.log && console.log("🚧 premount", this.name), this.loadStyles(), this.premount();
   }
   premount() {
   }
