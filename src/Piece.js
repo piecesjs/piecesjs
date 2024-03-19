@@ -40,7 +40,7 @@ export class Piece extends HTMLElement {
 
     this.privatePremount();
 
-    if(this.baseHTML != " ") {
+    if(this.baseHTML != undefined) {
       this.template.innerHTML = this.render();
       this.appendChild(this.template.cloneNode(true).content);
     }

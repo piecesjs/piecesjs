@@ -32,7 +32,7 @@ class u extends HTMLElement {
       name: this.name,
       id: this.cid,
       piece: this
-    })), this.privatePremount(), this.baseHTML != " " && (this.template.innerHTML = this.render(), this.appendChild(this.template.cloneNode(!0).content)), this.privateMount();
+    })), this.privatePremount(), this.baseHTML != null && (this.template.innerHTML = this.render(), this.appendChild(this.template.cloneNode(!0).content)), this.privateMount();
   }
   render() {
     if (this.baseHTML != null)
