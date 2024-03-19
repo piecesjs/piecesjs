@@ -59,7 +59,7 @@ export class Piece extends HTMLElement {
   }
 
   adoptedCallback() {
-    this.adopted();
+    
   }
 
   // Lifecycle - step : 0

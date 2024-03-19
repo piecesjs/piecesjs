@@ -42,7 +42,6 @@ class u extends HTMLElement {
     this.privateUnmount();
   }
   adoptedCallback() {
-    this.adopted();
   }
   // Lifecycle - step : 0
   privatePremount() {
