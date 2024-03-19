@@ -178,8 +178,8 @@ params: (functionName, args, pieceName [,pieceId])
 this.call("increment", {}, "Add", "myAddComponentId");
 ```
 
-If no pieceId are specified, all occuerences of the component will be called.
-A pieceId can be set directly with an attribute
+If no pieceId are specified, all occurrences of the component will be called.
+A pieceId can be set directly with an attribute `cid`
 
 ```html
 <c-button cid="myButtonUId"></c-button>
@@ -244,3 +244,5 @@ You can log the lifecycle of your component with an attribute `log`
 ```html
 <c-header log>Hello</c-header>
 ```
+
+<a href="https://polar.sh/quentinhocde"><picture><source media="(prefers-color-scheme: dark)" srcset="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe&darkmode"><img alt="Subscribe on Polar" src="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe"></picture></a>
