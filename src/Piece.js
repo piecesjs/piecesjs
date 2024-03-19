@@ -79,7 +79,7 @@ export class Piece extends HTMLElement {
   // Lifecycle - step : 1
   privateMount() {
     if (this.log) {
-      console.log("🔨 mount", this.name);
+      console.log("✅ mount", this.name);
     }
 
     this.mount();
@@ -108,7 +108,7 @@ export class Piece extends HTMLElement {
     }
 
     if (this.log) {
-      console.log("👋 unmount", this.name);
+      console.log("❌ unmount", this.name);
     }
     this.unmount();
   }

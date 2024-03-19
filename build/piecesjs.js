@@ -52,7 +52,7 @@ class u extends HTMLElement {
   }
   // Lifecycle - step : 1
   privateMount() {
-    this.log && console.log("🔨 mount", this.name), this.mount();
+    this.log && console.log("✅ mount", this.name), this.mount();
   }
   mount() {
   }
@@ -67,7 +67,7 @@ class u extends HTMLElement {
     e || this.piecesManager.removePiece({
       name: this.name,
       id: this.cid
-    }), this.log && console.log("👋 unmount", this.name), this.unmount();
+    }), this.log && console.log("❌ unmount", this.name), this.unmount();
   }
   unmount() {
   }
