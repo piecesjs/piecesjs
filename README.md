@@ -22,11 +22,11 @@ Compiled with [vitejs](https://vitejs.dev/).
 ## Main features
 
 - Dynamic JS & CSS import.
-- Scoped event manager.
-- Easy access to all elements inside a component with a `this.$(yourQuery)`.
-- Easy communication between active components.
-- Common and global CSS import management.
-- A PiecesManager to access to all active components.
+- Scoped event management.
+- Convenient access to scoped HTMLElements using this.$().
+- Seamless communication between active components.
+- Efficient management of common and global CSS imports.
+- A PiecesManager for accessing all active components.
 
 ## Installation
 
