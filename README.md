@@ -104,8 +104,10 @@ class Header extends Piece {
   constructor() {
     // Set the name of your component and stylesheets directly with the super();
     super('Header', {
-      styles: '/src/css/components/header.css'
-    });
+			stylesheets: [
+				() => import('/assets/css/components/header.css')
+			]
+		});
   }
 }
 // Register the custom element
@@ -116,7 +118,7 @@ customElements.define("c-header", Header);
 ```js
 import { load } from 'piecesjs';
 
-load('c-button', `/assets/js/components/Button.js`);
+load('c-button', () => import(`/assets/js/components/Button.js`));
 ```
 
 ---
