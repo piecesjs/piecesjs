@@ -32,7 +32,7 @@ class u extends HTMLElement {
       name: this.name,
       id: this.cid,
       piece: this
-    })), this.privatePremount(), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render(), this.appendChild(this.template.cloneNode(!0).content)), this.privateMount();
+    })), this.privatePremount(), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render(), this.appendChild(this.template.cloneNode(!0).content)), this.privateMount(e);
   }
   render() {
     if (this.baseHTML != null)
@@ -50,10 +50,10 @@ class u extends HTMLElement {
   premount() {
   }
   // Lifecycle - step : 1
-  privateMount() {
-    this.log && console.log("✅ mount", this.name), this.mount();
+  privateMount(e) {
+    this.log && console.log("✅ mount", this.name), this.mount(e);
   }
-  mount() {
+  mount(e) {
   }
   // Lifecycle - step : 2
   privateUpdate() {

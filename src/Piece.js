@@ -48,7 +48,7 @@ export class Piece extends HTMLElement {
       this.appendChild(this.template.cloneNode(true).content);
     }
 
-    this.privateMount();
+    this.privateMount(firstHit);
   }
 
   render() {
@@ -70,7 +70,7 @@ export class Piece extends HTMLElement {
     if(this.baseHTML == undefined) {
       this.innerHTML = "";
     }
-    
+
     if (this.log) {
       console.log("🚧 premount", this.name);
     }
@@ -82,15 +82,15 @@ export class Piece extends HTMLElement {
   premount(){}
 
   // Lifecycle - step : 1
-  privateMount() {
+  privateMount(firstHit) {
     if (this.log) {
       console.log("✅ mount", this.name);
     }
 
-    this.mount();
+    this.mount(firstHit);
   }
 
-  mount() {}
+  mount(firstHit) {}
 
   // Lifecycle - step : 2
   privateUpdate() {

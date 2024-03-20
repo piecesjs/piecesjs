@@ -128,7 +128,7 @@ load("c-button", () => import(`/assets/js/components/Button.js`));
 
 ```js
 premount(){}
-mount(){}
+mount(firstHit){} // firstHit parameter is available, it's set to false if the function is called with an update or if its content is changed.
 update(){} //Called if an attribute is changed : unmount(), premount(), mount()
 unmount(){}
 ```
