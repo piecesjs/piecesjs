@@ -1,7 +1,7 @@
 const l = async (r, e, t = document) => {
   t.getElementsByTagName(r).length > 0 && await e();
 };
-class h {
+class a {
   constructor() {
     this.piecesCount = 0, this.currentPieces = {};
   }
@@ -16,8 +16,8 @@ class h {
     });
   }
 }
-let o = new h();
-class u extends HTMLElement {
+let o = new a();
+class d extends HTMLElement {
   constructor(e, { stylesheets: t = [] } = {}) {
     super(), this.name = e, this.template = document.createElement("template"), this.piecesManager = o, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML);
   }
@@ -83,8 +83,8 @@ class u extends HTMLElement {
   //
   addEvent(e, t, i, s = null) {
     t != null && (t.length > 0 ? t.forEach((n) => {
-      n.addEventListener(e, i.bind(this, s));
-    }) : t.addEventListener(e, i.bind(this, s)));
+      s == null ? n.addEventListener(e, i.bind(this)) : n.addEventListener(e, i.bind(this, s));
+    }) : s == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, s)));
   }
   removeEvent(e, t, i) {
     t != null && (t.length > 0 ? t.forEach((s) => {
@@ -94,8 +94,8 @@ class u extends HTMLElement {
   // Call function anywhere
   call(e, t, i, s) {
     Object.keys(this.piecesManager.currentPieces).forEach((n) => {
-      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((c) => {
-        s != null ? c == s && this.piecesManager.currentPieces[n][c].piece[e](t) : this.piecesManager.currentPieces[n][c].piece[e](t);
+      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((h) => {
+        s != null ? h == s && this.piecesManager.currentPieces[n][h].piece[e](t) : this.piecesManager.currentPieces[n][h].piece[e](t);
       });
     });
   }
@@ -118,7 +118,7 @@ class u extends HTMLElement {
   }
 }
 export {
-  u as Piece,
+  d as Piece,
   l as load,
   o as piecesManager
 };
