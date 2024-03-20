@@ -1,5 +1,5 @@
-const l = async (r, e) => {
-  document.getElementsByTagName(r).length > 0 && await e();
+const l = async (r, e, t = document) => {
+  t.getElementsByTagName(r).length > 0 && await e();
 };
 class h {
   constructor() {

@@ -53,7 +53,7 @@ export class Add extends Piece {
   }
 
   mount() {
-    this.$button = this.$("button")[0];
+    this.$button = this.$('button')[0];
     this.addEvent("click", this.$button, this.click);
   }
 
@@ -139,7 +139,7 @@ Shortcut to query an element
 
 ```js
 // return an array of elements
-this.$("button");
+this.$('button');
 ```
 
 ## Events
