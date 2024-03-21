@@ -11,11 +11,11 @@ class Add extends Piece {
 
 	mount() {
 		this.$button = this.$('button')[0];
-		this.addEvent('click', this.$button, this.increment);
+		this.on('click', this.$button, this.increment);
 	}
 
 	unmount() {
-		this.removeEvent('click', this.$button, this.increment);
+		this.off('click', this.$button, this.increment);
 	}
 	
 	render() {

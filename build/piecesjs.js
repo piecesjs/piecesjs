@@ -1,7 +1,7 @@
 const l = async (r, e, t = document) => {
   t.getElementsByTagName(r).length > 0 && await e();
 };
-class a {
+class h {
   constructor() {
     this.piecesCount = 0, this.currentPieces = {};
   }
@@ -16,95 +16,139 @@ class a {
     });
   }
 }
-let o = new a();
-class d extends HTMLElement {
+let o = new h();
+class u extends HTMLElement {
   constructor(e, { stylesheets: t = [] } = {}) {
     super(), this.name = e, this.template = document.createElement("template"), this.piecesManager = o, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML);
   }
-  registerStylesheet(e) {
-    this.stylesheets.push(e);
-  }
-  //
-  // Basic Custom Elements functions
-  //
+  /**
+  * default function from native web components connectedCallback()
+  */
   connectedCallback(e = !0) {
     e && (typeof this.cid == "string" ? this.cid = this.cid : this.cid = `c${this.piecesManager.piecesCount++}`, this.piecesManager.addPiece({
       name: this.name,
       id: this.cid,
       piece: this
-    })), this.privatePremount(), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render(), this.appendChild(this.template.cloneNode(!0).content)), this.privateMount(e);
+    })), this.privatePremount(e), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render(), this.appendChild(this.template.cloneNode(!0).content)), this.privateMount(e);
   }
+  /**
+  * Function to render HTML in component. If component is not emtpy, the rendering is not called
+  */
   render() {
     if (this.baseHTML != null)
       return this.baseHTML;
   }
+  /**
+  * default function from native web components disconnectedCallback()
+  */
   disconnectedCallback() {
     this.privateUnmount();
   }
+  /**
+  * default function from native web components adoptedCallback()
+  */
   adoptedCallback() {
   }
-  // Lifecycle - step : 0
-  privatePremount() {
-    this.baseHTML == null && (this.innerHTML = ""), this.log && console.log("🚧 premount", this.name), this.loadStyles(), this.premount();
+  /**
+  * Lifecycle - step : 0
+  * @param { firstHit } boolean (false if it's an update)
+  */
+  privatePremount(e = !0) {
+    this.baseHTML == null && (this.innerHTML = ""), this.log && console.log("🚧 premount", this.name), this.loadStyles(e), this.premount(e);
   }
-  premount() {
+  /**
+  * Satelite function for premount
+  */
+  premount(e = !0) {
   }
-  // Lifecycle - step : 1
+  /**
+  * Lifecycle - step : 1
+  * @param { firstHit } boolean (false if it's an update)
+  */
   privateMount(e) {
     this.log && console.log("✅ mount", this.name), this.mount(e);
   }
-  mount(e) {
+  /**
+  * Satelite function for mount
+  */
+  mount(e = !0) {
   }
-  // Lifecycle - step : 2
+  /**
+  * Lifecycle - step : 2
+  */
   privateUpdate() {
     this.log && console.log("🔃 update", this.name), this.privateUnmount(!0), this.connectedCallback(!1);
   }
+  /**
+  * Satelite function for update
+  */
   update() {
   }
-  // Lifecycle - step : 3
+  /**
+  * Lifecycle - step : 3
+  * @param { update } boolean
+  */
   privateUnmount(e = !1) {
     e || this.piecesManager.removePiece({
       name: this.name,
       id: this.cid
-    }), this.log && console.log("❌ unmount", this.name), this.unmount();
+    }), this.log && console.log("❌ unmount", this.name), this.unmount(e);
   }
-  unmount() {
+  /**
+  * Satelite function for unmount
+  */
+  unmount(e = !1) {
   }
-  // Check for updates
+  /**
+  * default function from native web components
+  * @param { String } property
+  * @param { String } oldValue
+  * @param { String } newValue
+  */
   attributeChangedCallback(e, t, i) {
     t !== i && (this[e] = i, this.privateUpdate());
   }
-  // Simple query to return an HTMLElement
-  $(e) {
-    return this.querySelectorAll(e);
+  /**
+  * @param { String } query
+  * @param { HTMLElement } context
+  */
+  $(e, t = this) {
+    return t.querySelectorAll(e);
   }
   /**
   * Events Managment
   */
   /**
+  * Tips: remove events in the mount(), register event for an HTMLElement or an array of HTMLElements
   * @param { String } type
-  * @param { HTMLElement } el
-  * @param { String } func
+  * @param { HTMLElement or HTMLElement[] } el
+  * @param { function } func
   * @param { Object } params
   */
-  addEvent(e, t, i, s = null) {
+  on(e, t, i, s = null) {
     t != null && (t.length > 0 ? t.forEach((n) => {
       s == null ? n.addEventListener(e, i.bind(this)) : n.addEventListener(e, i.bind(this, s));
     }) : s == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, s)));
   }
   /**
+  * Tips: remove events in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
   * @param { String } type
   * @param { HTMLElement } el
-  * @param { String } func
+  * @param { function } func
   */
-  removeEvent(e, t, i) {
+  off(e, t, i) {
     t != null && (t.length > 0 ? t.forEach((s) => {
       s.removeEventListener(e, i.bind(this));
     }) : t.removeEventListener(e, i.bind(this)));
   }
-  emit() {
-  }
-  on() {
+  /**
+  * Emit a custom event
+  * @param { String } eventName
+  * @param { HTMLElement } el
+  */
+  emit(e, t = document) {
+    const i = new CustomEvent(e);
+    t.dispatchEvent(i);
   }
   /**
   * Call function of a component, from a component 
@@ -115,15 +159,18 @@ class d extends HTMLElement {
   */
   call(e, t, i, s) {
     Object.keys(this.piecesManager.currentPieces).forEach((n) => {
-      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((h) => {
-        s != null ? h == s && this.piecesManager.currentPieces[n][h].piece[e](t) : this.piecesManager.currentPieces[n][h].piece[e](t);
+      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((c) => {
+        s != null ? c == s && this.piecesManager.currentPieces[n][c].piece[e](t) : this.piecesManager.currentPieces[n][c].piece[e](t);
       });
     });
   }
-  // Dynamically load styles in the page
-  async loadStyles() {
-    for (let e = 0; e < this.stylesheets.length; e++)
-      await this.stylesheets[e]();
+  /**
+  * Dynamic loading of stylesheets from super()
+  */
+  async loadStyles(e = !0) {
+    if (e)
+      for (let t = 0; t < this.stylesheets.length; t++)
+        await this.stylesheets[t]();
   }
   get log() {
     return typeof this.getAttribute("log") == "string";
@@ -139,7 +186,7 @@ class d extends HTMLElement {
   }
 }
 export {
-  d as Piece,
+  u as Piece,
   l as load,
   o as piecesManager
 };

@@ -7,17 +7,16 @@ class Button extends Piece {
 				() => import('/assets/css/components/button.css')
 			]
 		});
-
-		// this.registerStylesheet(() => import('/assets/css/components/button.css'));
 	}
 
 	mount() {
-		this.pieces
-		this.addEvent('click', this, this.click, {test: 'test'});
+		this.emit('buttonIsMounted');
+		
+		this.on('click', this, this.click, {value: 'increment'});
 	}
 
 	unmount() {
-		this.removeEvent('click', this, this.click);
+		this.off('click', this, this.click);
 	}
 
 	click(params, e) {

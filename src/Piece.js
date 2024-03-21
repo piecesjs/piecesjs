@@ -16,13 +16,9 @@ export class Piece extends HTMLElement {
 
   }
 
-  registerStylesheet(loadStylesheet) {
-    this.stylesheets.push(loadStylesheet);
-  }
-
-  //
-  // Basic Custom Elements functions
-  //
+  /**
+  * default function from native web components connectedCallback()
+  */
   connectedCallback(firstHit = true) {
     if (firstHit) {
       // Add the piece to the PiecesManager
@@ -39,8 +35,7 @@ export class Piece extends HTMLElement {
       });
     }
 
-    this.privatePremount();
-    
+    this.privatePremount(firstHit);
 
     if(this.baseHTML == undefined) {
       this.innerHTML = "";
@@ -51,22 +46,34 @@ export class Piece extends HTMLElement {
     this.privateMount(firstHit);
   }
 
+  /**
+  * Function to render HTML in component. If component is not emtpy, the rendering is not called
+  */
   render() {
     if (this.baseHTML != undefined) {
       return this.baseHTML;
     }
   }
 
+  /**
+  * default function from native web components disconnectedCallback()
+  */
   disconnectedCallback() {
     this.privateUnmount();
   }
 
+  /**
+  * default function from native web components adoptedCallback()
+  */
   adoptedCallback() {
     
   }
 
-  // Lifecycle - step : 0
-  privatePremount() {
+  /**
+  * Lifecycle - step : 0
+  * @param { firstHit } boolean (false if it's an update)
+  */
+  privatePremount(firstHit = true) {
     if(this.baseHTML == undefined) {
       this.innerHTML = "";
     }
@@ -75,13 +82,18 @@ export class Piece extends HTMLElement {
       console.log("🚧 premount", this.name);
     }
 
-    this.loadStyles();
-    this.premount();
+    this.loadStyles(firstHit);
+    this.premount(firstHit);
   }
+  /**
+  * Satelite function for premount
+  */
+  premount(firstHit = true){}
 
-  premount(){}
-
-  // Lifecycle - step : 1
+  /**
+  * Lifecycle - step : 1
+  * @param { firstHit } boolean (false if it's an update)
+  */
   privateMount(firstHit) {
     if (this.log) {
       console.log("✅ mount", this.name);
@@ -89,10 +101,14 @@ export class Piece extends HTMLElement {
 
     this.mount(firstHit);
   }
+  /**
+  * Satelite function for mount
+  */
+  mount(firstHit = true) {}
 
-  mount(firstHit) {}
-
-  // Lifecycle - step : 2
+  /**
+  * Lifecycle - step : 2
+  */
   privateUpdate() {
     if (this.log) {
       console.log("🔃 update", this.name);
@@ -101,9 +117,15 @@ export class Piece extends HTMLElement {
     this.privateUnmount(true);
     this.connectedCallback(false);
   }
+  /**
+  * Satelite function for update
+  */
   update() {}
 
-  // Lifecycle - step : 3
+  /**
+  * Lifecycle - step : 3
+  * @param { update } boolean
+  */
   privateUnmount(update = false) {
     if(!update) {
       this.piecesManager.removePiece({
@@ -115,12 +137,19 @@ export class Piece extends HTMLElement {
     if (this.log) {
       console.log("❌ unmount", this.name);
     }
-    this.unmount();
+    this.unmount(update);
   }
+  /**
+  * Satelite function for unmount
+  */
+  unmount(update = false) {}
 
-  unmount() {}
-
-  // Check for updates
+  /**
+  * default function from native web components
+  * @param { String } property
+  * @param { String } oldValue
+  * @param { String } newValue
+  */
   attributeChangedCallback(property, oldValue, newValue) {
     if (oldValue === newValue) return;
     this[property] = newValue;
@@ -128,9 +157,12 @@ export class Piece extends HTMLElement {
     this.privateUpdate();
   }
 
-  // Simple query to return an HTMLElement
-  $(query) {
-    return this.querySelectorAll(query);
+  /**
+  * @param { String } query
+  * @param { HTMLElement } context
+  */
+  $(query, context = this) {
+    return context.querySelectorAll(query);
   }
 
   /**
@@ -138,12 +170,13 @@ export class Piece extends HTMLElement {
   */
 
   /**
+  * Tips: remove events in the mount(), register event for an HTMLElement or an array of HTMLElements
   * @param { String } type
-  * @param { HTMLElement } el
-  * @param { String } func
+  * @param { HTMLElement or HTMLElement[] } el
+  * @param { function } func
   * @param { Object } params
   */
-  addEvent(type, el, func, params = null) {
+  on(type, el, func, params = null) {
     if(el != null) {
       if(el.length > 0) {
         el.forEach(item => {
@@ -165,11 +198,12 @@ export class Piece extends HTMLElement {
   }
 
   /**
+  * Tips: remove events in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
   * @param { String } type
   * @param { HTMLElement } el
-  * @param { String } func
+  * @param { function } func
   */
-  removeEvent(type, el, func) {
+  off(type, el, func) {
     if(el != null) {
       if(el.length > 0) {
         el.forEach(item => {
@@ -181,12 +215,14 @@ export class Piece extends HTMLElement {
     }
   }
 
-  emit() {
-
-  }
-
-  on() {
-
+  /**
+  * Emit a custom event
+  * @param { String } eventName
+  * @param { HTMLElement } el
+  */
+  emit(eventName, el = document) {
+    const event = new CustomEvent(eventName);
+    el.dispatchEvent(event);
   }
 
   /**
@@ -215,10 +251,14 @@ export class Piece extends HTMLElement {
     });
   }
 
-  // Dynamically load styles in the page
-  async loadStyles() {
-    for (let i = 0; i < this.stylesheets.length; i++) {
-      await this.stylesheets[i]();
+  /**
+  * Dynamic loading of stylesheets from super()
+  */
+  async loadStyles(firstHit = true) {
+    if(firstHit) {
+      for (let i = 0; i < this.stylesheets.length; i++) {
+        await this.stylesheets[i]();
+      }
     }
   }
 

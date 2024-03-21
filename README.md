@@ -54,11 +54,11 @@ export class Add extends Piece {
 
   mount() {
     this.$button = this.$('button')[0];
-    this.addEvent("click", this.$button, this.click);
+    this.on("click", this.$button, this.click);
   }
 
   unmount() {
-    this.removeEvent("click", this.$button, this.click);
+    this.off("click", this.$button, this.click);
   }
 
   render() {
@@ -105,8 +105,8 @@ import { default as Piece } from "piecesjs";
 class Header extends Piece {
   constructor() {
     // Set the name of your component and stylesheets directly with the super();
-    super("Header", {
-      stylesheets: [() => import("/assets/css/components/header.css")],
+    super('Header', {
+      stylesheets: [() => import('/assets/css/components/header.css')],
     });
   }
 }
@@ -119,7 +119,7 @@ customElements.define("c-header", Header);
 ```js
 import { load } from "piecesjs";
 
-load("c-button", () => import(`/assets/js/components/Button.js`));
+load('c-button', () => import('/assets/js/components/Button.js'));
 ```
 
 ---
@@ -127,10 +127,10 @@ load("c-button", () => import(`/assets/js/components/Button.js`));
 ## Lifecycle
 
 ```js
-premount(){}
-mount(firstHit){} // firstHit parameter is available, it's set to false if the function is called with an update or if its content is changed.
-update(){} //Called if an attribute is changed : unmount(), premount(), mount()
-unmount(){}
+premount(firstHit = true){}
+mount(firstHit = true){} // firstHit parameter is available, set to false if the function is called with an update or if its content is changed.
+update(){} //Called if an attribute is changed, relaunch: unmount(update = true), premount(firstHit = false), mount(firstHit = false)
+unmount(update = false){}
 ```
 
 ### Query with this.$
@@ -138,44 +138,63 @@ unmount(){}
 Shortcut to query an element
 
 ```js
-// return an array of elements
+/**
+* @param { String } query
+* @param { HTMLElement } context (this by default)
+*/
 this.$('button');
 ```
 
 ## Events
 
-Register an event
+Register an event listener with `this.on()`
 
 ```js
 /*
-You can add an event in the mount().
-The called function is automatically binded to this
-params: (eventName, HTMLElement or array of HTMLElement, func [,parameters])
+* Tips: call listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
+* The called func is automatically binded to this
+* @param { String } type
+* @param { HTMLElement or HTMLElement[] } el
+* @param { function } func
+* @param { Object } params
 */
 mount() {
-  this.addEvent('click', this.$button, this.click, {hello: 'world'});
+  this.on('click', this.$button, this.click, {hello: 'world'});
 }
+
+// if you have set params, the eventObject will be available after
+click(params, ev) {}
 ```
 
-Unregister the event
+Unregister an event listener with `this.off()`
 
 ```js
 /*
-You can remove the event listener in the unmount().
-params: (eventName, HTMLElement or array of HTMLElement, func)
+* Tips: remove listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
+* The called func is automatically binded to this
+* @param { String } type
+* @param { HTMLElement or HTMLElement[] } el
+* @param { function } func
+* @param { Object } params
 */
 unmount() {
-  this.removeEvent('click', this.$button, this.click);
+  this.off('click', this.$button, this.click);
 }
 ```
 
+## Communication between components
+### this.call()
 Call a function of any components, from any components
 
 ```js
-/*
-params: (functionName, args, pieceName [,pieceId])
+/**
+* Call function of a component, from a component 
+* @param { String } func
+* @param { Object } args
+* @param { String } pieceName
+* @param { pieceId } pieceName
 */
-this.call("increment", {}, "Add", "myAddComponentId");
+this.call('increment', {}, 'Add', 'myAddComponentId');
 ```
 
 If no `pieceId` are specified, all occurrences of the component will be called.
@@ -185,16 +204,43 @@ A `pieceId` can be set directly with an attribute `cid`
 <c-button cid="myButtonUId"></c-button>
 ```
 
-## PiecesManager
-
-Used to manage all active components.
-To access to the current components active in the page:
+### this.emit() and custom events
+You can also emit a custom event with `this.emit()`
 
 ```js
+/**
+* Emit a custom event
+* @param { String } eventName
+* @param { HTMLElement } el, by default the event is emit on document
+*/
+this.emit('buttonIsMounted');
+```
+
+Then, in a Piece you can use `this.on()`, like the default events.
+```js
+mount() {
+  this.on('buttonIsMounted', document, this.customEventTrigger, {value: 'Button is mounted!'});
+}
+
+customEventTrigger(params, e) {
+  console.log(params, e);
+}
+
+unmount() {
+  this.off('buttonIsMounted', document, this.customEventTrigger);
+}
+```
+
+## PiecesManager
+
+PiecesManager manage all active components.
+Get access of all current components visible in the page:
+```js
+// From anywhere
 import { piecesManager } from "piecesjs";
 console.log(piecesManager.currentPieces);
 
-// or in a Piece
+// In a Piece
 console.log(this.piecesManager);
 
 class Header extends Piece {
@@ -246,12 +292,12 @@ You can log the lifecycle of your component with an attribute `log`
 ```
 
 ## You want to collaborate ?
-Clone the repo and at the root
+Clone the repo and at the root `/`
 ```
 npm i
 ```
 
-Link your local piecesjs to use it at an npm package
+Link your local piecesjs to use it as an npm package
 ```
 npm link piecesjs
 ```
