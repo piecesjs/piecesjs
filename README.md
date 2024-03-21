@@ -2,7 +2,7 @@
 	<img src="https://github.com/piecesjs/piecesjs/blob/main/test/assets/logo.png?raw=true" witdh="160" height="57" alt="piecesjs">
   <br>
 	<p>
-		[alpha] - [<a href="https://bundlephobia.com/package/piecesjs@0.0.10">1.1kb</a>] - Front-end js framework, using native web components.
+		[alpha] - [<a href="https://bundlephobia.com/package/piecesjs@0.0.10">1.1kb</a>] - Tiny framework, using native web components.
 	</p>
 </div>
 
@@ -178,8 +178,8 @@ params: (functionName, args, pieceName [,pieceId])
 this.call("increment", {}, "Add", "myAddComponentId");
 ```
 
-If no pieceId are specified, all occurrences of the component will be called.
-A pieceId can be set directly with an attribute `cid`
+If no `pieceId` are specified, all occurrences of the component will be called.
+A `pieceId` can be set directly with an attribute `cid`
 
 ```html
 <c-button cid="myButtonUId"></c-button>
@@ -196,6 +196,7 @@ console.log(piecesManager.currentPieces);
 
 // or in a Piece
 console.log(this.piecesManager);
+
 class Header extends Piece {
   mount() {
     console.log(this.piecesManager.currentPieces);
@@ -203,7 +204,6 @@ class Header extends Piece {
 }
 
 /*
-
 {
   Add: {
     c0: {
@@ -244,5 +244,26 @@ You can log the lifecycle of your component with an attribute `log`
 ```html
 <c-header log>Hello</c-header>
 ```
+
+## You want to collaborate ?
+Clone the repo and at the root
+```
+npm i
+```
+
+Link your local piecesjs to use it at an npm package
+```
+npm link piecesjs
+```
+
+In the folder `/test`
+```
+npm i
+npm run dev
+```
+Enjoy and feel free to create a pull request!
+
+## Support
+If you want to support me, and follow the journey of the creation of pieces 👀
 
 <a href="https://polar.sh/quentinhocde"><picture><source media="(prefers-color-scheme: dark)" srcset="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe&darkmode"><img alt="Subscribe on Polar" src="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe"></picture></a>
