@@ -120,7 +120,7 @@ export class Piece extends HTMLElement {
 
   unmount() {}
 
-  // Check for update
+  // Check for updates
   attributeChangedCallback(property, oldValue, newValue) {
     if (oldValue === newValue) return;
     this[property] = newValue;
@@ -133,9 +133,16 @@ export class Piece extends HTMLElement {
     return this.querySelectorAll(query);
   }
 
-  //
-  // Event Managment
-  //
+  /**
+  * Events Managment
+  */
+
+  /**
+  * @param { String } type
+  * @param { HTMLElement } el
+  * @param { String } func
+  * @param { Object } params
+  */
   addEvent(type, el, func, params = null) {
     if(el != null) {
       if(el.length > 0) {
@@ -157,6 +164,11 @@ export class Piece extends HTMLElement {
     }
   }
 
+  /**
+  * @param { String } type
+  * @param { HTMLElement } el
+  * @param { String } func
+  */
   removeEvent(type, el, func) {
     if(el != null) {
       if(el.length > 0) {
@@ -169,7 +181,21 @@ export class Piece extends HTMLElement {
     }
   }
 
-  // Call function anywhere
+  emit() {
+
+  }
+
+  on() {
+
+  }
+
+  /**
+  * Call function of a component, from a component 
+  * @param { String } func
+  * @param { Object } args
+  * @param { String } pieceName
+  * @param { pieceId } pieceName
+  */
   call(func, args, pieceName, pieceId) {
     Object.keys(this.piecesManager.currentPieces).forEach((name) => {
 

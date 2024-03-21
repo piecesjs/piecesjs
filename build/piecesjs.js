@@ -70,7 +70,7 @@ class d extends HTMLElement {
   }
   unmount() {
   }
-  // Check for update
+  // Check for updates
   attributeChangedCallback(e, t, i) {
     t !== i && (this[e] = i, this.privateUpdate());
   }
@@ -78,20 +78,41 @@ class d extends HTMLElement {
   $(e) {
     return this.querySelectorAll(e);
   }
-  //
-  // Event Managment
-  //
+  /**
+  * Events Managment
+  */
+  /**
+  * @param { String } type
+  * @param { HTMLElement } el
+  * @param { String } func
+  * @param { Object } params
+  */
   addEvent(e, t, i, s = null) {
     t != null && (t.length > 0 ? t.forEach((n) => {
       s == null ? n.addEventListener(e, i.bind(this)) : n.addEventListener(e, i.bind(this, s));
     }) : s == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, s)));
   }
+  /**
+  * @param { String } type
+  * @param { HTMLElement } el
+  * @param { String } func
+  */
   removeEvent(e, t, i) {
     t != null && (t.length > 0 ? t.forEach((s) => {
       s.removeEventListener(e, i.bind(this));
     }) : t.removeEventListener(e, i.bind(this)));
   }
-  // Call function anywhere
+  emit() {
+  }
+  on() {
+  }
+  /**
+  * Call function of a component, from a component 
+  * @param { String } func
+  * @param { Object } args
+  * @param { String } pieceName
+  * @param { pieceId } pieceName
+  */
   call(e, t, i, s) {
     Object.keys(this.piecesManager.currentPieces).forEach((n) => {
       n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((h) => {
