@@ -74,21 +74,21 @@ export class Add extends Piece {
   }
 
   set value(value) {
-    return this.setAttribute("value", value);
+    return this.setAttribute('value', value);
   }
 
   get value() {
-    return this.getAttribute("value");
+    return this.getAttribute('value');
   }
 
   // Important to automatically call the update function if attribute is changing
   static get observedAttributes() {
-    return ["value"];
+    return ['value'];
   }
 }
 
 // Register the custom element
-customElements.define("c-add", Add);
+customElements.define('c-add', Add);
 ```
 
 ### With static content
@@ -100,7 +100,7 @@ customElements.define("c-add", Add);
 ```
 
 ```js
-import { default as Piece } from "piecesjs";
+import { default as Piece } from 'piecesjs';
 
 class Header extends Piece {
   constructor() {
@@ -111,13 +111,13 @@ class Header extends Piece {
   }
 }
 // Register the custom element
-customElements.define("c-header", Header);
+customElements.define('c-header', Header);
 ```
 
 ### Register and load dynamically your component
 
 ```js
-import { load } from "piecesjs";
+import { load } from 'piecesjs';
 
 load('c-button', () => import('/assets/js/components/Button.js'));
 ```
