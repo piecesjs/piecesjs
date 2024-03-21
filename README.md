@@ -54,11 +54,11 @@ export class Add extends Piece {
 
   mount() {
     this.$button = this.$('button')[0];
-    this.on("click", this.$button, this.click);
+    this.on('click', this.$button, this.click);
   }
 
   unmount() {
-    this.off("click", this.$button, this.click);
+    this.off('click', this.$button[0], this.click);
   }
 
   render() {
@@ -135,7 +135,7 @@ unmount(update = false){}
 
 ### Query with this.$
 
-Shortcut to query an element
+Shortcut to query an element. `this.dom(query, context)` is also available.
 
 ```js
 /**

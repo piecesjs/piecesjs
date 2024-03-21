@@ -1,7 +1,7 @@
 const l = async (r, e, t = document) => {
   t.getElementsByTagName(r).length > 0 && await e();
 };
-class h {
+class a {
   constructor() {
     this.piecesCount = 0, this.currentPieces = {};
   }
@@ -16,7 +16,7 @@ class h {
     });
   }
 }
-let o = new h();
+let o = new a();
 class u extends HTMLElement {
   constructor(e, { stylesheets: t = [] } = {}) {
     super(), this.name = e, this.template = document.createElement("template"), this.piecesManager = o, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML);
@@ -113,6 +113,9 @@ class u extends HTMLElement {
   * @param { HTMLElement } context
   */
   $(e, t = this) {
+    return t.querySelectorAll(e);
+  }
+  dom(e, t = this) {
     return t.querySelectorAll(e);
   }
   /**

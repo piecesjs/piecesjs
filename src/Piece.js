@@ -164,6 +164,9 @@ export class Piece extends HTMLElement {
   $(query, context = this) {
     return context.querySelectorAll(query);
   }
+  dom(query, context = this) {
+    return context.querySelectorAll(query);
+  }
 
   /**
   * Events Managment
