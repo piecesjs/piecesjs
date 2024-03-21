@@ -47,8 +47,8 @@ import { default as Piece } from "piecesjs";
 
 export class Add extends Piece {
   constructor() {
-    super("add", {
-      stylesheets: [() => import("/assets/css/components/add.css")],
+    super('add', {
+      stylesheets: [() => import('/assets/css/components/add.css')],
     });
   }
 
