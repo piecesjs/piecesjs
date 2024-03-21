@@ -302,6 +302,12 @@ Link your local piecesjs to use it as an npm package
 npm link piecesjs
 ```
 
+Build piecesjs
+```
+npm run build
+```
+
+Test environment :
 In the folder `/test`
 ```
 npm i
