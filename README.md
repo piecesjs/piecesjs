@@ -2,7 +2,7 @@
 	<img src="https://github.com/piecesjs/piecesjs/blob/main/test/assets/logo.png?raw=true" witdh="160" height="57" alt="piecesjs">
   <br>
 	<p>
-		[alpha] - [<a href="https://bundlephobia.com/package/piecesjs@0.0.10">1.1kb</a>] - Tiny framework, using native web components.
+		[alpha] - [<a href="https://bundlephobia.com/package/piecesjs@0.1.2">1.1kb</a>] - Tiny framework, using native web components.
 	</p>
 </div>
 
@@ -47,18 +47,18 @@ import { default as Piece } from "piecesjs";
 
 export class Add extends Piece {
   constructor() {
-    super('add', {
-      stylesheets: [() => import('/assets/css/components/add.css')],
+    super("add", {
+      stylesheets: [() => import("/assets/css/components/add.css")],
     });
   }
 
   mount() {
-    this.$button = this.$('button')[0];
-    this.on('click', this.$button, this.click);
+    this.$button = this.$("button")[0];
+    this.on("click", this.$button, this.click);
   }
 
   unmount() {
-    this.off('click', this.$button[0], this.click);
+    this.off("click", this.$button[0], this.click);
   }
 
   render() {
@@ -74,21 +74,21 @@ export class Add extends Piece {
   }
 
   set value(value) {
-    return this.setAttribute('value', value);
+    return this.setAttribute("value", value);
   }
 
   get value() {
-    return this.getAttribute('value');
+    return this.getAttribute("value");
   }
 
   // Important to automatically call the update function if attribute is changing
   static get observedAttributes() {
-    return ['value'];
+    return ["value"];
   }
 }
 
 // Register the custom element
-customElements.define('c-add', Add);
+customElements.define("c-add", Add);
 ```
 
 ### With static content
@@ -100,26 +100,26 @@ customElements.define('c-add', Add);
 ```
 
 ```js
-import { default as Piece } from 'piecesjs';
+import { default as Piece } from "piecesjs";
 
 class Header extends Piece {
   constructor() {
     // Set the name of your component and stylesheets directly with the super();
-    super('Header', {
-      stylesheets: [() => import('/assets/css/components/header.css')],
+    super("Header", {
+      stylesheets: [() => import("/assets/css/components/header.css")],
     });
   }
 }
 // Register the custom element
-customElements.define('c-header', Header);
+customElements.define("c-header", Header);
 ```
 
 ### Register and load dynamically your component
 
 ```js
-import { load } from 'piecesjs';
+import { load } from "piecesjs";
 
-load('c-button', () => import('/assets/js/components/Button.js'));
+load("c-button", () => import("/assets/js/components/Button.js"));
 ```
 
 ---
@@ -139,10 +139,10 @@ Shortcut to query an element. `this.dom(query, context)` is also available.
 
 ```js
 /**
-* @param { String } query
-* @param { HTMLElement } context (this by default)
-*/
-this.$('button');
+ * @param { String } query
+ * @param { HTMLElement } context (this by default)
+ */
+this.$("button");
 ```
 
 ## Events
@@ -183,18 +183,20 @@ unmount() {
 ```
 
 ## Communication between components
+
 ### this.call()
+
 Call a function of any components, from any components
 
 ```js
 /**
-* Call function of a component, from a component 
-* @param { String } func
-* @param { Object } args
-* @param { String } pieceName
-* @param { pieceId } pieceName
-*/
-this.call('increment', {}, 'Add', 'myAddComponentId');
+ * Call function of a component, from a component
+ * @param { String } func
+ * @param { Object } args
+ * @param { String } pieceName
+ * @param { pieceId } pieceName
+ */
+this.call("increment", {}, "Add", "myAddComponentId");
 ```
 
 If no `pieceId` are specified, all occurrences of the component will be called.
@@ -205,18 +207,20 @@ A `pieceId` can be set directly with an attribute `cid`
 ```
 
 ### this.emit() and custom events
+
 You can also emit a custom event with `this.emit()`
 
 ```js
 /**
-* Emit a custom event
-* @param { String } eventName
-* @param { HTMLElement } el, by default the event is emit on document
-*/
-this.emit('buttonIsMounted');
+ * Emit a custom event
+ * @param { String } eventName
+ * @param { HTMLElement } el, by default the event is emit on document
+ */
+this.emit("buttonIsMounted");
 ```
 
 Then, in a Piece you can use `this.on()`, like the default events.
+
 ```js
 mount() {
   this.on('buttonIsMounted', document, this.customEventTrigger, {value: 'Button is mounted!'});
@@ -235,6 +239,7 @@ unmount() {
 
 PiecesManager manage all active components.
 Get access of all current components visible in the page:
+
 ```js
 // From anywhere
 import { piecesManager } from "piecesjs";
@@ -292,30 +297,37 @@ You can log the lifecycle of your component with an attribute `log`
 ```
 
 ## You want to collaborate ?
+
 Clone the repo and at the root `/`
+
 ```
 npm i
 ```
 
 Link your local piecesjs to use it as an npm package
+
 ```
 npm link piecesjs
 ```
 
 Build piecesjs
+
 ```
 npm run build
 ```
 
 Test environment :
 In the folder `/test`
+
 ```
 npm i
 npm run dev
 ```
+
 Enjoy and feel free to create a pull request!
 
 ## Support
+
 If you want to support me, and follow the journey of the creation of pieces 👀
 
 <a href="https://polar.sh/quentinhocde"><picture><source media="(prefers-color-scheme: dark)" srcset="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe&darkmode"><img alt="Subscribe on Polar" src="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe"></picture></a>
