@@ -179,14 +179,16 @@ export class Piece extends HTMLElement {
    */
   on(type, el, func, params = null) {
     if (el != null) {
-      if (isNodeList(el) && el.length > 0) {
-        el.forEach((item) => {
-          if (params == null) {
-            item.addEventListener(type, func.bind(this));
-          } else {
-            item.addEventListener(type, func.bind(this, params));
-          }
-        });
+      if (isNodeList(el)) {
+        if (el.length > 0) {
+          el.forEach((item) => {
+            if (params == null) {
+              item.addEventListener(type, func.bind(this));
+            } else {
+              item.addEventListener(type, func.bind(this, params));
+            }
+          });
+        }
       } else {
         if (params == null) {
           el.addEventListener(type, func.bind(this));
@@ -205,10 +207,12 @@ export class Piece extends HTMLElement {
    */
   off(type, el, func) {
     if (el != null) {
-      if (isNodeList(el) && el.length > 0) {
-        el.forEach((item) => {
-          item.removeEventListener(type, func.bind(this));
-        });
+      if (isNodeList(el)) {
+        if (el.length > 0) {
+          el.forEach((item) => {
+            item.removeEventListener(type, func.bind(this));
+          });
+        }
       } else {
         el.removeEventListener(type, func.bind(this));
       }

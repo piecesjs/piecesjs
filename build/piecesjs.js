@@ -132,7 +132,7 @@ class d extends HTMLElement {
    * @param { Object } params
    */
   on(e, t, i, n = null) {
-    t != null && (h(t) && t.length > 0 ? t.forEach((r) => {
+    t != null && (h(t) ? t.length > 0 && t.forEach((r) => {
       n == null ? r.addEventListener(e, i.bind(this)) : r.addEventListener(e, i.bind(this, n));
     }) : n == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, n)));
   }
@@ -143,7 +143,7 @@ class d extends HTMLElement {
    * @param { function } func
    */
   off(e, t, i) {
-    t != null && (h(t) && t.length > 0 ? t.forEach((n) => {
+    t != null && (h(t) ? t.length > 0 && t.forEach((n) => {
       n.removeEventListener(e, i.bind(this));
     }) : t.removeEventListener(e, i.bind(this)));
   }
