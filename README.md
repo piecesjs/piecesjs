@@ -1,4 +1,4 @@
-<div align="left">
+<div align="center">
 	<img src="https://github.com/piecesjs/piecesjs/blob/main/test/assets/logo-square.png?raw=true" witdh="160" height="57" alt="piecesjs">
   <br>
 	<p>
