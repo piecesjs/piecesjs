@@ -1,4 +1,5 @@
 import { piecesManager } from "./piecesManager";
+import { isNodeList } from "./utils";
 
 export class Piece extends HTMLElement {
   constructor(name, { stylesheets = [] } = {}) {
@@ -177,9 +178,8 @@ export class Piece extends HTMLElement {
    * @param { Object } params
    */
   on(type, el, func, params = null) {
-    if (el.length == 0) return;
     if (el != null) {
-      if (el.length > 0) {
+      if (isNodeList(el) && el.length > 0) {
         el.forEach((item) => {
           if (params == null) {
             item.addEventListener(type, func.bind(this));
@@ -205,7 +205,7 @@ export class Piece extends HTMLElement {
    */
   off(type, el, func) {
     if (el != null) {
-      if (el.length > 0) {
+      if (isNodeList(el) && el.length > 0) {
         el.forEach((item) => {
           item.removeEventListener(type, func.bind(this));
         });
