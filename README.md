@@ -1,5 +1,5 @@
 <div align="center">
-	<img src="https://github.com/piecesjs/piecesjs/blob/main/test/assets/logo-square.png?raw=true" witdh="160" height="160" alt="piecesjs">
+	<img src="https://github.com/piecesjs/piecesjs/blob/main/test/assets/logo-square.png?raw=true" witdh="200" height="200" alt="piecesjs">
   <br>
 	<p>
 		[alpha] - [<a href="https://bundlephobia.com/package/piecesjs@0.1.5">1.1kb</a>] - Tiny framework, using native web components.
