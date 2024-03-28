@@ -161,6 +161,9 @@ Register an event listener with `this.on()`
 */
 mount() {
   this.on('click', this.$button, this.click, {hello: 'world'});
+
+  // You can also use this.on() to add an event listener on global elements
+  // this.on('resize', window, this.resize);
 }
 
 // if you have set params, the eventObject will be available after
@@ -171,7 +174,7 @@ Unregister an event listener with `this.off()`
 
 ```js
 /*
-* Tips: remove listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
+* Tips: remove listeners in the unmount(), register event for an HTMLElement or an array of HTMLElements
 * The called func is automatically binded to this
 * @param { String } type
 * @param { HTMLElement or HTMLElement[] } el
@@ -195,7 +198,7 @@ Call a function of any components, from any components
  * @param { String } func
  * @param { Object } args
  * @param { String } pieceName
- * @param { pieceId } pieceName
+ * @param { String } pieceId
  */
 this.call("increment", {}, "Add", "myAddComponentId");
 ```
