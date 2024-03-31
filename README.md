@@ -40,16 +40,16 @@ npm i piecesjs --save
 ### With dynamic attributes (reactive)
 
 ```html
-<c-add class="c-add" value="0"></c-add>
+<c-counter class="c-counter" value="0"></c-counter>
 ```
 
 ```js
 import { default as Piece } from "piecesjs";
 
-export class Add extends Piece {
+export class Counter extends Piece {
   constructor() {
-    super("add", {
-      stylesheets: [() => import("/assets/css/components/add.css")],
+    super("Counter", {
+      stylesheets: [() => import("/assets/css/components/counter.css")],
     });
   }
 
@@ -89,7 +89,7 @@ export class Add extends Piece {
 }
 
 // Register the custom element
-customElements.define("c-add", Add);
+customElements.define("c-counter", Counter);
 ```
 
 ### With static content
@@ -200,7 +200,7 @@ Call a function of any components, from any components
  * @param { String } pieceName
  * @param { String } pieceId
  */
-this.call("increment", {}, "Add", "myAddComponentId");
+this.call("increment", {}, "Counter", "myCounterComponentId");
 ```
 
 If no `pieceId` are specified, all occurrences of the component will be called.
@@ -260,15 +260,15 @@ class Header extends Piece {
 
 /*
 {
-  Add: {
+  Counter: {
     c0: {
-      name: 'Add',
+      name: 'Counter',
       id: 'c0',
       piece: HTMLElement
     },
-    myAddComponentId: {
-      name: 'Add',
-      id: 'myAddComponentId',
+    myCounterComponentId: {
+      name: 'Counter',
+      id: 'myCounterComponentId',
       piece: HTMLElement
     }
   }, 

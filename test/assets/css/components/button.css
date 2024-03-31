@@ -1,9 +1,9 @@
 .c-button {
-	display: inline-block;
-	cursor: pointer;
-	padding: 10px;
-	border: 1px solid black;
-	border-radius: 12px;
-	user-select: none;
-	background-color: transparent;
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 12px;
+  user-select: none;
+  background-color: transparent;
 }
