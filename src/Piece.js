@@ -1,17 +1,17 @@
-import { piecesManager } from "./piecesManager";
-import { isNodeList } from "./utils";
+import { piecesManager } from './piecesManager';
+import { isNodeList } from './utils';
 
 export class Piece extends HTMLElement {
   constructor(name, { stylesheets = [] } = {}) {
     super();
 
     this.name = name;
-    this.template = document.createElement("template");
+    this.template = document.createElement('template');
     this.piecesManager = piecesManager;
 
     this.stylesheets = stylesheets;
 
-    if (this.innerHTML != "") {
+    if (this.innerHTML != '') {
       this.baseHTML = this.innerHTML;
     }
   }
@@ -22,7 +22,7 @@ export class Piece extends HTMLElement {
   connectedCallback(firstHit = true) {
     if (firstHit) {
       // Add the piece to the PiecesManager
-      if (typeof this.cid == "string") {
+      if (typeof this.cid == 'string') {
         this.cid = this.cid;
       } else {
         this.cid = `c${this.piecesManager.piecesCount++}`;
@@ -38,7 +38,7 @@ export class Piece extends HTMLElement {
     this.privatePremount(firstHit);
 
     if (this.baseHTML == undefined) {
-      this.innerHTML = "";
+      this.innerHTML = '';
       this.template.innerHTML = this.render();
       this.appendChild(this.template.cloneNode(true).content);
     }
@@ -73,11 +73,11 @@ export class Piece extends HTMLElement {
    */
   privatePremount(firstHit = true) {
     if (this.baseHTML == undefined) {
-      this.innerHTML = "";
+      this.innerHTML = '';
     }
 
     if (this.log) {
-      console.log("🚧 premount", this.name);
+      console.log('🚧 premount', this.name);
     }
 
     this.loadStyles(firstHit);
@@ -94,7 +94,7 @@ export class Piece extends HTMLElement {
    */
   privateMount(firstHit) {
     if (this.log) {
-      console.log("✅ mount", this.name);
+      console.log('✅ mount', this.name);
     }
 
     this.mount(firstHit);
@@ -109,7 +109,7 @@ export class Piece extends HTMLElement {
    */
   privateUpdate() {
     if (this.log) {
-      console.log("🔃 update", this.name);
+      console.log('🔃 update', this.name);
     }
 
     this.privateUnmount(true);
@@ -133,7 +133,7 @@ export class Piece extends HTMLElement {
     }
 
     if (this.log) {
-      console.log("❌ unmount", this.name);
+      console.log('❌ unmount', this.name);
     }
     this.unmount(update);
   }
@@ -222,10 +222,14 @@ export class Piece extends HTMLElement {
   /**
    * Emit a custom event
    * @param { String } eventName
-   * @param { HTMLElement } el
+   * @param { HTMLElement } el, by default the event is emit on document
+   * @param { Object } params
    */
-  emit(eventName, el = document) {
-    const event = new CustomEvent(eventName);
+  emit(eventName, el = document, params) {
+    const event = new CustomEvent(eventName, {
+      detail: params,
+    });
+
     el.dispatchEvent(event);
   }
 
@@ -266,20 +270,20 @@ export class Piece extends HTMLElement {
   }
 
   get log() {
-    return typeof this.getAttribute("log") == "string";
+    return typeof this.getAttribute('log') == 'string';
   }
 
   get cid() {
-    return this.getAttribute("cid");
+    return this.getAttribute('cid');
   }
 
   set cid(cid) {
-    return this.setAttribute("cid", cid);
+    return this.setAttribute('cid', cid);
   }
 
   get properties() {
     return Object.values(this.attributes)
       .map((a) => `${a.name}="${a.value}"`)
-      .join(" ");
+      .join(' ');
   }
 }

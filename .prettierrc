@@ -1,0 +1,16 @@
+{
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "flow"
+      }
+    }
+  ],
+  "printWidth": 80,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "pluginSearchDirs": false,
+  "twigAlwaysBreakObjects": false,
+  "twigFollowOfficialCodingStandards": false
+}

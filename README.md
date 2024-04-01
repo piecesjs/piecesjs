@@ -44,22 +44,22 @@ npm i piecesjs --save
 ```
 
 ```js
-import { default as Piece } from "piecesjs";
+import { default as Piece } from 'piecesjs';
 
 export class Counter extends Piece {
   constructor() {
-    super("Counter", {
-      stylesheets: [() => import("/assets/css/components/counter.css")],
+    super('Counter', {
+      stylesheets: [() => import('/assets/css/components/counter.css')],
     });
   }
 
   mount() {
-    this.$button = this.$("button")[0];
-    this.on("click", this.$button, this.click);
+    this.$button = this.$('button')[0];
+    this.on('click', this.$button, this.click);
   }
 
   unmount() {
-    this.off("click", this.$button[0], this.click);
+    this.off('click', this.$button[0], this.click);
   }
 
   render() {
@@ -75,21 +75,21 @@ export class Counter extends Piece {
   }
 
   set value(value) {
-    return this.setAttribute("value", value);
+    return this.setAttribute('value', value);
   }
 
   get value() {
-    return this.getAttribute("value");
+    return this.getAttribute('value');
   }
 
   // Important to automatically call the update function if attribute is changing
   static get observedAttributes() {
-    return ["value"];
+    return ['value'];
   }
 }
 
 // Register the custom element
-customElements.define("c-counter", Counter);
+customElements.define('c-counter', Counter);
 ```
 
 ### With static content
@@ -101,26 +101,26 @@ customElements.define("c-counter", Counter);
 ```
 
 ```js
-import { default as Piece } from "piecesjs";
+import { default as Piece } from 'piecesjs';
 
 class Header extends Piece {
   constructor() {
     // Set the name of your component and stylesheets directly with the super();
-    super("Header", {
-      stylesheets: [() => import("/assets/css/components/header.css")],
+    super('Header', {
+      stylesheets: [() => import('/assets/css/components/header.css')],
     });
   }
 }
 // Register the custom element
-customElements.define("c-header", Header);
+customElements.define('c-header', Header);
 ```
 
 ### Register and load dynamically your component
 
 ```js
-import { load } from "piecesjs";
+import { load } from 'piecesjs';
 
-load("c-button", () => import("/assets/js/components/Button.js"));
+load('c-button', () => import('/assets/js/components/Button.js'));
 ```
 
 ---
@@ -143,7 +143,7 @@ Shortcut to query an element. `this.dom(query, context)` is also available.
  * @param { String } query
  * @param { HTMLElement } context (this by default)
  */
-this.$("button");
+this.$('button');
 ```
 
 ## Events
@@ -200,7 +200,7 @@ Call a function of any components, from any components
  * @param { String } pieceName
  * @param { String } pieceId
  */
-this.call("increment", {}, "Counter", "myCounterComponentId");
+this.call('increment', {}, 'Counter', 'myCounterComponentId');
 ```
 
 If no `pieceId` are specified, all occurrences of the component will be called.
@@ -219,19 +219,21 @@ You can also emit a custom event with `this.emit()`
  * Emit a custom event
  * @param { String } eventName
  * @param { HTMLElement } el, by default the event is emit on document
+ * @param { Object } params
  */
-this.emit("buttonIsMounted");
+this.emit('buttonIsMounted', document, { value: 'A Button is mounted!' });
 ```
 
 Then, in a Piece you can use `this.on()`, like the default events.
 
 ```js
 mount() {
-  this.on('buttonIsMounted', document, this.customEventTrigger, {value: 'Button is mounted!'});
+  this.on('buttonIsMounted', document, this.customEventTrigger);
 }
 
-customEventTrigger(params, e) {
-  console.log(params, e);
+// You can get parameters with event.detail
+customEventTrigger(event) {
+  console.log(event.detail); // { value: 'A Button is mounted! }
 }
 
 unmount() {
@@ -246,7 +248,7 @@ Get access of all current components visible in the page:
 
 ```js
 // From anywhere
-import { piecesManager } from "piecesjs";
+import { piecesManager } from 'piecesjs';
 console.log(piecesManager.currentPieces);
 
 // In a Piece

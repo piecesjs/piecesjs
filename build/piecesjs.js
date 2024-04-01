@@ -1,8 +1,8 @@
-const u = async (s, e, t = document) => {
-  t.getElementsByTagName(s).length > 0 && await e();
-}, h = (s) => {
-  var e = Object.prototype.toString.call(s);
-  return typeof s == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof s.length == "number" && (s.length === 0 || typeof s[0] == "object" && s[0].nodeType > 0);
+const u = async (n, e, t = document) => {
+  t.getElementsByTagName(n).length > 0 && await e();
+}, a = (n) => {
+  var e = Object.prototype.toString.call(n);
+  return typeof n == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof n.length == "number" && (n.length === 0 || typeof n[0] == "object" && n[0].nodeType > 0);
 };
 class o {
   constructor() {
@@ -131,10 +131,10 @@ class d extends HTMLElement {
    * @param { function } func
    * @param { Object } params
    */
-  on(e, t, i, n = null) {
-    t != null && (h(t) ? t.length > 0 && t.forEach((r) => {
-      n == null ? r.addEventListener(e, i.bind(this)) : r.addEventListener(e, i.bind(this, n));
-    }) : n == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, n)));
+  on(e, t, i, s = null) {
+    t != null && (a(t) ? t.length > 0 && t.forEach((r) => {
+      s == null ? r.addEventListener(e, i.bind(this)) : r.addEventListener(e, i.bind(this, s));
+    }) : s == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, s)));
   }
   /**
    * Tips: remove events in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
@@ -143,18 +143,21 @@ class d extends HTMLElement {
    * @param { function } func
    */
   off(e, t, i) {
-    t != null && (h(t) ? t.length > 0 && t.forEach((n) => {
-      n.removeEventListener(e, i.bind(this));
+    t != null && (a(t) ? t.length > 0 && t.forEach((s) => {
+      s.removeEventListener(e, i.bind(this));
     }) : t.removeEventListener(e, i.bind(this)));
   }
   /**
    * Emit a custom event
    * @param { String } eventName
-   * @param { HTMLElement } el
+   * @param { HTMLElement } el, by default the event is emit on document
+   * @param { Object } params
    */
-  emit(e, t = document) {
-    const i = new CustomEvent(e);
-    t.dispatchEvent(i);
+  emit(e, t = document, i) {
+    const s = new CustomEvent(e, {
+      detail: i
+    });
+    t.dispatchEvent(s);
   }
   /**
    * Call function of a component, from a component
@@ -163,10 +166,10 @@ class d extends HTMLElement {
    * @param { String } pieceName
    * @param { String } pieceId
    */
-  call(e, t, i, n) {
+  call(e, t, i, s) {
     Object.keys(this.piecesManager.currentPieces).forEach((r) => {
       r == i && Object.keys(this.piecesManager.currentPieces[r]).forEach((c) => {
-        n != null ? c == n && this.piecesManager.currentPieces[r][c].piece[e](t) : this.piecesManager.currentPieces[r][c].piece[e](t);
+        s != null ? c == s && this.piecesManager.currentPieces[r][c].piece[e](t) : this.piecesManager.currentPieces[r][c].piece[e](t);
       });
     });
   }

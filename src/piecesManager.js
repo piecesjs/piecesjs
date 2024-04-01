@@ -5,7 +5,7 @@ class Manager {
   }
 
   addPiece(piece) {
-    if (typeof this.currentPieces[piece.name] != "object") {
+    if (typeof this.currentPieces[piece.name] != 'object') {
       this.currentPieces[piece.name] = {};
     }
     this.currentPieces[piece.name][piece.id] = piece;
