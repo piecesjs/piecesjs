@@ -12,15 +12,7 @@ class Manager {
   }
 
   removePiece(piece) {
-    Object.keys(this.currentPieces).forEach((name) => {
-      if (name == piece.name) {
-        Object.keys(this.currentPieces[name]).forEach((id) => {
-          delete this.currentPieces[name][id];
-        });
-
-        delete this.currentPieces[name];
-      }
-    });
+    delete this.currentPieces[piece.name][piece.id];
   }
 }
 

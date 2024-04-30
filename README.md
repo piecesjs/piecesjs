@@ -152,7 +152,7 @@ Register an event listener with `this.on()`
 
 ```js
 /*
-* Tips: call listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
+* Tips: call event listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
 * The called func is automatically binded to this
 * @param { String } type
 * @param { HTMLElement or HTMLElement[] } el
@@ -167,20 +167,18 @@ mount() {
 }
 
 // if you have set params, the eventObject will be available after
-click(params, ev) {}
+click(params, event) {}
 ```
 
 Unregister an event listener with `this.off()`
 
 ```js
-/*
-* Tips: remove listeners in the unmount(), register event for an HTMLElement or an array of HTMLElements
-* The called func is automatically binded to this
-* @param { String } type
-* @param { HTMLElement or HTMLElement[] } el
-* @param { function } func
-* @param { Object } params
-*/
+/**
+ * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
+ * @param { String } type
+ * @param { HTMLElement } el
+ * @param { function } func
+ */
 unmount() {
   this.off('click', this.$button, this.click);
 }

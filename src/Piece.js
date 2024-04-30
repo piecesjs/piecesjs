@@ -171,7 +171,7 @@ export class Piece extends HTMLElement {
    */
 
   /**
-   * Tips: remove events in the mount(), register event for an HTMLElement or an array of HTMLElements
+   * Tips: call event listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
    * @param { String } type
    * @param { HTMLElement or HTMLElement[] } el
    * @param { function } func
@@ -200,8 +200,7 @@ export class Piece extends HTMLElement {
   }
 
   /**
-   * Tips: remove events in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
-   * @param { String } type
+   * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements   * @param { String } type
    * @param { HTMLElement } el
    * @param { function } func
    */

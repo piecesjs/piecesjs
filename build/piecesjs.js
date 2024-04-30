@@ -1,6 +1,6 @@
 const u = async (n, e, t = document) => {
   t.getElementsByTagName(n).length > 0 && await e();
-}, a = (n) => {
+}, c = (n) => {
   var e = Object.prototype.toString.call(n);
   return typeof n == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof n.length == "number" && (n.length === 0 || typeof n[0] == "object" && n[0].nodeType > 0);
 };
@@ -12,11 +12,7 @@ class o {
     typeof this.currentPieces[e.name] != "object" && (this.currentPieces[e.name] = {}), this.currentPieces[e.name][e.id] = e;
   }
   removePiece(e) {
-    Object.keys(this.currentPieces).forEach((t) => {
-      t == e.name && (Object.keys(this.currentPieces[t]).forEach((i) => {
-        delete this.currentPieces[t][i];
-      }), delete this.currentPieces[t]);
-    });
+    delete this.currentPieces[e.name][e.id];
   }
 }
 let l = new o();
@@ -125,25 +121,24 @@ class d extends HTMLElement {
    * Events Managment
    */
   /**
-   * Tips: remove events in the mount(), register event for an HTMLElement or an array of HTMLElements
+   * Tips: call event listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
    * @param { String } type
    * @param { HTMLElement or HTMLElement[] } el
    * @param { function } func
    * @param { Object } params
    */
   on(e, t, i, s = null) {
-    t != null && (a(t) ? t.length > 0 && t.forEach((r) => {
+    t != null && (c(t) ? t.length > 0 && t.forEach((r) => {
       s == null ? r.addEventListener(e, i.bind(this)) : r.addEventListener(e, i.bind(this, s));
     }) : s == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, s)));
   }
   /**
-   * Tips: remove events in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
-   * @param { String } type
+   * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements   * @param { String } type
    * @param { HTMLElement } el
    * @param { function } func
    */
   off(e, t, i) {
-    t != null && (a(t) ? t.length > 0 && t.forEach((s) => {
+    t != null && (c(t) ? t.length > 0 && t.forEach((s) => {
       s.removeEventListener(e, i.bind(this));
     }) : t.removeEventListener(e, i.bind(this)));
   }
@@ -168,8 +163,8 @@ class d extends HTMLElement {
    */
   call(e, t, i, s) {
     Object.keys(this.piecesManager.currentPieces).forEach((r) => {
-      r == i && Object.keys(this.piecesManager.currentPieces[r]).forEach((c) => {
-        s != null ? c == s && this.piecesManager.currentPieces[r][c].piece[e](t) : this.piecesManager.currentPieces[r][c].piece[e](t);
+      r == i && Object.keys(this.piecesManager.currentPieces[r]).forEach((a) => {
+        s != null ? a == s && this.piecesManager.currentPieces[r][a].piece[e](t) : this.piecesManager.currentPieces[r][a].piece[e](t);
       });
     });
   }
