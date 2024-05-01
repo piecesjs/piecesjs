@@ -44,7 +44,7 @@ npm i piecesjs --save
 ```
 
 ```js
-import { default as Piece } from 'piecesjs';
+import { Piece } from 'piecesjs';
 
 export class Counter extends Piece {
   constructor() {
@@ -101,7 +101,7 @@ customElements.define('c-counter', Counter);
 ```
 
 ```js
-import { default as Piece } from 'piecesjs';
+import { Piece } from 'piecesjs';
 
 class Header extends Piece {
   constructor() {
