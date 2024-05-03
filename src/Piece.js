@@ -165,6 +165,10 @@ export class Piece extends HTMLElement {
   dom(query, context = this) {
     return context.querySelectorAll(query);
   }
+  // To capture element using data-attribute <div data-dom='query'></div>
+  domAttr(query, context = this) {
+    return context.querySelectorAll(`[data-dom="${query}"]`);
+  }
 
   /**
    * Events Managment

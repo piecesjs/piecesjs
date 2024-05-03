@@ -4,7 +4,7 @@ const u = async (n, e, t = document) => {
   var e = Object.prototype.toString.call(n);
   return typeof n == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof n.length == "number" && (n.length === 0 || typeof n[0] == "object" && n[0].nodeType > 0);
 };
-class o {
+class h {
   constructor() {
     this.piecesCount = 0, this.currentPieces = {};
   }
@@ -15,7 +15,7 @@ class o {
     delete this.currentPieces[e.name][e.id];
   }
 }
-let l = new o();
+let l = new h();
 class d extends HTMLElement {
   constructor(e, { stylesheets: t = [] } = {}) {
     super(), this.name = e, this.template = document.createElement("template"), this.piecesManager = l, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML);
@@ -116,6 +116,10 @@ class d extends HTMLElement {
   }
   dom(e, t = this) {
     return t.querySelectorAll(e);
+  }
+  // To capture element using data-attribute <div data-dom='query'></div>
+  domAttr(e, t = this) {
+    return t.querySelectorAll(`[data-dom="${e}"]`);
   }
   /**
    * Events Managment
