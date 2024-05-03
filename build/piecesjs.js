@@ -1,6 +1,6 @@
 const u = async (n, e, t = document) => {
   t.getElementsByTagName(n).length > 0 && await e();
-}, c = (n) => {
+}, o = (n) => {
   var e = Object.prototype.toString.call(n);
   return typeof n == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof n.length == "number" && (n.length === 0 || typeof n[0] == "object" && n[0].nodeType > 0);
 };
@@ -121,6 +121,15 @@ class d extends HTMLElement {
   domAttr(e, t = this) {
     return t.querySelectorAll(`[data-dom="${e}"]`);
   }
+  captureTree(e, t = this) {
+    const i = this.querySelectorAll("[data-dom]");
+    let s = {};
+    for (let r of i) {
+      const a = r.getAttribute("data-dom");
+      typeof s[a] > "u" && (s[a] = []), s[a].push(r);
+    }
+    return s;
+  }
   /**
    * Events Managment
    */
@@ -132,7 +141,7 @@ class d extends HTMLElement {
    * @param { Object } params
    */
   on(e, t, i, s = null) {
-    t != null && (c(t) ? t.length > 0 && t.forEach((r) => {
+    t != null && (o(t) ? t.length > 0 && t.forEach((r) => {
       s == null ? r.addEventListener(e, i.bind(this)) : r.addEventListener(e, i.bind(this, s));
     }) : s == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, s)));
   }
@@ -142,7 +151,7 @@ class d extends HTMLElement {
    * @param { function } func
    */
   off(e, t, i) {
-    t != null && (c(t) ? t.length > 0 && t.forEach((s) => {
+    t != null && (o(t) ? t.length > 0 && t.forEach((s) => {
       s.removeEventListener(e, i.bind(this));
     }) : t.removeEventListener(e, i.bind(this)));
   }
