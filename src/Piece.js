@@ -170,6 +170,19 @@ export class Piece extends HTMLElement {
     return context.querySelectorAll(`[data-dom="${query}"]`);
   }
 
+  captureTree(query, context = this) {
+    const capture = this.querySelectorAll('[data-dom]');
+    let allDOM = {};
+    for (let dom of capture) {
+      const domAttr = dom.getAttribute('data-dom');
+      if (typeof allDOM[domAttr] == 'undefined') {
+        allDOM[domAttr] = [];
+      }
+      allDOM[domAttr].push(dom);
+    }
+    return allDOM;
+  }
+
   /**
    * Events Managment
    */
