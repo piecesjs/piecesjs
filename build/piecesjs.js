@@ -1,8 +1,8 @@
-const u = async (n, e, t = document) => {
-  t.getElementsByTagName(n).length > 0 && await e();
-}, o = (n) => {
-  var e = Object.prototype.toString.call(n);
-  return typeof n == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof n.length == "number" && (n.length === 0 || typeof n[0] == "object" && n[0].nodeType > 0);
+const u = async (r, e, t = document) => {
+  t.getElementsByTagName(r).length > 0 && await e();
+}, o = (r) => {
+  var e = Object.prototype.toString.call(r);
+  return typeof r == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof r.length == "number" && (r.length === 0 || typeof r[0] == "object" && r[0].nodeType > 0);
 };
 class h {
   constructor() {
@@ -34,8 +34,7 @@ class d extends HTMLElement {
    * Function to render HTML in component. If component is not emtpy, the rendering is not called
    */
   render() {
-    if (this.baseHTML != null)
-      return this.baseHTML;
+    return this.baseHTML != null ? this.baseHTML : "";
   }
   /**
    * default function from native web components disconnectedCallback()
@@ -121,14 +120,14 @@ class d extends HTMLElement {
   domAttr(e, t = this) {
     return t.querySelectorAll(`[data-dom="${e}"]`);
   }
-  captureTree(e, t = this) {
-    const i = this.querySelectorAll("[data-dom]");
-    let s = {};
-    for (let r of i) {
-      const a = r.getAttribute("data-dom");
-      typeof s[a] > "u" && (s[a] = []), s[a].push(r);
+  captureTree(e = this) {
+    const t = this.querySelectorAll("[data-dom]");
+    let i = {};
+    for (let s of t) {
+      const n = s.getAttribute("data-dom");
+      typeof i[n] > "u" && (i[n] = []), i[n].push(s);
     }
-    return s;
+    return i;
   }
   /**
    * Events Managment
@@ -141,8 +140,8 @@ class d extends HTMLElement {
    * @param { Object } params
    */
   on(e, t, i, s = null) {
-    t != null && (o(t) ? t.length > 0 && t.forEach((r) => {
-      s == null ? r.addEventListener(e, i.bind(this)) : r.addEventListener(e, i.bind(this, s));
+    t != null && (o(t) ? t.length > 0 && t.forEach((n) => {
+      s == null ? n.addEventListener(e, i.bind(this)) : n.addEventListener(e, i.bind(this, s));
     }) : s == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, s)));
   }
   /**
@@ -175,9 +174,9 @@ class d extends HTMLElement {
    * @param { String } pieceId
    */
   call(e, t, i, s) {
-    Object.keys(this.piecesManager.currentPieces).forEach((r) => {
-      r == i && Object.keys(this.piecesManager.currentPieces[r]).forEach((a) => {
-        s != null ? a == s && this.piecesManager.currentPieces[r][a].piece[e](t) : this.piecesManager.currentPieces[r][a].piece[e](t);
+    Object.keys(this.piecesManager.currentPieces).forEach((n) => {
+      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((a) => {
+        s != null ? a == s && this.piecesManager.currentPieces[n][a].piece[e](t) : this.piecesManager.currentPieces[n][a].piece[e](t);
       });
     });
   }

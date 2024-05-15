@@ -52,6 +52,8 @@ export class Piece extends HTMLElement {
   render() {
     if (this.baseHTML != undefined) {
       return this.baseHTML;
+    } else {
+      return '';
     }
   }
 

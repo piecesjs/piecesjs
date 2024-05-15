@@ -2,7 +2,7 @@
   "name": "piecesjs",
   "description": "Tiny framework based on native web components.",
   "author": "Quentin Hocdé (https://github.com/quentinhocde)",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "type": "module",
   "exports": "./build/piecesjs.js",
   "main": "./build/piecesjs.js",
