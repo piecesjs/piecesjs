@@ -39,7 +39,7 @@ export class Piece extends HTMLElement {
 
     if (this.baseHTML == undefined) {
       this.innerHTML = '';
-      this.template.innerHTML = this.render();
+      this.template.innerHTML = this.render() != undefined ? this.render() : '';
       this.appendChild(this.template.cloneNode(true).content);
     }
 
@@ -52,8 +52,6 @@ export class Piece extends HTMLElement {
   render() {
     if (this.baseHTML != undefined) {
       return this.baseHTML;
-    } else {
-      return '';
     }
   }
 

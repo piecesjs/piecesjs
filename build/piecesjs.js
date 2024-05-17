@@ -28,13 +28,14 @@ class d extends HTMLElement {
       name: this.name,
       id: this.cid,
       piece: this
-    })), this.privatePremount(e), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render(), this.appendChild(this.template.cloneNode(!0).content)), this.privateMount(e);
+    })), this.privatePremount(e), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render() != null ? this.render() : "", this.appendChild(this.template.cloneNode(!0).content)), this.privateMount(e);
   }
   /**
    * Function to render HTML in component. If component is not emtpy, the rendering is not called
    */
   render() {
-    return this.baseHTML != null ? this.baseHTML : "";
+    if (this.baseHTML != null)
+      return this.baseHTML;
   }
   /**
    * default function from native web components disconnectedCallback()
