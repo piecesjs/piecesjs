@@ -3,7 +3,7 @@
   <br>
   <br>
 	<p>
-		[alpha] - [<a href="https://bundlephobia.com/package/piecesjs@0.1.5">1.1kb</a>] - Tiny framework, using native web components.
+		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.1.5">1.1kb</a>] - Tiny framework, using native web components.
 	</p>
 </div>
 
@@ -143,7 +143,24 @@ Shortcut to query an element. `this.dom(query, context)` is also available.
  * @param { String } query
  * @param { HTMLElement } context (this by default)
  */
-this.$('button');
+this.$('button'); // return a NodeList
+```
+
+### Get an element with a slug
+
+```html
+<ul>
+  <li data-dom="listItem">Item 1</li>
+  <li data-dom="listItem">Item 2</li>
+</ul>
+```
+
+```js
+/**
+ * @param { String } slug
+ * @param { HTMLElement } context (this by default)
+ */
+this.domAttr('listItem'); // return a NodeList
 ```
 
 ## Events
