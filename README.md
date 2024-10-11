@@ -25,9 +25,9 @@ Compiled with [vitejs](https://vitejs.dev/).
 - Dynamic JS & CSS import.
 - Scoped event management.
 - Convenient access to scoped HTMLElements using this.$().
-- Seamless communication between active components.
+- Seamless communication between active pieces.
 - Efficient management of common and global CSS imports.
-- A PiecesManager for accessing all active components.
+- A PiecesManager for accessing all active pieces.
 
 ## Installation
 
