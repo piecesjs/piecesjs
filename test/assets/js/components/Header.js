@@ -8,7 +8,10 @@ class Header extends Piece {
   }
 
   mount() {
-    this.on('buttonIsMounted', document, this.customEventTrigger);
+    // Event listener
+    this.on('resetIsMounted', document, this.customEventTrigger);
+
+    console.log(this.piecesManager.currentPieces);
   }
 
   customEventTrigger(e) {
@@ -16,7 +19,7 @@ class Header extends Piece {
   }
 
   unmount() {
-    this.off('buttonIsMounted', document, this.customEventTrigger);
+    this.off('resetIsMounted', document, this.customEventTrigger);
   }
 }
 

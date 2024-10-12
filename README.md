@@ -3,7 +3,7 @@
   <br>
   <br>
 	<p>
-		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.2.0">1.1kb</a>] - Tiny framework, using native web components.
+		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.2.1">1.1kb</a>] - Tiny framework, using native web components.
 	</p>
 </div>
 
@@ -35,7 +35,7 @@ Compiled with [vitejs](https://vitejs.dev/).
 npm i piecesjs --save
 ```
 
-## Create your first component
+## Create your first Piece
 
 ### With dynamic attributes (reactive)
 
@@ -96,7 +96,7 @@ customElements.define('c-counter', Counter);
 
 ```html
 <c-header class="c-header">
-  <h1>Hello world 🫶</h1>
+  <h1>Hello world</h1>
 </c-header>
 ```
 
@@ -125,13 +125,13 @@ load('c-button', () => import('/assets/js/components/Button.js'));
 
 ---
 
-## Lifecycle
+### Lifecycle
 
 ```js
 premount(firstHit = true){}
-mount(firstHit = true){} // firstHit parameter is available, set to false if the function is called with an update or if its content is changed.
-update(){} //Called if an attribute is changed, relaunch: unmount(update = true), premount(firstHit = false), mount(firstHit = false)
-unmount(update = false){}
+mount(firstHit = true){} // firstHit parameter is set to false if the function is called after an update or if its content is changed.
+update(){} //Called if an attribute is changed. Then it will call unmount(), premount() and mount().
+unmount(update = false){} // update = true if this unmount() is called after an attribute is changed.
 ```
 
 ### Query with this.$
@@ -307,15 +307,33 @@ class Header extends Piece {
 */
 ```
 
+---
+
 ## Utils
 
-### Logs
+### HTML attributes
 
-You can log the lifecycle of your component with an attribute `log`
+| Attribute | Description                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------- |
+| `log`     | You can log the lifecycle of your Piece with an attribute `<c-header log>Hello</c-header>`  |
+| `cid`     | To override the generated id of your Piece. Usefull to communicate with this specific Piece |
 
-```html
-<c-header log>Hello</c-header>
-```
+### Piece instance method
+
+| Method         | Description                                                                   | Arguments                                                                       |
+| -------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `this.$`       | Query an HTMLElement                                                          | <ul><li>`query`: String</li><li> `context`: HTMLElement, `this` by default</li> |
+| `this.dom`     | `this.$` clone                                                                | <ul><li>`query`: String</li><li> `context`: HTMLElement, `this` by default</li> |
+| `this.domAttr` | Query with a slug. If you have an element like `<li> data-dom="mySlug"></li>` | `slug`: String                                                                  |
+
+### Piece events method
+
+| Method      | Description                                                                 | Arguments                                                                                                                                                           |
+| ----------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `this.on`   | Event listener for scoped and binded (this) events                          | <ul><li>`type`: String (example: `mouseenter`, `resize`..)</li><li>`el`: HTMLElement or HTMLElement[]</li><li>`func`: Function</li><li>`params`: {} (optional)</li> |
+| `this.off`  | Remove event listener, the better way is to put it in the `unmount()`.      | <ul><li>`type`: String (example: `mouseenter`, `resize`..)</li><li>`el`: HTMLElement or HTMLElement[]</li><li>`func`: Function</li>                                 |
+| `this.call` | Call of a function of a Piece or a specific Piece based on its `cid`        | <ul><li>`func`: String, the function name</li><li>`args`: Object</li><li>`pieceName`: String</li><li>`pieceId`: String (optional), linked to a `cid` attribute</li> |
+| `this.emit` | Emit a custom event. Can be listened by the other Pieces with a `this.on()` | <ul><li>`eventName`: String</li><li>`el`: HTMLElement, document by default (optional)</li><li>`params`: Object (optional)</li>                                      |
 
 ## You want to collaborate ?
 
@@ -350,5 +368,7 @@ Enjoy and feel free to create a pull request!
 ## Support
 
 If you want to support me, and follow the journey of the creation of pieces 👀
+
+<a href="https://github.com/sponsors/piecesjs">Support me on github</a>
 
 <a href="https://polar.sh/quentinhocde"><picture><source media="(prefers-color-scheme: dark)" srcset="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe&darkmode"><img alt="Subscribe on Polar" src="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe"></picture></a>

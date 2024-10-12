@@ -1,9 +1,14 @@
 .c-button {
   display: inline-block;
   cursor: pointer;
-  padding: 10px;
+  padding: 10px 15px;
   border: 1px solid black;
-  border-radius: 12px;
+  border-radius: 20px;
   user-select: none;
   background-color: transparent;
+
+  &:hover {
+    background-color: var(--black);
+    color: var(--offWhite);
+  }
 }

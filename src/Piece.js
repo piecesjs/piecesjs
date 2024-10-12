@@ -111,7 +111,7 @@ export class Piece extends HTMLElement {
     if (this.log) {
       console.log('🔃 update', this.name);
     }
-
+    this.update();
     this.privateUnmount(true);
     this.connectedCallback(false);
   }
@@ -137,6 +137,7 @@ export class Piece extends HTMLElement {
     }
     this.unmount(update);
   }
+
   /**
    * Satelite function for unmount
    */
@@ -217,7 +218,8 @@ export class Piece extends HTMLElement {
   }
 
   /**
-   * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements   * @param { String } type
+   * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
+   * @param { String } type
    * @param { HTMLElement } el
    * @param { function } func
    */

@@ -1,7 +1,7 @@
 .c-header {
-	display: block;
-	padding: 1px 20px 20px 20px;
-	border-radius: 12px;
-	color: white;
-	background-color: black;
+  display: block;
+  padding: 20px;
+  border-radius: 12px;
+  color: var(--offWhite);
+  background-color: var(--black);
 }
