@@ -76,7 +76,7 @@ class d extends HTMLElement {
    * Lifecycle - step : 2
    */
   privateUpdate() {
-    this.log && console.log("🔃 update", this.name), this.privateUnmount(!0), this.connectedCallback(!1);
+    this.log && console.log("🔃 update", this.name), this.update(), this.privateUnmount(!0), this.connectedCallback(!1);
   }
   /**
    * Satelite function for update
@@ -146,7 +146,8 @@ class d extends HTMLElement {
     }) : s == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, s)));
   }
   /**
-   * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements   * @param { String } type
+   * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
+   * @param { String } type
    * @param { HTMLElement } el
    * @param { function } func
    */
