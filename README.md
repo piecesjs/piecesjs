@@ -330,9 +330,10 @@ class Header extends Piece {
 
 ### Piece instance props
 
-| Attribute  | Description                                                      |
-| ---------- | ---------------------------------------------------------------- |
-| `this.cid` | A generated id of the Piece, override if you set a cid attribute |
+| Attribute   | Description                                                      |
+| ----------- | ---------------------------------------------------------------- |
+| `this.cid`  | A generated id of the Piece, override if you set a cid attribute |
+| `this.name` | Return the name of the Piece                                     |
 
 ### Piece instance methods
 
