@@ -3,7 +3,7 @@
   <br>
   <br>
 	<p>
-		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.2.1">1.1kb</a>] - Tiny framework, using native web components.
+		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.2.1">1.3kb</a>] - Tiny framework, using native web components.
 	</p>
 </div>
 
@@ -24,10 +24,19 @@ Compiled with [vitejs](https://vitejs.dev/).
 
 - Dynamic JS & CSS import.
 - Scoped event management.
-- Convenient access to scoped HTMLElements using this.$().
-- Seamless communication between active pieces.
+- Convenient access to scoped HTMLElements using `this.$()` or `this.domAttr(slug)`.
+- Seamless communication between active pieces using `this.call()` or `this.emit()`
 - Efficient management of common and global CSS imports.
 - A PiecesManager for accessing all active pieces.
+
+## Nav
+
+- [Introduction](#introduction)
+- [Main features](#main-features)
+- [Installation](#installation)
+- [Create your first Piece](#create-your-first-piece)
+- [Methods, props and attributes](#memo)
+- [Support](#support)
 
 ## Installation
 
@@ -129,6 +138,7 @@ load('c-button', () => import('/assets/js/components/Button.js'));
 
 ```js
 premount(firstHit = true){}
+render(){} // if you want to do a Javascript rendering
 mount(firstHit = true){} // firstHit parameter is set to false if the function is called after an update or if its content is changed.
 update(){} //Called if an attribute is changed. Then it will call unmount(), premount() and mount().
 unmount(update = false){} // update = true if this unmount() is called after an attribute is changed.
@@ -309,7 +319,7 @@ class Header extends Piece {
 
 ---
 
-## Utils
+## Memo
 
 ### HTML attributes
 
@@ -317,6 +327,12 @@ class Header extends Piece {
 | --------- | ------------------------------------------------------------------------------------------- |
 | `log`     | You can log the lifecycle of your Piece with an attribute `<c-header log>Hello</c-header>`  |
 | `cid`     | To override the generated id of your Piece. Usefull to communicate with this specific Piece |
+
+### Piece instance props
+
+| Attribute  | Description                                                      |
+| ---------- | ---------------------------------------------------------------- |
+| `this.cid` | A generated id of the Piece, override if you set a cid attribute |
 
 ### Piece instance method
 
