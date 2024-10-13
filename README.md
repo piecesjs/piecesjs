@@ -334,7 +334,7 @@ class Header extends Piece {
 | ---------- | ---------------------------------------------------------------- |
 | `this.cid` | A generated id of the Piece, override if you set a cid attribute |
 
-### Piece instance method
+### Piece instance methods
 
 | Method         | Description                                                                   | Arguments                                                                       |
 | -------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
@@ -342,7 +342,7 @@ class Header extends Piece {
 | `this.dom`     | `this.$` clone                                                                | <ul><li>`query`: String</li><li> `context`: HTMLElement, `this` by default</li> |
 | `this.domAttr` | Query with a slug. If you have an element like `<li> data-dom="mySlug"></li>` | `slug`: String                                                                  |
 
-### Piece events method
+### Piece events methods
 
 | Method      | Description                                                                 | Arguments                                                                                                                                                           |
 | ----------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
