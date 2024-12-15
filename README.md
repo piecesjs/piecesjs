@@ -3,31 +3,32 @@
   <br>
   <br>
 	<p>
-		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.2.1">1.3kb</a>] - Tiny framework, using native web components.
+		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.2.2">1.3kb</a>] - Tiny framework, using native web components.
 	</p>
 </div>
 
 ## Introduction
 
-piecesjs is a tiny Javascript framework built on the top of native web components with a bunch of tools and utilities.
-
-A Piece is a component. A component is a piece of your page, which can live anywhere in your website, with its own encapsulated styles and interactions.
+piecesjs is a lightweight JavaScript framework built upon native web components, offering a suite of tools and utilities tailored for creative websites.
 
 ---
 
-piecesjs is a simple and lightweight front-end framework that aims to make native web components accessible, with several utilities and tools for website and app development.
-Like modern frameworks, it dynamically imports the JS and CSS that the page needs, for better optimization. Without being limited to a big headless infrastructure.
+At its core, a “Piece” is a modular component that can live anywhere on your webpage. Each Piece operates independently, with its own encapsulated styles and interactions, making it easy to manage and reuse across your site.
+
+Piecesjs dynamically imports only the necessary JavaScript and CSS for each page, optimizing performance while maintaining flexibility. Unlike larger frameworks, it allows you to build exactly what you need, free from the overhead of unnecessary code or restrictive architectures.
+
+Designed for creative websites that rely heavily on JavaScript logic—handling multiple steps, states, and events—piecesjs offers a streamlined and scalable approach for developers looking to create highly interactive experiences.
 
 Compiled with [vitejs](https://vitejs.dev/).
 
 ## Main features
 
-- Dynamic JS & CSS import.
-- Scoped event management.
-- Convenient access to scoped HTMLElements using `this.$()` or `this.domAttr(slug)`.
-- Seamless communication between active pieces using `this.call()` or `this.emit()`
-- Efficient management of common and global CSS imports.
-- A PiecesManager for accessing all active pieces.
+- Dynamic JS & CSS Import: Automatically loads only the necessary JavaScript and CSS for each page, improving performance.
+- Scoped Event Management: Easily manage events within a specific component’s scope using `this.on()` and `this.off()` methods.
+- Convenient Access to Scoped HTMLElements: Quickly access elements within the component using `this.$()` or `this.domAttr('slug')`.
+- Seamless Communication Between Active Components: Components can communicate effortlessly with each other using `this.call()` or `this.emit()`.
+- Efficient Global CSS Management: Streamlined handling of global CSS imports to keep your styles organized.
+- PiecesManager: Provides centralized access to all active pieces, simplifying component management.
 
 ## Nav
 

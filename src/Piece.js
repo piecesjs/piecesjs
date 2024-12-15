@@ -14,6 +14,9 @@ export class Piece extends HTMLElement {
     if (this.innerHTML != '') {
       this.baseHTML = this.innerHTML;
     }
+
+    // Store bound event listeners
+    this._boundListeners = new Map();
   }
 
   /**
@@ -197,21 +200,35 @@ export class Piece extends HTMLElement {
    */
   on(type, el, func, params = null) {
     if (el != null) {
+      // Create unique key for this event listener
+      const key = `${type}_${func.name}`;
+
+      // Create bound function if it doesn't exist
+      if (!this._boundListeners.has(key)) {
+        const boundFunc = func.bind(this);
+        this._boundListeners.set(key, {
+          original: func,
+          bound: boundFunc,
+        });
+      }
+
+      const boundFunc = this._boundListeners.get(key).bound;
+
       if (isNodeList(el)) {
         if (el.length > 0) {
           el.forEach((item) => {
             if (params == null) {
-              item.addEventListener(type, func.bind(this));
+              item.addEventListener(type, boundFunc);
             } else {
-              item.addEventListener(type, func.bind(this, params));
+              item.addEventListener(type, () => boundFunc(params));
             }
           });
         }
       } else {
         if (params == null) {
-          el.addEventListener(type, func.bind(this));
+          el.addEventListener(type, boundFunc);
         } else {
-          el.addEventListener(type, func.bind(this, params));
+          el.addEventListener(type, () => boundFunc(params));
         }
       }
     }
@@ -225,15 +242,29 @@ export class Piece extends HTMLElement {
    */
   off(type, el, func) {
     if (el != null) {
+      // Get the bound version of the function
+      const key = `${type}_${func.name}`;
+      const listener = this._boundListeners.get(key);
+
+      if (!listener) {
+        console.warn(`No bound listener found for ${key}`);
+        return;
+      }
+
+      const boundFunc = listener.bound;
+
       if (isNodeList(el)) {
         if (el.length > 0) {
           el.forEach((item) => {
-            item.removeEventListener(type, func.bind(this));
+            item.removeEventListener(type, boundFunc);
           });
         }
       } else {
-        el.removeEventListener(type, func.bind(this));
+        el.removeEventListener(type, boundFunc);
       }
+
+      // Clean up the stored reference
+      this._boundListeners.delete(key);
     }
   }
 

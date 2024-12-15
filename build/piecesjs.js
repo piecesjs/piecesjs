@@ -1,10 +1,10 @@
-const u = async (r, e, t = document) => {
-  t.getElementsByTagName(r).length > 0 && await e();
-}, o = (r) => {
-  var e = Object.prototype.toString.call(r);
-  return typeof r == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof r.length == "number" && (r.length === 0 || typeof r[0] == "object" && r[0].nodeType > 0);
+const l = async (o, e, t = document) => {
+  t.getElementsByTagName(o).length > 0 && await e();
+}, a = (o) => {
+  var e = Object.prototype.toString.call(o);
+  return typeof o == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof o.length == "number" && (o.length === 0 || typeof o[0] == "object" && o[0].nodeType > 0);
 };
-class h {
+class u {
   constructor() {
     this.piecesCount = 0, this.currentPieces = {};
   }
@@ -15,10 +15,10 @@ class h {
     delete this.currentPieces[e.name][e.id];
   }
 }
-let l = new h();
+let h = new u();
 class d extends HTMLElement {
   constructor(e, { stylesheets: t = [] } = {}) {
-    super(), this.name = e, this.template = document.createElement("template"), this.piecesManager = l, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML);
+    super(), this.name = e, this.template = document.createElement("template"), this.piecesManager = h, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
   }
   /**
    * default function from native web components connectedCallback()
@@ -124,9 +124,9 @@ class d extends HTMLElement {
   captureTree(e = this) {
     const t = this.querySelectorAll("[data-dom]");
     let i = {};
-    for (let s of t) {
-      const n = s.getAttribute("data-dom");
-      typeof i[n] > "u" && (i[n] = []), i[n].push(s);
+    for (let n of t) {
+      const s = n.getAttribute("data-dom");
+      typeof i[s] > "u" && (i[s] = []), i[s].push(n);
     }
     return i;
   }
@@ -140,10 +140,21 @@ class d extends HTMLElement {
    * @param { function } func
    * @param { Object } params
    */
-  on(e, t, i, s = null) {
-    t != null && (o(t) ? t.length > 0 && t.forEach((n) => {
-      s == null ? n.addEventListener(e, i.bind(this)) : n.addEventListener(e, i.bind(this, s));
-    }) : s == null ? t.addEventListener(e, i.bind(this)) : t.addEventListener(e, i.bind(this, s)));
+  on(e, t, i, n = null) {
+    if (t != null) {
+      const s = `${e}_${i.name}`;
+      if (!this._boundListeners.has(s)) {
+        const c = i.bind(this);
+        this._boundListeners.set(s, {
+          original: i,
+          bound: c
+        });
+      }
+      const r = this._boundListeners.get(s).bound;
+      a(t) ? t.length > 0 && t.forEach((c) => {
+        n == null ? c.addEventListener(e, r) : c.addEventListener(e, () => r(n));
+      }) : n == null ? t.addEventListener(e, r) : t.addEventListener(e, () => r(n));
+    }
   }
   /**
    * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
@@ -152,9 +163,17 @@ class d extends HTMLElement {
    * @param { function } func
    */
   off(e, t, i) {
-    t != null && (o(t) ? t.length > 0 && t.forEach((s) => {
-      s.removeEventListener(e, i.bind(this));
-    }) : t.removeEventListener(e, i.bind(this)));
+    if (t != null) {
+      const n = `${e}_${i.name}`, s = this._boundListeners.get(n);
+      if (!s) {
+        console.warn(`No bound listener found for ${n}`);
+        return;
+      }
+      const r = s.bound;
+      a(t) ? t.length > 0 && t.forEach((c) => {
+        c.removeEventListener(e, r);
+      }) : t.removeEventListener(e, r), this._boundListeners.delete(n);
+    }
   }
   /**
    * Emit a custom event
@@ -163,10 +182,10 @@ class d extends HTMLElement {
    * @param { Object } params
    */
   emit(e, t = document, i) {
-    const s = new CustomEvent(e, {
+    const n = new CustomEvent(e, {
       detail: i
     });
-    t.dispatchEvent(s);
+    t.dispatchEvent(n);
   }
   /**
    * Call function of a component, from a component
@@ -175,10 +194,10 @@ class d extends HTMLElement {
    * @param { String } pieceName
    * @param { String } pieceId
    */
-  call(e, t, i, s) {
-    Object.keys(this.piecesManager.currentPieces).forEach((n) => {
-      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((a) => {
-        s != null ? a == s && this.piecesManager.currentPieces[n][a].piece[e](t) : this.piecesManager.currentPieces[n][a].piece[e](t);
+  call(e, t, i, n) {
+    Object.keys(this.piecesManager.currentPieces).forEach((s) => {
+      s == i && Object.keys(this.piecesManager.currentPieces[s]).forEach((r) => {
+        n != null ? r == n && this.piecesManager.currentPieces[s][r].piece[e](t) : this.piecesManager.currentPieces[s][r].piece[e](t);
       });
     });
   }
@@ -205,6 +224,6 @@ class d extends HTMLElement {
 }
 export {
   d as Piece,
-  u as load,
-  l as piecesManager
+  l as load,
+  h as piecesManager
 };
