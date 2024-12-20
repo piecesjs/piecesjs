@@ -7,6 +7,10 @@
 	</p>
 </div>
 
+### Codrops article
+
+[Getting Started with Piecesjs: Building Native Web Components with a Lightweight Framework](https://tympanus.net/codrops/2024/10/21/getting-started-with-piecesjs-building-native-web-components-with-a-lightweight-framework/)
+
 ## Introduction
 
 piecesjs is a lightweight JavaScript framework built upon native web components, offering a suite of tools and utilities tailored for creative websites.
