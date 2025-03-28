@@ -158,7 +158,7 @@ Shortcut to query an element. `this.dom(query, context)` is also available.
  * @param { String } query
  * @param { HTMLElement } context (this by default)
  */
-this.$('button'); // return a NodeList
+this.$('button'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
 ```
 
 ### Get an element with a slug
@@ -175,7 +175,7 @@ this.$('button'); // return a NodeList
  * @param { String } slug
  * @param { HTMLElement } context (this by default)
  */
-this.domAttr('listItem'); // return a NodeList
+this.domAttr('listItem'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
 ```
 
 ## Events
@@ -365,13 +365,15 @@ Clone the repo and at the root `/`
 npm i
 ```
 
-Link your local piecesjs to use it as an npm package
+In the test environment, link your local piecesjs to use it as an npm package
 
 ```
+cd /test
 npm link piecesjs
 ```
 
-Build piecesjs
+Then back to the root with `cd ../`
+and build piecesjs
 
 ```
 npm run build
@@ -381,7 +383,6 @@ Test environment :
 In the folder `/test`
 
 ```
-npm i
 npm run dev
 ```
 

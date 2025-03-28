@@ -9,7 +9,7 @@ class Counter extends Piece {
 
   mount() {
     // Query with this.$
-    this.$button = this.$('button')[0];
+    this.$button = this.$('button');
 
     // Event listener
     this.on('click', this.$button, this.increment);

@@ -5,7 +5,7 @@ export class Piece extends HTMLElement {
   constructor(name, { stylesheets = [] } = {}) {
     super();
 
-    this.name = name;
+    this.name = name || this.constructor.name;
     this.template = document.createElement('template');
     this.piecesManager = piecesManager;
 
@@ -164,14 +164,18 @@ export class Piece extends HTMLElement {
    * @param { HTMLElement } context
    */
   $(query, context = this) {
-    return context.querySelectorAll(query);
+    const result = context.querySelectorAll(query);
+    return result.length == 1 ? result[0] : result;
   }
+
   dom(query, context = this) {
-    return context.querySelectorAll(query);
+    const result = context.querySelectorAll(query);
+    return result.length == 1 ? result[0] : result;
   }
   // To capture element using data-attribute <div data-dom='query'></div>
   domAttr(query, context = this) {
-    return context.querySelectorAll(`[data-dom="${query}"]`);
+    const result = context.querySelectorAll(`[data-dom="${query}"]`);
+    return result.length == 1 ? result[0] : result;
   }
 
   captureTree(context = this) {

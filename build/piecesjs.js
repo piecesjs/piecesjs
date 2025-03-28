@@ -18,7 +18,7 @@ class u {
 let h = new u();
 class d extends HTMLElement {
   constructor(e, { stylesheets: t = [] } = {}) {
-    super(), this.name = e, this.template = document.createElement("template"), this.piecesManager = h, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
+    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = h, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
   }
   /**
    * default function from native web components connectedCallback()
@@ -112,14 +112,17 @@ class d extends HTMLElement {
    * @param { HTMLElement } context
    */
   $(e, t = this) {
-    return t.querySelectorAll(e);
+    const i = t.querySelectorAll(e);
+    return i.length == 1 ? i[0] : i;
   }
   dom(e, t = this) {
-    return t.querySelectorAll(e);
+    const i = t.querySelectorAll(e);
+    return i.length == 1 ? i[0] : i;
   }
   // To capture element using data-attribute <div data-dom='query'></div>
   domAttr(e, t = this) {
-    return t.querySelectorAll(`[data-dom="${e}"]`);
+    const i = t.querySelectorAll(`[data-dom="${e}"]`);
+    return i.length == 1 ? i[0] : i;
   }
   captureTree(e = this) {
     const t = this.querySelectorAll("[data-dom]");
