@@ -3,7 +3,7 @@
   <br>
   <br>
 	<p>
-		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.2.2">1.3kb</a>] - Tiny framework, using native web components.
+		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.3.0">1.5kb</a>] - Tiny framework, using native web components.
 	</p>
 </div>
 
@@ -68,12 +68,12 @@ export class Counter extends Piece {
   }
 
   mount() {
-    this.$button = this.$('button')[0];
+    this.$button = this.$('button');
     this.on('click', this.$button, this.click);
   }
 
   unmount() {
-    this.off('click', this.$button[0], this.click);
+    this.off('click', this.$button, this.click);
   }
 
   render() {
@@ -158,7 +158,7 @@ Shortcut to query an element. `this.dom(query, context)` is also available.
  * @param { String } query
  * @param { HTMLElement } context (this by default)
  */
-this.$('button'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
+let myButton = this.$('button'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
 ```
 
 ### Get an element with a slug
@@ -175,7 +175,7 @@ this.$('button'); // returns a NodeList if there is more than one element otherw
  * @param { String } slug
  * @param { HTMLElement } context (this by default)
  */
-this.domAttr('listItem'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
+let listItems this.domAttr('listItem'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
 ```
 
 ## Events

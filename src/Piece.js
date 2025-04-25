@@ -165,17 +165,17 @@ export class Piece extends HTMLElement {
    */
   $(query, context = this) {
     const result = context.querySelectorAll(query);
-    return result.length == 1 ? result[0] : result;
+    return result.length == 1 ? result[0] : result.length == 0 ? null : result;
   }
 
   dom(query, context = this) {
     const result = context.querySelectorAll(query);
-    return result.length == 1 ? result[0] : result;
+    return result.length == 1 ? result[0] : result.length == 0 ? null : result;
   }
   // To capture element using data-attribute <div data-dom='query'></div>
   domAttr(query, context = this) {
     const result = context.querySelectorAll(`[data-dom="${query}"]`);
-    return result.length == 1 ? result[0] : result;
+    return result.length == 1 ? result[0] : result.length == 0 ? null : result;
   }
 
   captureTree(context = this) {

@@ -1,10 +1,10 @@
-const l = async (o, e, t = document) => {
+const h = async (o, e, t = document) => {
   t.getElementsByTagName(o).length > 0 && await e();
 }, a = (o) => {
   var e = Object.prototype.toString.call(o);
   return typeof o == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof o.length == "number" && (o.length === 0 || typeof o[0] == "object" && o[0].nodeType > 0);
 };
-class u {
+class l {
   constructor() {
     this.piecesCount = 0, this.currentPieces = {};
   }
@@ -15,10 +15,10 @@ class u {
     delete this.currentPieces[e.name][e.id];
   }
 }
-let h = new u();
+let u = new l();
 class d extends HTMLElement {
   constructor(e, { stylesheets: t = [] } = {}) {
-    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = h, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
+    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = u, this.stylesheets = t, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
   }
   /**
    * default function from native web components connectedCallback()
@@ -113,16 +113,16 @@ class d extends HTMLElement {
    */
   $(e, t = this) {
     const i = t.querySelectorAll(e);
-    return i.length == 1 ? i[0] : i;
+    return i.length == 1 ? i[0] : i.length == 0 ? null : i;
   }
   dom(e, t = this) {
     const i = t.querySelectorAll(e);
-    return i.length == 1 ? i[0] : i;
+    return i.length == 1 ? i[0] : i.length == 0 ? null : i;
   }
   // To capture element using data-attribute <div data-dom='query'></div>
   domAttr(e, t = this) {
     const i = t.querySelectorAll(`[data-dom="${e}"]`);
-    return i.length == 1 ? i[0] : i;
+    return i.length == 1 ? i[0] : i.length == 0 ? null : i;
   }
   captureTree(e = this) {
     const t = this.querySelectorAll("[data-dom]");
@@ -227,6 +227,6 @@ class d extends HTMLElement {
 }
 export {
   d as Piece,
-  l as load,
-  h as piecesManager
+  h as load,
+  u as piecesManager
 };
