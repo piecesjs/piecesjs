@@ -220,7 +220,7 @@ export class Piece extends HTMLElement {
 
       const boundFunc = this._boundListeners.get(key).bound;
 
-      if (isNodeList(el)) {
+      if (isNodeList(el) || Array.isArray(el)) {
         if (el.length > 0) {
           el.forEach((item) => {
             if (params == null) {
@@ -259,7 +259,7 @@ export class Piece extends HTMLElement {
 
       const boundFunc = listener.bound;
 
-      if (isNodeList(el)) {
+      if (isNodeList(el) || Array.isArray(el)) {
         if (el.length > 0) {
           el.forEach((item) => {
             item.removeEventListener(type, boundFunc);

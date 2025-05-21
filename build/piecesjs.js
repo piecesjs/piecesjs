@@ -1,6 +1,6 @@
 const h = async (o, e, t = document) => {
   t.getElementsByTagName(o).length > 0 && await e();
-}, a = (o) => {
+}, c = (o) => {
   var e = Object.prototype.toString.call(o);
   return typeof o == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof o.length == "number" && (o.length === 0 || typeof o[0] == "object" && o[0].nodeType > 0);
 };
@@ -147,15 +147,15 @@ class d extends HTMLElement {
     if (t != null) {
       const s = `${e}_${i.name}`;
       if (!this._boundListeners.has(s)) {
-        const c = i.bind(this);
+        const a = i.bind(this);
         this._boundListeners.set(s, {
           original: i,
-          bound: c
+          bound: a
         });
       }
       const r = this._boundListeners.get(s).bound;
-      a(t) ? t.length > 0 && t.forEach((c) => {
-        n == null ? c.addEventListener(e, r) : c.addEventListener(e, () => r(n));
+      c(t) || Array.isArray(t) ? t.length > 0 && t.forEach((a) => {
+        n == null ? a.addEventListener(e, r) : a.addEventListener(e, () => r(n));
       }) : n == null ? t.addEventListener(e, r) : t.addEventListener(e, () => r(n));
     }
   }
@@ -173,8 +173,8 @@ class d extends HTMLElement {
         return;
       }
       const r = s.bound;
-      a(t) ? t.length > 0 && t.forEach((c) => {
-        c.removeEventListener(e, r);
+      c(t) || Array.isArray(t) ? t.length > 0 && t.forEach((a) => {
+        a.removeEventListener(e, r);
       }) : t.removeEventListener(e, r), this._boundListeners.delete(n);
     }
   }
