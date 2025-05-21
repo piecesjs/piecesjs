@@ -145,7 +145,6 @@ export class Piece extends HTMLElement {
               const eventName = attributes[i].name.replace('data-events-', '');
               const functionName = attributes[i].value;
 
-              console.log(eventName, functionName);
               if (typeof this[functionName] == 'function') {
                 this.on(eventName, element, this[functionName]);
               }
@@ -198,7 +197,6 @@ export class Piece extends HTMLElement {
               const eventName = attributes[i].name.replace('data-events-', '');
               const functionName = attributes[i].value;
 
-              console.log(eventName, functionName);
               if (typeof this[functionName] == 'function') {
                 this.off(eventName, element, this[functionName]);
               }
@@ -245,10 +243,23 @@ export class Piece extends HTMLElement {
     const result = context.querySelectorAll(query);
     return result.length == 1 ? result[0] : result.length == 0 ? null : result;
   }
+
   // To capture element using data-attribute <div data-dom='query'></div>
   domAttr(query, context = this) {
     const result = context.querySelectorAll(`[data-dom="${query}"]`);
     return result.length == 1 ? result[0] : result.length == 0 ? null : result;
+  }
+
+  $Array(query, context = this) {
+    return Array.from(context.querySelectorAll(query));
+  }
+
+  domArray(query, context = this) {
+    return Array.from(context.querySelectorAll(query));
+  }
+
+  domAttrArray(query, context = this) {
+    return Array.from(context.querySelectorAll(`[data-dom="${query}"]`));
   }
 
   captureTree(context = this) {
