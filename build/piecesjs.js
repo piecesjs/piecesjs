@@ -1,10 +1,10 @@
-const u = async (a, e, i = document) => {
-  i.getElementsByTagName(a).length > 0 && await e();
-}, c = (a) => {
+const u = async (a, e, t = document) => {
+  t.getElementsByTagName(a).length > 0 && await e();
+}, l = (a) => {
   var e = Object.prototype.toString.call(a);
   return typeof a == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof a.length == "number" && (a.length === 0 || typeof a[0] == "object" && a[0].nodeType > 0);
 };
-class l {
+class c {
   constructor() {
     this.loadedPiecesCount = 0, this.piecesCount = 0, this.currentPieces = {}, this.domClickElements = [];
   }
@@ -15,10 +15,10 @@ class l {
     delete this.currentPieces[e.name][e.id];
   }
 }
-let h = new l();
+let h = new c();
 class d extends HTMLElement {
-  constructor(e, { stylesheets: i = [] } = {}) {
-    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = h, this.stylesheets = i, this.updatedPiecesCount = this.piecesManager.piecesCount++, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
+  constructor(e, { stylesheets: t = [] } = {}) {
+    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = h, this.stylesheets = t, this.updatedPiecesCount = this.piecesManager.piecesCount++, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
   }
   /**
    * default function from native web components connectedCallback()
@@ -31,7 +31,7 @@ class d extends HTMLElement {
     })), this.privatePremount(e), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render() != null ? this.render() : "", this.appendChild(this.template.cloneNode(!0).content)), this.privateMount(e);
   }
   /**
-   * Function to render HTML in component. If component is not emtpy, the rendering is not called
+   * Function to render HTML in the component. If component is not emtpy, the rendering is not called
    */
   render() {
     if (this.baseHTML != null)
@@ -67,23 +67,23 @@ class d extends HTMLElement {
   privateMount(e) {
     if (this.log && console.log("✅ mount", this.name), e) {
       this.piecesManager.loadedPiecesCount++, this.domEventsElements = Array.from(this.querySelectorAll("*")).filter(
-        (t) => {
-          const s = t.attributes;
+        (i) => {
+          const s = i.attributes;
           for (let n = 0; n < s.length; n++)
             if (s[n].name.startsWith("data-events-"))
               return !0;
           return !1;
         }
       );
-      const i = this.attributes;
-      for (let t = 0; t < i.length; t++)
-        i[t].name.startsWith("data-events-") && this.domEventsElements.push(this);
-      this.domEventsElements && this.domEventsElements.forEach((t) => {
-        let s = t.attributes;
+      const t = this.attributes;
+      for (let i = 0; i < t.length; i++)
+        t[i].name.startsWith("data-events-") && this.domEventsElements.push(this);
+      this.domEventsElements && this.domEventsElements.forEach((i) => {
+        let s = i.attributes;
         for (let n = 0; n < s.length; n++)
           if (s[n].name.startsWith("data-events-")) {
             const r = s[n].name.replace("data-events-", ""), o = s[n].value;
-            console.log(r, o), typeof this[o] == "function" && this.on(r, t, this[o]);
+            typeof this[o] == "function" && this.on(r, i, this[o]);
           }
       });
     }
@@ -113,12 +113,12 @@ class d extends HTMLElement {
     e || (this.piecesManager.removePiece({
       name: this.name,
       id: this.cid
-    }), this.domEventsElements && this.domEventsElements.forEach((i) => {
-      let t = i.attributes;
-      for (let s = 0; s < t.length; s++)
-        if (t[s].name.startsWith("data-events-")) {
-          const n = t[s].name.replace("data-events-", ""), r = t[s].value;
-          console.log(n, r), typeof this[r] == "function" && this.off(n, i, this[r]);
+    }), this.domEventsElements && this.domEventsElements.forEach((t) => {
+      let i = t.attributes;
+      for (let s = 0; s < i.length; s++)
+        if (i[s].name.startsWith("data-events-")) {
+          const n = i[s].name.replace("data-events-", ""), r = i[s].value;
+          typeof this[r] == "function" && this.off(n, t, this[r]);
         }
     })), this.log && console.log("❌ unmount", this.name), this.unmount(e);
   }
@@ -133,34 +133,43 @@ class d extends HTMLElement {
    * @param { String } oldValue
    * @param { String } newValue
    */
-  attributeChangedCallback(e, i, t) {
-    i !== t && (this[e] = t, this.privateUpdate());
+  attributeChangedCallback(e, t, i) {
+    t !== i && (this[e] = i, this.privateUpdate());
   }
   /**
    * @param { String } query
    * @param { HTMLElement } context
    */
-  $(e, i = this) {
-    const t = i.querySelectorAll(e);
-    return t.length == 1 ? t[0] : t.length == 0 ? null : t;
+  $(e, t = this) {
+    const i = t.querySelectorAll(e);
+    return i.length == 1 ? i[0] : i.length == 0 ? null : i;
   }
-  dom(e, i = this) {
-    const t = i.querySelectorAll(e);
-    return t.length == 1 ? t[0] : t.length == 0 ? null : t;
+  dom(e, t = this) {
+    const i = t.querySelectorAll(e);
+    return i.length == 1 ? i[0] : i.length == 0 ? null : i;
   }
   // To capture element using data-attribute <div data-dom='query'></div>
-  domAttr(e, i = this) {
-    const t = i.querySelectorAll(`[data-dom="${e}"]`);
-    return t.length == 1 ? t[0] : t.length == 0 ? null : t;
+  domAttr(e, t = this) {
+    const i = t.querySelectorAll(`[data-dom="${e}"]`);
+    return i.length == 1 ? i[0] : i.length == 0 ? null : i;
+  }
+  $All(e, t = this) {
+    return Array.from(t.querySelectorAll(e));
+  }
+  domAll(e, t = this) {
+    return Array.from(t.querySelectorAll(e));
+  }
+  domAttrAll(e, t = this) {
+    return Array.from(t.querySelectorAll(`[data-dom="${e}"]`));
   }
   captureTree(e = this) {
-    const i = this.querySelectorAll("[data-dom]");
-    let t = {};
-    for (let s of i) {
+    const t = this.querySelectorAll("[data-dom]");
+    let i = {};
+    for (let s of t) {
       const n = s.getAttribute("data-dom");
-      typeof t[n] > "u" && (t[n] = []), t[n].push(s);
+      typeof i[n] > "u" && (i[n] = []), i[n].push(s);
     }
-    return t;
+    return i;
   }
   /**
    * Events Managment
@@ -172,20 +181,20 @@ class d extends HTMLElement {
    * @param { function } func
    * @param { Object } params
    */
-  on(e, i, t, s = null) {
-    if (i != null) {
-      const n = `${e}_${t.name}`;
+  on(e, t, i, s = null) {
+    if (t != null) {
+      const n = `${e}_${i.name}`;
       if (!this._boundListeners.has(n)) {
-        const o = t.bind(this);
+        const o = i.bind(this);
         this._boundListeners.set(n, {
-          original: t,
+          original: i,
           bound: o
         });
       }
       const r = this._boundListeners.get(n).bound;
-      c(i) || Array.isArray(i) ? i.length > 0 && i.forEach((o) => {
+      l(t) || Array.isArray(t) ? t.length > 0 && t.forEach((o) => {
         s == null ? o.addEventListener(e, r) : o.addEventListener(e, () => r(s));
-      }) : s == null ? i.addEventListener(e, r) : i.addEventListener(e, () => r(s));
+      }) : s == null ? t.addEventListener(e, r) : t.addEventListener(e, () => r(s));
     }
   }
   /**
@@ -194,17 +203,17 @@ class d extends HTMLElement {
    * @param { HTMLElement } el
    * @param { function } func
    */
-  off(e, i, t) {
-    if (i != null) {
-      const s = `${e}_${t.name}`, n = this._boundListeners.get(s);
+  off(e, t, i) {
+    if (t != null) {
+      const s = `${e}_${i.name}`, n = this._boundListeners.get(s);
       if (!n) {
         console.warn(`No bound listener found for ${s}`);
         return;
       }
       const r = n.bound;
-      c(i) || Array.isArray(i) ? i.length > 0 && i.forEach((o) => {
+      l(t) || Array.isArray(t) ? t.length > 0 && t.forEach((o) => {
         o.removeEventListener(e, r);
-      }) : i.removeEventListener(e, r), this._boundListeners.delete(s);
+      }) : t.removeEventListener(e, r), this._boundListeners.delete(s);
     }
   }
   /**
@@ -213,11 +222,11 @@ class d extends HTMLElement {
    * @param { HTMLElement } el, by default the event is emit on document
    * @param { Object } params
    */
-  emit(e, i = document, t) {
+  emit(e, t = document, i) {
     const s = new CustomEvent(e, {
-      detail: t
+      detail: i
     });
-    i.dispatchEvent(s);
+    t.dispatchEvent(s);
   }
   /**
    * Call function of a component, from a component
@@ -226,10 +235,10 @@ class d extends HTMLElement {
    * @param { String } pieceName
    * @param { String } pieceId
    */
-  call(e, i, t, s) {
+  call(e, t, i, s) {
     Object.keys(this.piecesManager.currentPieces).forEach((n) => {
-      n == t && Object.keys(this.piecesManager.currentPieces[n]).forEach((r) => {
-        s != null ? r == s && this.piecesManager.currentPieces[n][r].piece[e](i) : this.piecesManager.currentPieces[n][r].piece[e](i);
+      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((r) => {
+        s != null ? r == s && this.piecesManager.currentPieces[n][r].piece[e](t) : this.piecesManager.currentPieces[n][r].piece[e](t);
       });
     });
   }
@@ -238,8 +247,8 @@ class d extends HTMLElement {
    */
   async loadStyles(e = !0) {
     if (e)
-      for (let i = 0; i < this.stylesheets.length; i++)
-        await this.stylesheets[i]();
+      for (let t = 0; t < this.stylesheets.length; t++)
+        await this.stylesheets[t]();
   }
   get log() {
     return typeof this.getAttribute("log") == "string";

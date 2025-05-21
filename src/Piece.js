@@ -52,7 +52,7 @@ export class Piece extends HTMLElement {
   }
 
   /**
-   * Function to render HTML in component. If component is not emtpy, the rendering is not called
+   * Function to render HTML in the component. If component is not emtpy, the rendering is not called
    */
   render() {
     if (this.baseHTML != undefined) {
@@ -104,18 +104,6 @@ export class Piece extends HTMLElement {
 
     if (firstHit) {
       this.piecesManager.loadedPiecesCount++;
-
-      // console.log(
-      //   this.piecesManager.loadedPiecesCount,
-      //   '/',
-      //   this.piecesManager.piecesCount,
-      // );
-
-      // if (
-      //   this.piecesManager.loadedPiecesCount == this.piecesManager.piecesCount
-      // ) {
-      //   console.log('🔥 all pieces are loaded');
-      // }
 
       this.domEventsElements = Array.from(this.querySelectorAll('*')).filter(
         (element) => {
@@ -250,15 +238,15 @@ export class Piece extends HTMLElement {
     return result.length == 1 ? result[0] : result.length == 0 ? null : result;
   }
 
-  $Array(query, context = this) {
+  $All(query, context = this) {
     return Array.from(context.querySelectorAll(query));
   }
 
-  domArray(query, context = this) {
+  domAll(query, context = this) {
     return Array.from(context.querySelectorAll(query));
   }
 
-  domAttrArray(query, context = this) {
+  domAttrAll(query, context = this) {
     return Array.from(context.querySelectorAll(`[data-dom="${query}"]`));
   }
 
