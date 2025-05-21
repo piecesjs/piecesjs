@@ -65,12 +65,7 @@ class d extends HTMLElement {
    * @param { firstHit } boolean (false if it's an update)
    */
   privateMount(e) {
-    this.log && console.log("✅ mount", this.name), this.piecesManager.loadedPiecesCount++, console.log(
-      this.piecesManager.loadedPiecesCount,
-      Object.keys(this.piecesManager.currentPieces).filter(
-        (t) => this.piecesManager.currentPieces[t].piece.name == this.name
-      ).length
-    ), this.mount(e);
+    this.log && console.log("✅ mount", this.name), this.piecesManager.loadedPiecesCount++, this.mount(e);
   }
   /**
    * Satelite function for mount
@@ -159,7 +154,7 @@ class d extends HTMLElement {
         });
       }
       const r = this._boundListeners.get(s).bound;
-      a(t) || Array.isArray(t) ? t.length > 0 && t.forEach((c) => {
+      a(t) ? t.length > 0 && t.forEach((c) => {
         n == null ? c.addEventListener(e, r) : c.addEventListener(e, () => r(n));
       }) : n == null ? t.addEventListener(e, r) : t.addEventListener(e, () => r(n));
     }
@@ -178,7 +173,7 @@ class d extends HTMLElement {
         return;
       }
       const r = s.bound;
-      a(t) || Array.isArray(t) ? t.length > 0 && t.forEach((c) => {
+      a(t) ? t.length > 0 && t.forEach((c) => {
         c.removeEventListener(e, r);
       }) : t.removeEventListener(e, r), this._boundListeners.delete(n);
     }
