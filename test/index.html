@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -40,11 +40,17 @@
     <c-counter cid="firstCounter" class="c-counter" value="2"></c-counter>
     <c-counter class="c-counter" value="0"></c-counter>
 
+    <c-reset log class="c-button" data-events-click="resetCounter">
+      Reset on click
+    </c-reset>
+
+    <c-reset>
+      <button class="c-button" data-events-mouseenter="resetCounter">
+        Reset on mouseenter
+      </button>
+    </c-reset>
+
     <!-- Component without reactive interaction, rendering directly in HTML -->
-    <c-reset log class="c-button"> Reset counters </c-reset>
-    <c-reset class="c-button" counterToReset="firstCounter">
-      Reset first counter</c-reset
-    >
 
     <script type="module" src="./assets/js/app.js"></script>
 

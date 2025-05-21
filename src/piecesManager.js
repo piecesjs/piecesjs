@@ -1,7 +1,9 @@
 class Manager {
   constructor() {
     this.loadedPiecesCount = 0;
+    this.piecesCount = 0;
     this.currentPieces = {};
+    this.domClickElements = [];
   }
 
   addPiece(piece) {

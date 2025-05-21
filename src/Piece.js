@@ -11,6 +11,8 @@ export class Piece extends HTMLElement {
 
     this.stylesheets = stylesheets;
 
+    this.updatedPiecesCount = this.piecesManager.piecesCount++;
+
     if (this.innerHTML != '') {
       this.baseHTML = this.innerHTML;
     }
@@ -28,7 +30,7 @@ export class Piece extends HTMLElement {
       if (typeof this.cid == 'string') {
         this.cid = this.cid;
       } else {
-        this.cid = `c${this.piecesManager.piecesCount++}`;
+        this.cid = `c${this.updatedPiecesCount}`;
       }
 
       this.piecesManager.addPiece({
@@ -100,10 +102,62 @@ export class Piece extends HTMLElement {
       console.log('✅ mount', this.name);
     }
 
-    this.piecesManager.loadedPiecesCount++;
+    if (firstHit) {
+      this.piecesManager.loadedPiecesCount++;
+
+      // console.log(
+      //   this.piecesManager.loadedPiecesCount,
+      //   '/',
+      //   this.piecesManager.piecesCount,
+      // );
+
+      // if (
+      //   this.piecesManager.loadedPiecesCount == this.piecesManager.piecesCount
+      // ) {
+      //   console.log('🔥 all pieces are loaded');
+      // }
+
+      this.domEventsElements = Array.from(this.querySelectorAll('*')).filter(
+        (element) => {
+          const attributes = element.attributes;
+          for (let i = 0; i < attributes.length; i++) {
+            if (attributes[i].name.startsWith('data-events-')) {
+              return true;
+            }
+          }
+          return false;
+        },
+      );
+
+      const attributes = this.attributes;
+
+      for (let i = 0; i < attributes.length; i++) {
+        if (attributes[i].name.startsWith('data-events-')) {
+          this.domEventsElements.push(this);
+        }
+      }
+
+      if (this.domEventsElements) {
+        this.domEventsElements.forEach((element) => {
+          let attributes = element.attributes;
+          for (let i = 0; i < attributes.length; i++) {
+            if (attributes[i].name.startsWith('data-events-')) {
+              const eventName = attributes[i].name.replace('data-events-', '');
+              const functionName = attributes[i].value;
+
+              console.log(eventName, functionName);
+              if (typeof this[functionName] == 'function') {
+                this.on(eventName, element, this[functionName]);
+              }
+            }
+          }
+        });
+      }
+    }
 
     this.mount(firstHit);
   }
+
   /**
    * Satelite function for mount
    */
@@ -135,6 +189,23 @@ export class Piece extends HTMLElement {
         name: this.name,
         id: this.cid,
       });
+
+      if (this.domEventsElements) {
+        this.domEventsElements.forEach((element) => {
+          let attributes = element.attributes;
+          for (let i = 0; i < attributes.length; i++) {
+            if (attributes[i].name.startsWith('data-events-')) {
+              const eventName = attributes[i].name.replace('data-events-', '');
+              const functionName = attributes[i].value;
+
+              console.log(eventName, functionName);
+              if (typeof this[functionName] == 'function') {
+                this.off(eventName, element, this[functionName]);
+              }
+            }
+          }
+        });
+      }
     }
 
     if (this.log) {

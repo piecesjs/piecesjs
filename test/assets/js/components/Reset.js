@@ -9,16 +9,13 @@ class Reset extends Piece {
     this.emit('resetIsMounted', document, {
       value: 'A reset component is mounted!',
     });
-    this.on('click', this, this.click);
   }
 
-  click(e) {
+  resetCounter(e) {
     this.call('reset', {}, 'Counter', this.counterToReset);
   }
 
-  unmount() {
-    this.off('click', this, this.click);
-  }
+  unmount() {}
 
   // getter and setter for easy access to the counterToReset attribute
   get counterToReset() {
