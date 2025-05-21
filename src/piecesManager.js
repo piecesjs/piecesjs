@@ -1,6 +1,6 @@
 class Manager {
   constructor() {
-    this.piecesCount = 0;
+    this.loadedPiecesCount = 0;
     this.currentPieces = {};
   }
 

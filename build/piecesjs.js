@@ -6,7 +6,7 @@ const h = async (o, e, t = document) => {
 };
 class l {
   constructor() {
-    this.piecesCount = 0, this.currentPieces = {};
+    this.loadedPiecesCount = 0, this.currentPieces = {};
   }
   addPiece(e) {
     typeof this.currentPieces[e.name] != "object" && (this.currentPieces[e.name] = {}), this.currentPieces[e.name][e.id] = e;
@@ -65,7 +65,12 @@ class d extends HTMLElement {
    * @param { firstHit } boolean (false if it's an update)
    */
   privateMount(e) {
-    this.log && console.log("✅ mount", this.name), this.mount(e);
+    this.log && console.log("✅ mount", this.name), this.piecesManager.loadedPiecesCount++, console.log(
+      this.piecesManager.loadedPiecesCount,
+      Object.keys(this.piecesManager.currentPieces).filter(
+        (t) => this.piecesManager.currentPieces[t].piece.name == this.name
+      ).length
+    ), this.mount(e);
   }
   /**
    * Satelite function for mount
@@ -154,7 +159,7 @@ class d extends HTMLElement {
         });
       }
       const r = this._boundListeners.get(s).bound;
-      a(t) ? t.length > 0 && t.forEach((c) => {
+      a(t) || Array.isArray(t) ? t.length > 0 && t.forEach((c) => {
         n == null ? c.addEventListener(e, r) : c.addEventListener(e, () => r(n));
       }) : n == null ? t.addEventListener(e, r) : t.addEventListener(e, () => r(n));
     }
@@ -173,7 +178,7 @@ class d extends HTMLElement {
         return;
       }
       const r = s.bound;
-      a(t) ? t.length > 0 && t.forEach((c) => {
+      a(t) || Array.isArray(t) ? t.length > 0 && t.forEach((c) => {
         c.removeEventListener(e, r);
       }) : t.removeEventListener(e, r), this._boundListeners.delete(n);
     }

@@ -100,6 +100,15 @@ export class Piece extends HTMLElement {
       console.log('✅ mount', this.name);
     }
 
+    this.piecesManager.loadedPiecesCount++;
+
+    console.log(
+      this.piecesManager.loadedPiecesCount,
+      Object.keys(this.piecesManager.currentPieces).filter(
+        (key) => this.piecesManager.currentPieces[key].piece.name == this.name,
+      ).length,
+    );
+
     this.mount(firstHit);
   }
   /**
@@ -218,7 +227,7 @@ export class Piece extends HTMLElement {
 
       const boundFunc = this._boundListeners.get(key).bound;
 
-      if (isNodeList(el)) {
+      if (isNodeList(el) || Array.isArray(el)) {
         if (el.length > 0) {
           el.forEach((item) => {
             if (params == null) {
@@ -257,7 +266,7 @@ export class Piece extends HTMLElement {
 
       const boundFunc = listener.bound;
 
-      if (isNodeList(el)) {
+      if (isNodeList(el) || Array.isArray(el)) {
         if (el.length > 0) {
           el.forEach((item) => {
             item.removeEventListener(type, boundFunc);
