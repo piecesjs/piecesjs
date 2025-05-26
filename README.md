@@ -40,6 +40,8 @@ Compiled with [vitejs](https://vitejs.dev/).
 - [Main features](#main-features)
 - [Installation](#installation)
 - [Create your first Piece](#create-your-first-piece)
+- [Lifecycle](#lifecycle)
+- [Queries](#queries)
 - [Methods, props and attributes](#memo)
 - [Support](#support)
 
@@ -137,9 +139,22 @@ import { load } from 'piecesjs';
 load('c-button', () => import('/assets/js/components/Button.js'));
 ```
 
+The load function can take a context (HTMLElement) as its third parameter. It's really usefull for page transitions or if you add dynamically some pieces in your DOM.
+This will re-run a “check” of the pieces present in the "context", and mount them if there are any new ones.
+
+```js
+import { load } from 'piecesjs';
+
+load(
+  'c-button',
+  () => import('/assets/js/components/Button.js'),
+  document.querySelector('#wrapper'),
+);
+```
+
 ---
 
-### Lifecycle
+## Lifecycle
 
 ```js
 premount(firstHit = true){}
@@ -149,15 +164,13 @@ update(){} //Called if an attribute is changed. Then it will call unmount(), pre
 unmount(update = false){} // update = true if this unmount() is called after an attribute is changed.
 ```
 
-### Query with this.$
+## Queries
+
+### this.$
 
 Shortcut to query an element. `this.dom(query, context)` is also available.
 
 ```js
-/**
- * @param { String } query
- * @param { HTMLElement } context (this by default)
- */
 let myButton = this.$('button'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
 ```
 
@@ -177,6 +190,10 @@ let myButton = this.$('button'); // returns a NodeList if there is more than one
  */
 let listItems this.domAttr('listItem'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
 ```
+
+### NodeList anyway
+
+If you prefer get a `NodeList` even if there is just one element (useful for dynamic content), you can call these functions : `this.$All()`, `this.domAll()` and `this.domAttrAll()` with the same parameters as above
 
 ## Events
 
