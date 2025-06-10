@@ -416,10 +416,11 @@ class Header extends Piece {
 
 ### HTML attributes
 
-| Attribute | Description                                                                                 |
-| --------- | ------------------------------------------------------------------------------------------- |
-| `log`     | You can log the lifecycle of your Piece with an attribute `<c-header log>Hello</c-header>`  |
-| `cid`     | To override the generated id of your Piece. Usefull to communicate with this specific Piece |
+| Attribute       | Description                                                                                                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `log`           | You can log the lifecycle of your Piece with an attribute `<c-header log>Hello</c-header>`                                                                                                             |
+| `cid`           | To override the generated id of your Piece. Usefull to communicate with this specific Piece                                                                                                            |
+| `data-events-*` | Declarative way to handle events directly in your HTML. Format: `data-events-*="functionName[,pieceName][,pieceId]"`. Example: `<button data-events-click="increment,Counter,mainCounter">+1</button>` |
 
 ### Piece instance props
 
@@ -481,5 +482,3 @@ Enjoy and feel free to create a pull request!
 If you want to support me, and follow the journey of the creation of pieces 👀
 
 <a href="https://github.com/sponsors/piecesjs">Support me on github</a>
-
-<a href="https://polar.sh/quentinhocde"><picture><source media="(prefers-color-scheme: dark)" srcset="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe&darkmode"><img alt="Subscribe on Polar" src="https://polar.sh/embed/subscribe.svg?org=quentinhocde&label=Subscribe"></picture></a>
