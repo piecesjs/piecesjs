@@ -21,7 +21,7 @@ At its core, a “Piece” is a modular component that can live anywhere on your
 
 Piecesjs dynamically imports only the necessary JavaScript and CSS for each page, optimizing performance while maintaining flexibility. Unlike larger frameworks, it allows you to build exactly what you need, free from the overhead of unnecessary code or restrictive architectures.
 
-Designed for creative websites that rely heavily on JavaScript logic—handling multiple steps, states, and events—piecesjs offers a streamlined and scalable approach for developers looking to create highly interactive experiences.
+Designed for creative websites that rely heavily on JavaScript logic—handling multiple steps, states, and events. Piecesjs offers a streamlined and scalable approach for developers looking to create highly interactive experiences.
 
 Compiled with [vitejs](https://vitejs.dev/).
 
