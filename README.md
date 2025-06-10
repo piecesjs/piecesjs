@@ -3,7 +3,7 @@
   <br>
   <br>
 	<p>
-		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.3.0">1.5kb</a>] - Tiny framework, using native web components.
+		[beta] - [<a href="https://bundlephobia.com/package/piecesjs@0.4.0">1.8kb</a>] - Tiny framework, using native web components.
 	</p>
 </div>
 
