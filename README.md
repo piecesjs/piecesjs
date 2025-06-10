@@ -241,6 +241,8 @@ unmount() {
 
 PiecesJS provides a declarative way to handle events directly in your HTML using `data-events-*` attributes.
 
+`data-events-*="functionName[,pieceName][,pieceId]"`
+
 #### Syntax
 
 ```html
