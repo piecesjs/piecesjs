@@ -42,6 +42,10 @@ Compiled with [vitejs](https://vitejs.dev/).
 - [Create your first Piece](#create-your-first-piece)
 - [Lifecycle](#lifecycle)
 - [Queries](#queries)
+- [Events](#events)
+  - [HTML Event System](#html-event-system)
+- [Communication between components](#communication-between-components)
+- [PiecesManager](#piecesmanager)
 - [Methods, props and attributes](#memo)
 - [Support](#support)
 
@@ -232,6 +236,71 @@ unmount() {
   this.off('click', this.$button, this.click);
 }
 ```
+
+### HTML Event System
+
+PiecesJS provides a declarative way to handle events directly in your HTML using `data-events-*` attributes.
+
+#### Syntax
+
+```html
+<!-- 1 parameter: call method in current or parent Piece -->
+<button data-events-click="increment">Increment</button>
+
+<!-- 2 parameters: call method in all instances of a Piece type -->
+<button data-events-click="reset,Counter">Reset All Counters</button>
+
+<!-- 3 parameters: call method in specific Piece instance -->
+<button data-events-click="increment,Counter,mainCounter">
+  Increment Main Counter
+</button>
+```
+
+#### Example
+
+```html
+<c-header>
+  <button data-events-click="toggleMenu">Toggle Menu</button>
+  <button data-events-click="reset,Counter">Reset All</button>
+  <button data-events-click="increment,Counter,mainCounter">+1 Main</button>
+</c-header>
+
+<c-counter cid="mainCounter" value="0"></c-counter>
+```
+
+```js
+class Header extends Piece {
+  toggleMenu() {
+    console.log('Menu toggled!');
+  }
+}
+
+class Counter extends Piece {
+  reset() {
+    this.value = 0;
+  }
+  increment() {
+    this.value = parseInt(this.value) + 1;
+  }
+
+  get value() {
+    return this.getAttribute('value');
+  }
+  set value(val) {
+    this.setAttribute('value', val);
+  }
+
+  static get observedAttributes() {
+    return ['value'];
+  }
+}
+```
+
+You can use any DOM event: `data-events-click`, `data-events-mouseenter`, `data-events-input`, etc.
+
+#### How it works
+
+PiecesJS automatically scans for `data-events-*` attributes during mount, binds the appropriate event listeners, and cleans them up on unmount.
 
 ## Communication between components
 

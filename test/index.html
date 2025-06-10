@@ -34,14 +34,22 @@
     <!-- Component without reactive interaction, rendering directly in HTML -->
     <c-header log class="c-header">
       <h1>piecesjs</h1>
+
+      <c-reset log>
+        <button class="c-button" data-events-click="resetCounter,Reset">
+          Reset on click
+        </button>
+      </c-reset>
     </c-header>
 
     <!-- Components with reactive interaction, rendering in JS -->
     <c-counter cid="firstCounter" class="c-counter" value="2"></c-counter>
     <c-counter class="c-counter" value="0"></c-counter>
 
-    <c-reset log class="c-button" data-events-click="resetCounter">
-      Reset on click
+    <c-reset cid="reset01" log>
+      <button class="c-button" data-events-click="resetCounter">
+        Reset on click
+      </button>
     </c-reset>
 
     <c-reset>

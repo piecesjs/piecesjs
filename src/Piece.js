@@ -131,10 +131,26 @@ export class Piece extends HTMLElement {
           for (let i = 0; i < attributes.length; i++) {
             if (attributes[i].name.startsWith('data-events-')) {
               const eventName = attributes[i].name.replace('data-events-', '');
-              const functionName = attributes[i].value;
+              let functionName = attributes[i].value;
+              const params = attributes[i].value.split(',');
 
-              if (typeof this[functionName] == 'function') {
-                this.on(eventName, element, this[functionName]);
+              if (params.length == 1) {
+                if (typeof this[functionName] == 'function') {
+                  this.on(eventName, element, this[functionName]);
+                }
+              } else {
+                if (
+                  params.length >= 2 &&
+                  element.dataset.eventInit == undefined
+                ) {
+                  functionName = params[0];
+                  const pieceName = params[1];
+                  const pieceId = params[2];
+                  element.dataset.eventInit = true;
+                  this.on(eventName, element, () => {
+                    this.call(functionName, {}, pieceName, pieceId);
+                  });
+                }
               }
             }
           }
@@ -183,10 +199,26 @@ export class Piece extends HTMLElement {
           for (let i = 0; i < attributes.length; i++) {
             if (attributes[i].name.startsWith('data-events-')) {
               const eventName = attributes[i].name.replace('data-events-', '');
-              const functionName = attributes[i].value;
+              let functionName = attributes[i].value;
+              const params = attributes[i].value.split(',');
 
-              if (typeof this[functionName] == 'function') {
-                this.off(eventName, element, this[functionName]);
+              if (params.length == 1) {
+                if (typeof this[functionName] == 'function') {
+                  this.off(eventName, element, this[functionName]);
+                }
+              } else {
+                if (
+                  params.length >= 2 &&
+                  element.dataset.eventInit == undefined
+                ) {
+                  functionName = params[0];
+                  const pieceName = params[1];
+                  const pieceId = params[2];
+                  element.dataset.eventInit = true;
+                  this.off(eventName, element, () => {
+                    this.call(functionName, {}, pieceName, pieceId);
+                  });
+                }
               }
             }
           }

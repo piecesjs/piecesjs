@@ -1,12 +1,12 @@
-const u = async (a, e, t = document) => {
-  t.getElementsByTagName(a).length > 0 && await e();
-}, l = (a) => {
-  var e = Object.prototype.toString.call(a);
-  return typeof a == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof a.length == "number" && (a.length === 0 || typeof a[0] == "object" && a[0].nodeType > 0);
+const m = async (o, e, t = document) => {
+  t.getElementsByTagName(o).length > 0 && await e();
+}, h = (o) => {
+  var e = Object.prototype.toString.call(o);
+  return typeof o == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof o.length == "number" && (o.length === 0 || typeof o[0] == "object" && o[0].nodeType > 0);
 };
-class c {
+class d {
   constructor() {
-    this.loadedPiecesCount = 0, this.piecesCount = 0, this.currentPieces = {}, this.domClickElements = [];
+    this.loadedPiecesCount = 0, this.piecesCount = 0, this.currentPieces = {};
   }
   addPiece(e) {
     typeof this.currentPieces[e.name] != "object" && (this.currentPieces[e.name] = {}), this.currentPieces[e.name][e.id] = e;
@@ -15,10 +15,10 @@ class c {
     delete this.currentPieces[e.name][e.id];
   }
 }
-let h = new c();
-class d extends HTMLElement {
+let f = new d();
+class p extends HTMLElement {
   constructor(e, { stylesheets: t = [] } = {}) {
-    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = h, this.stylesheets = t, this.updatedPiecesCount = this.piecesManager.piecesCount++, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
+    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = f, this.stylesheets = t, this.updatedPiecesCount = this.piecesManager.piecesCount++, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
   }
   /**
    * default function from native web components connectedCallback()
@@ -82,8 +82,18 @@ class d extends HTMLElement {
         let s = i.attributes;
         for (let n = 0; n < s.length; n++)
           if (s[n].name.startsWith("data-events-")) {
-            const r = s[n].name.replace("data-events-", ""), o = s[n].value;
-            typeof this[o] == "function" && this.on(r, i, this[o]);
+            const r = s[n].name.replace("data-events-", "");
+            let a = s[n].value;
+            const l = s[n].value.split(",");
+            if (l.length == 1)
+              typeof this[a] == "function" && this.on(r, i, this[a]);
+            else if (l.length >= 2 && i.dataset.eventInit == null) {
+              a = l[0];
+              const c = l[1], u = l[2];
+              i.dataset.eventInit = !0, this.on(r, i, () => {
+                this.call(a, {}, c, u);
+              });
+            }
           }
       });
     }
@@ -117,8 +127,18 @@ class d extends HTMLElement {
       let i = t.attributes;
       for (let s = 0; s < i.length; s++)
         if (i[s].name.startsWith("data-events-")) {
-          const n = i[s].name.replace("data-events-", ""), r = i[s].value;
-          typeof this[r] == "function" && this.off(n, t, this[r]);
+          const n = i[s].name.replace("data-events-", "");
+          let r = i[s].value;
+          const a = i[s].value.split(",");
+          if (a.length == 1)
+            typeof this[r] == "function" && this.off(n, t, this[r]);
+          else if (a.length >= 2 && t.dataset.eventInit == null) {
+            r = a[0];
+            const l = a[1], c = a[2];
+            t.dataset.eventInit = !0, this.off(n, t, () => {
+              this.call(r, {}, l, c);
+            });
+          }
         }
     })), this.log && console.log("❌ unmount", this.name), this.unmount(e);
   }
@@ -185,15 +205,15 @@ class d extends HTMLElement {
     if (t != null) {
       const n = `${e}_${i.name}`;
       if (!this._boundListeners.has(n)) {
-        const o = i.bind(this);
+        const a = i.bind(this);
         this._boundListeners.set(n, {
           original: i,
-          bound: o
+          bound: a
         });
       }
       const r = this._boundListeners.get(n).bound;
-      l(t) || Array.isArray(t) ? t.length > 0 && t.forEach((o) => {
-        s == null ? o.addEventListener(e, r) : o.addEventListener(e, () => r(s));
+      h(t) || Array.isArray(t) ? t.length > 0 && t.forEach((a) => {
+        s == null ? a.addEventListener(e, r) : a.addEventListener(e, () => r(s));
       }) : s == null ? t.addEventListener(e, r) : t.addEventListener(e, () => r(s));
     }
   }
@@ -211,8 +231,8 @@ class d extends HTMLElement {
         return;
       }
       const r = n.bound;
-      l(t) || Array.isArray(t) ? t.length > 0 && t.forEach((o) => {
-        o.removeEventListener(e, r);
+      h(t) || Array.isArray(t) ? t.length > 0 && t.forEach((a) => {
+        a.removeEventListener(e, r);
       }) : t.removeEventListener(e, r), this._boundListeners.delete(s);
     }
   }
@@ -264,7 +284,7 @@ class d extends HTMLElement {
   }
 }
 export {
-  d as Piece,
-  u as load,
-  h as piecesManager
+  p as Piece,
+  m as load,
+  f as piecesManager
 };
