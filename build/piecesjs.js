@@ -136,7 +136,7 @@ class p extends HTMLElement {
             r = a[0];
             const l = a[1], c = a[2];
             t.dataset.eventInit = !0, this.off(n, t, () => {
-              this.call(r, {}, l, c);
+              this.call(r, t, l, c);
             });
           }
         }
