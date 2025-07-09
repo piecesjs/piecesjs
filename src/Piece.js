@@ -148,7 +148,7 @@ export class Piece extends HTMLElement {
                   const pieceId = params[2];
                   element.dataset.eventInit = true;
                   this.on(eventName, element, () => {
-                    this.call(functionName, {}, pieceName, pieceId);
+                    this.call(functionName, element, pieceName, pieceId);
                   });
                 }
               }
