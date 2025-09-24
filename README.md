@@ -192,7 +192,7 @@ let myButton = this.$('button'); // returns a NodeList if there is more than one
  * @param { String } slug
  * @param { HTMLElement } context (this by default)
  */
-let listItems this.domAttr('listItem'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
+let listItems = this.domAttr('listItem'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
 ```
 
 ### NodeList anyway
