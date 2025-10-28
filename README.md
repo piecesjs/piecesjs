@@ -39,6 +39,7 @@ Compiled with [vitejs](https://vitejs.dev/).
 - [Introduction](#introduction)
 - [Main features](#main-features)
 - [Installation](#installation)
+- [TypeScript Support](#typescript-support)
 - [Create your first Piece](#create-your-first-piece)
 - [Lifecycle](#lifecycle)
 - [Queries](#queries)
@@ -53,6 +54,20 @@ Compiled with [vitejs](https://vitejs.dev/).
 
 ```
 npm i piecesjs --save
+```
+
+## TypeScript Support
+
+TypeScript definitions are included, so you get autocomplete and type checking out of the box.
+
+```typescript
+import { Piece } from 'piecesjs';
+
+class MyComponent extends Piece {
+  mount(): void {
+    const button = this.$<HTMLButtonElement>('button');
+  }
+}
 ```
 
 ## Create your first Piece
@@ -189,10 +204,11 @@ let myButton = this.$('button'); // returns a NodeList if there is more than one
 
 ```js
 /**
- * @param { String } slug
- * @param { HTMLElement } context (this by default)
+ * Query by data-dom attribute
+ * @param {string} query - Value of data-dom attribute
+ * @param {Element} [context=this] - Context element, this by default
  */
-let listItems this.domAttr('listItem'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
+let listItems = this.domAttr('listItem'); // returns a NodeList if there is more than one element otherwise returns the HTMLElement
 ```
 
 ### NodeList anyway
@@ -204,14 +220,14 @@ If you prefer get a `NodeList` even if there is just one element (useful for dyn
 Register an event listener with `this.on()`
 
 ```js
-/*
-* Tips: call event listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
-* The called func is automatically binded to this
-* @param { String } type
-* @param { HTMLElement or HTMLElement[] } el
-* @param { function } func
-* @param { Object } params
-*/
+/**
+ * Register event listener - the function is automatically binded to this
+ * Tips: call event listeners in the mount()
+ * @param {string} type - Event type (e.g., 'click', 'mouseenter')
+ * @param {HTMLElement|HTMLElement[]} el - Target element(s), Document, or Window
+ * @param {Function} func - Event handler function
+ * @param {Object} [params] - Optional parameters
+ */
 mount() {
   this.on('click', this.$button, this.click, {hello: 'world'});
 
@@ -227,10 +243,11 @@ Unregister an event listener with `this.off()`
 
 ```js
 /**
- * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
- * @param { String } type
- * @param { HTMLElement } el
- * @param { function } func
+ * Remove event listener
+ * Tips: remove event listeners in the unmount()
+ * @param {string} type - Event type (e.g., 'click', 'mouseenter')
+ * @param {HTMLElement} el - Target element(s), Document, or Window
+ * @param {Function} func - Event handler function to remove
  */
 unmount() {
   this.off('click', this.$button, this.click);
@@ -313,10 +330,10 @@ Call a function of any components, from any components
 ```js
 /**
  * Call function of a component, from a component
- * @param { String } func
- * @param { Object } args
- * @param { String } pieceName
- * @param { String } pieceId
+ * @param {string} func - Method name to call
+ * @param {Object} args - Arguments to pass
+ * @param {string} pieceName - Name of the target component(s)
+ * @param {string} [pieceId] - Specific component ID (optional)
  */
 this.call('increment', {}, 'Counter', 'myCounterComponentId');
 ```
@@ -335,9 +352,9 @@ You can also emit a custom event with `this.emit()`
 ```js
 /**
  * Emit a custom event
- * @param { String } eventName
- * @param { HTMLElement } el, by default the event is emit on document
- * @param { Object } params
+ * @param {string} eventName - Name of the custom event
+ * @param {HTMLElement} [el=document] - Element to dispatch on, document by default
+ * @param {Object} [params] - Parameters to pass in event.detail
  */
 this.emit('buttonIsMounted', document, { value: 'A Button is mounted!' });
 ```

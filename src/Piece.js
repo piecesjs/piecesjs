@@ -1,23 +1,63 @@
 import { piecesManager } from './piecesManager';
 import { isNodeList } from './utils';
 
+/**
+ * Piece is a base class for creating native web components
+ * Extends HTMLElement and provides lifecycle methods, DOM queries, and event management
+ */
 export class Piece extends HTMLElement {
+  /**
+   * Creates a new Piece component
+   * @param {string} [name] - Component name (defaults to class name if not provided)
+   * @param {{stylesheets?: Array<() => Promise<any>>}} [options={}] - Configuration options
+   * @param {Array<() => Promise<any>>} [options.stylesheets=[]] - Array of dynamic stylesheet import functions
+   */
   constructor(name, { stylesheets = [] } = {}) {
     super();
 
+    /**
+     * Name of the component
+     * @type {string}
+     */
     this.name = name || this.constructor.name;
+
+    /**
+     * Template element for rendering
+     * @type {HTMLTemplateElement}
+     */
     this.template = document.createElement('template');
+
+    /**
+     * Reference to the global pieces manager
+     * @type {import('./piecesManager').Manager}
+     */
     this.piecesManager = piecesManager;
 
+    /**
+     * Array of stylesheet loader functions
+     * @type {Array<() => Promise<any>>}
+     */
     this.stylesheets = stylesheets;
 
+    /**
+     * Counter for tracking component instances
+     * @type {number}
+     */
     this.updatedPiecesCount = this.piecesManager.piecesCount++;
 
     if (this.innerHTML != '') {
+      /**
+       * Base HTML content if component has initial content
+       * @type {string|undefined}
+       */
       this.baseHTML = this.innerHTML;
     }
 
-    // Store bound event listeners
+    /**
+     * Store bound event listeners for proper cleanup
+     * @private
+     * @type {Map<string, {original: Function, bound: Function}>}
+     */
     this._boundListeners = new Map();
   }
 
@@ -52,7 +92,8 @@ export class Piece extends HTMLElement {
   }
 
   /**
-   * Function to render HTML in the component. If component is not emtpy, the rendering is not called
+   * Render HTML in the component
+   * @returns {string|undefined}
    */
   render() {
     if (this.baseHTML != undefined) {
@@ -61,7 +102,7 @@ export class Piece extends HTMLElement {
   }
 
   /**
-   * default function from native web components disconnectedCallback()
+   * Default function from native web components disconnectedCallback()
    */
   disconnectedCallback() {
     this.privateUnmount();
@@ -74,7 +115,7 @@ export class Piece extends HTMLElement {
 
   /**
    * Lifecycle - step : 0
-   * @param { firstHit } boolean (false if it's an update)
+   * @param {boolean} firstHit - false if it's an update
    */
   privatePremount(firstHit = true) {
     if (this.baseHTML == undefined) {
@@ -89,13 +130,14 @@ export class Piece extends HTMLElement {
     this.premount(firstHit);
   }
   /**
-   * Satelite function for premount
+   * Called before mounting (before render)
+   * @param {boolean} [firstHit=true] - False if it's an update
    */
   premount(firstHit = true) {}
 
   /**
    * Lifecycle - step : 1
-   * @param { firstHit } boolean (false if it's an update)
+   * @param {boolean} firstHit - false if it's an update
    */
   privateMount(firstHit) {
     if (this.log) {
@@ -162,7 +204,8 @@ export class Piece extends HTMLElement {
   }
 
   /**
-   * Satelite function for mount
+   * Called after mounting (after render) - use it to add event listeners
+   * @param {boolean} [firstHit=true] - False if it's an update
    */
   mount(firstHit = true) {}
 
@@ -178,13 +221,13 @@ export class Piece extends HTMLElement {
     this.connectedCallback(false);
   }
   /**
-   * Satelite function for update
+   * Called when component is updated
    */
   update() {}
 
   /**
    * Lifecycle - step : 3
-   * @param { update } boolean
+   * @param {boolean} update
    */
   privateUnmount(update = false) {
     if (!update) {
@@ -233,15 +276,16 @@ export class Piece extends HTMLElement {
   }
 
   /**
-   * Satelite function for unmount
+   * Called when component is unmounted - use it to remove event listeners
+   * @param {boolean} [update=false] - True if called during an update
    */
   unmount(update = false) {}
 
   /**
    * default function from native web components
-   * @param { String } property
-   * @param { String } oldValue
-   * @param { String } newValue
+   * @param {string} property
+   * @param {string} oldValue
+   * @param {string} newValue
    */
   attributeChangedCallback(property, oldValue, newValue) {
     if (oldValue === newValue) return;
@@ -251,37 +295,73 @@ export class Piece extends HTMLElement {
   }
 
   /**
-   * @param { String } query
-   * @param { HTMLElement } context
+   * Query selector shortcut - returns element, NodeList or null
+   * @param {string} query - CSS selector
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element|NodeList|null}
    */
   $(query, context = this) {
     const result = context.querySelectorAll(query);
     return result.length == 1 ? result[0] : result.length == 0 ? null : result;
   }
 
+  /**
+   * Same as $ - query selector shortcut
+   * @param {string} query - CSS selector
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element|NodeList|null}
+   */
   dom(query, context = this) {
     const result = context.querySelectorAll(query);
     return result.length == 1 ? result[0] : result.length == 0 ? null : result;
   }
 
-  // To capture element using data-attribute <div data-dom='query'></div>
+  /**
+   * Query by data-dom attribute
+   * @param {string} query - Value of data-dom attribute
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element|NodeList|null}
+   */
   domAttr(query, context = this) {
     const result = context.querySelectorAll(`[data-dom="${query}"]`);
     return result.length == 1 ? result[0] : result.length == 0 ? null : result;
   }
 
+  /**
+   * Query selector - always returns an array
+   * @param {string} query - CSS selector
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element[]}
+   */
   $All(query, context = this) {
     return Array.from(context.querySelectorAll(query));
   }
 
+  /**
+   * Same as $All - always returns an array
+   * @param {string} query - CSS selector
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element[]}
+   */
   domAll(query, context = this) {
     return Array.from(context.querySelectorAll(query));
   }
 
+  /**
+   * Query by data-dom attribute - always returns an array
+   * @param {string} query - Value of data-dom attribute
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element[]}
+   */
   domAttrAll(query, context = this) {
     return Array.from(context.querySelectorAll(`[data-dom="${query}"]`));
   }
 
+  /**
+   * Capture all elements with data-dom attribute as object tree
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Object<string, Element[]>}
+   */
   captureTree(context = this) {
     const capture = this.querySelectorAll('[data-dom]');
     let allDOM = {};
@@ -301,10 +381,10 @@ export class Piece extends HTMLElement {
 
   /**
    * Tips: call event listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
-   * @param { String } type
-   * @param { HTMLElement or HTMLElement[] } el
-   * @param { function } func
-   * @param { Object } params
+   * @param {string} type
+   * @param {HTMLElement|HTMLElement[]} el
+   * @param {Function} func
+   * @param {Object} params
    */
   on(type, el, func, params = null) {
     if (el != null) {
@@ -344,9 +424,9 @@ export class Piece extends HTMLElement {
 
   /**
    * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
-   * @param { String } type
-   * @param { HTMLElement } el
-   * @param { function } func
+   * @param {string} type
+   * @param {HTMLElement} el
+   * @param {Function} func
    */
   off(type, el, func) {
     if (el != null) {
@@ -378,9 +458,9 @@ export class Piece extends HTMLElement {
 
   /**
    * Emit a custom event
-   * @param { String } eventName
-   * @param { HTMLElement } el, by default the event is emit on document
-   * @param { Object } params
+   * @param {string} eventName
+   * @param {HTMLElement} el - by default the event is emit on document
+   * @param {Object} params
    */
   emit(eventName, el = document, params) {
     const event = new CustomEvent(eventName, {
@@ -392,10 +472,10 @@ export class Piece extends HTMLElement {
 
   /**
    * Call function of a component, from a component
-   * @param { String } func
-   * @param { Object } args
-   * @param { String } pieceName
-   * @param { String } pieceId
+   * @param {string} func
+   * @param {Object} args
+   * @param {string} pieceName
+   * @param {string} pieceId
    */
   call(func, args, pieceName, pieceId) {
     Object.keys(this.piecesManager.currentPieces).forEach((name) => {
@@ -416,7 +496,9 @@ export class Piece extends HTMLElement {
   }
 
   /**
-   * Dynamic loading of stylesheets from super()
+   * Load stylesheets dynamically from super()
+   * @param {boolean} [firstHit=true] - False if called after an update
+   * @returns {Promise<void>}
    */
   async loadStyles(firstHit = true) {
     if (firstHit) {
@@ -426,18 +508,34 @@ export class Piece extends HTMLElement {
     }
   }
 
+  /**
+   * Check if log attribute is present
+   * @returns {boolean}
+   */
   get log() {
     return typeof this.getAttribute('log') == 'string';
   }
 
+  /**
+   * Get component ID
+   * @returns {string|null}
+   */
   get cid() {
     return this.getAttribute('cid');
   }
 
+  /**
+   * Set component ID
+   * @param {string} cid
+   */
   set cid(cid) {
     return this.setAttribute('cid', cid);
   }
 
+  /**
+   * Get all attributes as string
+   * @returns {string}
+   */
   get properties() {
     return Object.values(this.attributes)
       .map((a) => `${a.name}="${a.value}"`)
