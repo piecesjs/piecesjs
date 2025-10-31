@@ -1,0 +1,18 @@
+:root {
+  --black: #222222;
+  --offWhite: #f0f0f0;
+}
+
+html {
+  font-family: Arial;
+  color: var(--black);
+}
+
+body {
+  background-color: var(--offWhite);
+  padding: 20px;
+}
+
+a {
+  color: currentColor;
+}
