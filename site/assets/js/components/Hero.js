@@ -133,8 +133,6 @@ class Hero extends Piece {
       '--progress-y',
       `${gsap.utils.mapRange(0, 1, -1, 1, this.lerpYProgress)}`,
     );
-
-    console.log(this.lerpXProgress, this.lerpYProgress);
   }
 
   mousemove(e) {
