@@ -20,7 +20,7 @@
     border-radius: 20px;
     z-index: -1;
     border: 1px solid white;
-    transition: transform 0.3s cubic-bezier(0.17, 0.67, 0.3, 1.33);
+    transition: transform 0.3s var(--bounce);
   }
 
   &:hover {

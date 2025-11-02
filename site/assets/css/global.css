@@ -1,6 +1,8 @@
 :root {
   --black: #000000;
   --white: #ffffff;
+  --bounce: cubic-bezier(0.17, 0.67, 0.3, 1.33);
+  --ease: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 html {
@@ -15,6 +17,9 @@ html {
 }
 
 body {
+  html.is-ready & {
+    opacity: 1 !important;
+  }
 }
 
 a {

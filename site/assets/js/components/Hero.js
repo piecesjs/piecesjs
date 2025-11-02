@@ -8,11 +8,8 @@ class Hero extends Piece {
       stylesheets: [() => import('/assets/css/components/hero.css')],
     });
 
-    this.mouseX = 0;
-    this.mouseY = 0;
-
-    this.lerpXProgress = 0;
-    this.xProgress = 0;
+    this.lerpXProgress = 0.5;
+    this.xProgress = 0.5;
     this.lerpYProgress = 0;
     this.yProgress = 0;
     this.gradientAngle = 0;
@@ -24,12 +21,14 @@ class Hero extends Piece {
 
   mount() {
     this.resize();
+
+    this.mouseX = this.ww / 2;
+    this.mouseY = this.wh / 2;
+
     this.on('mousemove', window, this.mousemove);
     this.on('resize', window, this.resizeDebounce);
     this.on('click', window, this.click);
     this.animate();
-
-    this.generateBackground();
   }
 
   generateBackground() {
@@ -61,13 +60,43 @@ class Hero extends Piece {
         }
         const x = col * boxWidth + offsetX;
         const y = row * boxHeight + boxHeight / 2;
-        boxes.push({ x, y, width: boxWidth, height: boxHeight });
-
         const centerX = x + boxWidth / 2;
         const centerY = y + boxHeight / 2;
+
+        const dx = centerX - this.ww / 2;
+        const dy = centerY - this.wh / 2;
+        const angle = Math.atan2(dy, dx);
+        const displayOffsetX = Math.abs(centerX - this.ww / 2) / 2;
+        const displayOffsetY = Math.abs(centerY - this.wh / 2) / 2;
+
+        boxes.push({
+          x,
+          y,
+          width: boxWidth,
+          height: boxHeight,
+          offsetDisplayOpacity: 0,
+          offsetDisplayY: Math.sin(angle) * displayOffsetY,
+          offsetDisplayX: Math.cos(angle) * displayOffsetX,
+        });
+
         this.ctx.fillText('piecesjs', centerX, centerY);
       }
     }
+
+    gsap.to(boxes, {
+      duration: 1.2,
+      delay: 0.6,
+      ease: 'power3.out',
+      offsetDisplayOpacity: 1,
+      offsetDisplayY: 0,
+      offsetDisplayX: 0,
+      stagger: {
+        amount: 1,
+        grid: [rows, cols],
+        from: 'center',
+        ease: 'power3.inOut',
+      },
+    });
 
     this.backgroundBoxes = boxes;
   }
@@ -98,12 +127,15 @@ class Hero extends Piece {
     this.ctx.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
 
     this.backgroundBoxes.forEach((box) => {
-      const centerX = box.x + box.width / 2;
-      const centerY = box.y + box.height / 2;
+      const finalX = box.x + box.offsetDisplayX;
+      const finalY = box.y + box.offsetDisplayY;
+
+      const centerX = finalX + box.width / 2;
+      const centerY = finalY + box.height / 2;
       const gradient = this.ctx.createLinearGradient(
-        box.x,
+        finalX,
         0,
-        box.x + box.width,
+        finalX + box.width,
         0,
       );
       gradient.addColorStop(0, 'rgb(0, 0, 0)');
@@ -111,12 +143,12 @@ class Hero extends Piece {
       gradient.addColorStop(1, 'rgb(0, 0, 0)');
       this.ctx.fillStyle = gradient;
 
-      const distanceX = Math.abs(box.x - this.mouseX);
-      const distanceY = Math.abs(box.y - this.mouseY);
+      const distanceX = Math.abs(finalX - this.mouseX);
+      const distanceY = Math.abs(finalY - this.mouseY);
       const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
       const maxDistance = Math.sqrt(this.ww * this.ww + this.wh * this.wh);
       const opacity = 1 - distance / maxDistance;
-      this.ctx.globalAlpha = clamp(opacity, 0, 1);
+      this.ctx.globalAlpha = clamp(opacity * box.offsetDisplayOpacity, 0, 1);
 
       this.ctx.fillText('piecesjs', centerX, centerY);
 
