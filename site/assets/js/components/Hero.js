@@ -33,21 +33,21 @@ class Hero extends Piece {
   }
 
   generateBackground() {
-    this.ctx.width = this.ww + 70;
-    this.ctx.height = this.wh + 30;
-    this.$canvas.width = this.ww + 70;
-    this.$canvas.height = this.wh + 30;
-
-    const boxWidth = 70;
-    const boxHeight = 30;
+    const boxWidth = 100;
+    const boxHeight = 42;
     const boxes = [];
+
+    this.ctx.width = this.ww + boxWidth;
+    this.ctx.height = this.wh + boxHeight;
+    this.$canvas.width = this.ww + boxWidth;
+    this.$canvas.height = this.wh + boxHeight;
 
     const cols = Math.ceil(this.$canvas.width / boxWidth);
     const rows = Math.ceil(this.$canvas.height / boxHeight);
 
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-    this.ctx.font = "13px 'Delight Regular', Arial, sans-serif";
+    this.ctx.font = "16px 'Delight Regular', Arial, sans-serif";
     this.ctx.fillStyle = '#fff';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
@@ -60,7 +60,7 @@ class Hero extends Piece {
           offsetX = boxWidth / 4;
         }
         const x = col * boxWidth + offsetX;
-        const y = row * boxHeight + boxHeight / 6;
+        const y = row * boxHeight + boxHeight / 2;
         boxes.push({ x, y, width: boxWidth, height: boxHeight });
 
         const centerX = x + boxWidth / 2;
