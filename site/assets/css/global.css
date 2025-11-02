@@ -1,18 +1,31 @@
 :root {
-  --black: #222222;
-  --offWhite: #f0f0f0;
+  --black: #000000;
+  --white: #ffffff;
 }
 
 html {
   font-family: Arial;
   color: var(--black);
+  font-family: 'Delight Regular';
+
+  ::selection {
+    background-color: var(--white);
+    color: var(--black);
+  }
 }
 
 body {
-  background-color: var(--offWhite);
-  padding: 20px;
 }
 
 a {
   color: currentColor;
+}
+
+@font-face {
+  font-family: 'Delight Regular';
+  src:
+    url('/assets/fonts/Delight-Regular.woff2') format('woff2'),
+    url('/assets/fonts/Delight-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
 }

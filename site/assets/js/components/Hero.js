@@ -1,5 +1,5 @@
 import { Piece } from 'piecesjs';
-import { lerp } from '../utils/maths.js';
+import { lerp, clamp } from '../utils/maths.js';
 import gsap from 'gsap';
 
 class Hero extends Piece {
@@ -8,30 +8,18 @@ class Hero extends Piece {
       stylesheets: [() => import('/assets/css/components/hero.css')],
     });
 
-    this.lerpXProgress = 0;
-    this.xProgress = 0;
     this.mouseX = 0;
     this.mouseY = 0;
-    this.angle = 0;
-    this.lerpAngle = 0;
 
-    this.$model = this.domAttr('model');
+    this.lerpXProgress = 0;
+    this.xProgress = 0;
+    this.lerpYProgress = 0;
+    this.yProgress = 0;
+    this.gradientAngle = 0;
+    this.lerpGradientAngle = 0;
 
-    for (let i = 0; i < 99; i++) {
-      const $clone = this.$model.cloneNode(true);
-      this.appendChild($clone);
-    }
-
-    this.$items = this.domAttrAll('model');
-
-    this.itemsData = Array.from({ length: this.$items.length }, (item, i) => ({
-      alpha: 1,
-      lerpAlpha: 1,
-      el: this.$items[i],
-    }));
-
-    this.mode = 0;
-    this.classList.add(`mode-${this.mode}`);
+    this.$canvas = this.domAttr('canvas');
+    this.ctx = this.$canvas.getContext('2d');
   }
 
   mount() {
@@ -40,6 +28,48 @@ class Hero extends Piece {
     this.on('resize', window, this.resizeDebounce);
     this.on('click', window, this.click);
     this.animate();
+
+    this.generateBackground();
+  }
+
+  generateBackground() {
+    this.ctx.width = this.ww + 70;
+    this.ctx.height = this.wh + 30;
+    this.$canvas.width = this.ww + 70;
+    this.$canvas.height = this.wh + 30;
+
+    const boxWidth = 70;
+    const boxHeight = 30;
+    const boxes = [];
+
+    const cols = Math.ceil(this.$canvas.width / boxWidth);
+    const rows = Math.ceil(this.$canvas.height / boxHeight);
+
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+    this.ctx.font = "13px 'Delight Regular', Arial, sans-serif";
+    this.ctx.fillStyle = '#fff';
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'middle';
+    this.ctx.globalAlpha = 0;
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        let offsetX = -boxWidth / 4;
+        if (row % 2 == 0) {
+          offsetX = boxWidth / 4;
+        }
+        const x = col * boxWidth + offsetX;
+        const y = row * boxHeight + boxHeight / 6;
+        boxes.push({ x, y, width: boxWidth, height: boxHeight });
+
+        const centerX = x + boxWidth / 2;
+        const centerY = y + boxHeight / 2;
+        this.ctx.fillText('piecesjs', centerX, centerY);
+      }
+    }
+
+    this.backgroundBoxes = boxes;
   }
 
   click() {
@@ -56,11 +86,55 @@ class Hero extends Piece {
 
   animate() {
     this.raf = window.requestAnimationFrame(this.animate.bind(this));
-    this.lerpXProgress = lerp(this.lerpXProgress, this.xProgress, 0.2);
-    this.lerpAngle = lerp(this.lerpAngle, this.angle, 1);
+    this.lerpXProgress = lerp(this.lerpXProgress, this.xProgress, 0.05);
+    this.lerpYProgress = lerp(this.lerpYProgress, this.yProgress, 0.05);
 
-    this.style.setProperty('--progress', `${100 - this.lerpXProgress * 100}%`);
-    this.style.setProperty('--angle', `${this.lerpAngle}deg`);
+    this.lerpGradientAngle = lerp(
+      this.lerpGradientAngle,
+      this.gradientAngle,
+      1,
+    );
+
+    this.ctx.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
+
+    this.backgroundBoxes.forEach((box) => {
+      const centerX = box.x + box.width / 2;
+      const centerY = box.y + box.height / 2;
+      const gradient = this.ctx.createLinearGradient(
+        box.x,
+        0,
+        box.x + box.width,
+        0,
+      );
+      gradient.addColorStop(0, 'rgb(0, 0, 0)');
+      gradient.addColorStop(1 - this.lerpXProgress, 'rgb(100, 100, 100)');
+      gradient.addColorStop(1, 'rgb(0, 0, 0)');
+      this.ctx.fillStyle = gradient;
+
+      const distanceX = Math.abs(box.x - this.mouseX);
+      const distanceY = Math.abs(box.y - this.mouseY);
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+      const maxDistance = Math.sqrt(this.ww * this.ww + this.wh * this.wh);
+      const opacity = 1 - distance / maxDistance;
+      this.ctx.globalAlpha = clamp(opacity, 0, 1);
+
+      this.ctx.fillText('piecesjs', centerX, centerY);
+
+      this.ctx.globalAlpha = 1;
+    });
+
+    this.style.setProperty('--gradient-angle', `${this.lerpGradientAngle}deg`);
+
+    this.style.setProperty(
+      '--progress-x',
+      `${gsap.utils.mapRange(0, 1, -1, 1, this.lerpXProgress)}`,
+    );
+    this.style.setProperty(
+      '--progress-y',
+      `${gsap.utils.mapRange(0, 1, -1, 1, this.lerpYProgress)}`,
+    );
+
+    console.log(this.lerpXProgress, this.lerpYProgress);
   }
 
   mousemove(e) {
@@ -68,6 +142,7 @@ class Hero extends Piece {
     this.mouseY = e.clientY;
 
     this.xProgress = e.clientX / window.innerWidth;
+    this.yProgress = e.clientY / window.innerHeight;
     this.angle = gsap.utils.mapRange(
       0,
       window.innerHeight,
@@ -75,10 +150,19 @@ class Hero extends Piece {
       100,
       this.mouseY,
     );
-    // this.angle = 90;
+
+    this.gradientAngle = gsap.utils.mapRange(
+      0,
+      window.innerWidth,
+      0,
+      360,
+      this.mouseX,
+    );
   }
 
   resizeDebounce() {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
     if (this.resizeTimeout) {
       this.resizeTimeout.kill();
     }
@@ -90,6 +174,8 @@ class Hero extends Piece {
   resize() {
     this.ww = window.innerWidth;
     this.wh = window.innerHeight;
+
+    this.generateBackground();
   }
 
   unmount() {
