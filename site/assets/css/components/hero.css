@@ -25,12 +25,15 @@
   text-align: center;
   position: relative;
   z-index: 1;
-  perspective: 100vw;
+
+  @media (max-width: 768px) {
+    width: calc(100% - 70px);
+  }
 }
 
 .c-hero_logo_wrap {
   position: relative;
-  perspective: 100vw;
+  perspective: min(100vw, 100vh);
   transform: scale3d(0.8, 0.8, 1);
   opacity: 0;
   transition:
@@ -61,9 +64,13 @@
   place-items: center;
 
   html.is-ready & {
-    transform: rotateX(calc(var(--progress-y) * -5deg))
-      rotateY(calc(var(--progress-x) * 5deg)) scale3d(1, 1, 1);
+    transform: rotateX(calc(var(--progress-y) * -10deg))
+      rotateY(calc(var(--progress-x) * 10deg)) scale3d(1, 1, 1);
     opacity: 1;
+
+    @media (max-width: 768px) {
+      transform: scale3d(1, 1, 1) !important;
+    }
   }
 
   &::before {
