@@ -2,23 +2,34 @@
   "name": "piecesjs",
   "description": "Tiny framework based on native web components.",
   "author": "Quentin Hocdé (https://github.com/quentinhocde)",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "type": "module",
-  "exports": "./build/piecesjs.js",
+  "exports": {
+    ".": {
+      "types": "./build/types/index.d.ts",
+      "import": "./build/piecesjs.js",
+      "default": "./build/piecesjs.js"
+    }
+  },
   "main": "./build/piecesjs.js",
   "module": "./build/piecesjs.js",
+  "types": "./build/types/index.d.ts",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "build": "vite build",
+    "build:types": "mkdir -p build/types && cp src/types/*.d.ts build/types/",
+    "build:js": "vite build",
+    "build": "npm run build:js && npm run build:types",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/node": "^24.9.1",
+    "typescript": "^5.9.3",
     "vite": "^5.4.15"
   },
   "files": [
-    "./build/piecesjs.js"
+    "build"
   ],
   "keywords": [
     "piecesjs",

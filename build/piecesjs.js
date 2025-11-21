@@ -8,15 +8,29 @@ class d {
   constructor() {
     this.loadedPiecesCount = 0, this.piecesCount = 0, this.currentPieces = {};
   }
+  /**
+   * Add a piece to the manager
+   * @param {{name: string, id: string, piece: import('./Piece').Piece}} piece - Piece data to add
+   */
   addPiece(t) {
     typeof this.currentPieces[t.name] != "object" && (this.currentPieces[t.name] = {}), this.currentPieces[t.name][t.id] = t;
   }
+  /**
+   * Remove a piece from the manager
+   * @param {{name: string, id: string}} piece - Piece data to remove
+   */
   removePiece(t) {
     delete this.currentPieces[t.name][t.id];
   }
 }
 let f = new d();
 class p extends HTMLElement {
+  /**
+   * Creates a new Piece component
+   * @param {string} [name] - Component name (defaults to class name if not provided)
+   * @param {{stylesheets?: Array<() => Promise<any>>}} [options={}] - Configuration options
+   * @param {Array<() => Promise<any>>} [options.stylesheets=[]] - Array of dynamic stylesheet import functions
+   */
   constructor(t, { stylesheets: e = [] } = {}) {
     super(), this.name = t || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = f, this.stylesheets = e, this.updatedPiecesCount = this.piecesManager.piecesCount++, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
   }
@@ -31,14 +45,15 @@ class p extends HTMLElement {
     })), this.privatePremount(t), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render() != null ? this.render() : "", this.appendChild(this.template.cloneNode(!0).content)), this.privateMount(t);
   }
   /**
-   * Function to render HTML in the component. If component is not emtpy, the rendering is not called
+   * Render HTML in the component
+   * @returns {string|undefined}
    */
   render() {
     if (this.baseHTML != null)
       return this.baseHTML;
   }
   /**
-   * default function from native web components disconnectedCallback()
+   * Default function from native web components disconnectedCallback()
    */
   disconnectedCallback() {
     this.privateUnmount();
@@ -50,19 +65,20 @@ class p extends HTMLElement {
   }
   /**
    * Lifecycle - step : 0
-   * @param { firstHit } boolean (false if it's an update)
+   * @param {boolean} firstHit - false if it's an update
    */
   privatePremount(t = !0) {
     this.baseHTML == null && (this.innerHTML = ""), this.log && console.log("🚧 premount", this.name), this.loadStyles(t), this.premount(t);
   }
   /**
-   * Satelite function for premount
+   * Called before mounting (before render)
+   * @param {boolean} [firstHit=true] - False if it's an update
    */
   premount(t = !0) {
   }
   /**
    * Lifecycle - step : 1
-   * @param { firstHit } boolean (false if it's an update)
+   * @param {boolean} firstHit - false if it's an update
    */
   privateMount(t) {
     if (this.log && console.log("✅ mount", this.name), t) {
@@ -100,7 +116,8 @@ class p extends HTMLElement {
     this.mount(t);
   }
   /**
-   * Satelite function for mount
+   * Called after mounting (after render) - use it to add event listeners
+   * @param {boolean} [firstHit=true] - False if it's an update
    */
   mount(t = !0) {
   }
@@ -111,13 +128,13 @@ class p extends HTMLElement {
     this.log && console.log("🔃 update", this.name), this.update(), this.privateUnmount(!0), this.connectedCallback(!1);
   }
   /**
-   * Satelite function for update
+   * Called when component is updated
    */
   update() {
   }
   /**
    * Lifecycle - step : 3
-   * @param { update } boolean
+   * @param {boolean} update
    */
   privateUnmount(t = !1) {
     t || (this.piecesManager.removePiece({
@@ -143,45 +160,82 @@ class p extends HTMLElement {
     })), this.log && console.log("❌ unmount", this.name), this.unmount(t);
   }
   /**
-   * Satelite function for unmount
+   * Called when component is unmounted - use it to remove event listeners
+   * @param {boolean} [update=false] - True if called during an update
    */
   unmount(t = !1) {
   }
   /**
    * default function from native web components
-   * @param { String } property
-   * @param { String } oldValue
-   * @param { String } newValue
+   * @param {string} property
+   * @param {string} oldValue
+   * @param {string} newValue
    */
   attributeChangedCallback(t, e, i) {
     e !== i && (this[t] = i, this.privateUpdate());
   }
   /**
-   * @param { String } query
-   * @param { HTMLElement } context
+   * Query selector shortcut - returns element, NodeList or null
+   * @param {string} query - CSS selector
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element|NodeList|null}
    */
   $(t, e = this) {
     const i = e.querySelectorAll(t);
     return i.length == 1 ? i[0] : i.length == 0 ? null : i;
   }
+  /**
+   * Same as $ - query selector shortcut
+   * @param {string} query - CSS selector
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element|NodeList|null}
+   */
   dom(t, e = this) {
     const i = e.querySelectorAll(t);
     return i.length == 1 ? i[0] : i.length == 0 ? null : i;
   }
-  // To capture element using data-attribute <div data-dom='query'></div>
+  /**
+   * Query by data-dom attribute
+   * @param {string} query - Value of data-dom attribute
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element|NodeList|null}
+   */
   domAttr(t, e = this) {
     const i = e.querySelectorAll(`[data-dom="${t}"]`);
     return i.length == 1 ? i[0] : i.length == 0 ? null : i;
   }
+  /**
+   * Query selector - always returns an array
+   * @param {string} query - CSS selector
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element[]}
+   */
   $All(t, e = this) {
     return Array.from(e.querySelectorAll(t));
   }
+  /**
+   * Same as $All - always returns an array
+   * @param {string} query - CSS selector
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element[]}
+   */
   domAll(t, e = this) {
     return Array.from(e.querySelectorAll(t));
   }
+  /**
+   * Query by data-dom attribute - always returns an array
+   * @param {string} query - Value of data-dom attribute
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Element[]}
+   */
   domAttrAll(t, e = this) {
     return Array.from(e.querySelectorAll(`[data-dom="${t}"]`));
   }
+  /**
+   * Capture all elements with data-dom attribute as object tree
+   * @param {Element} [context=this] - Context element, this by default
+   * @returns {Object<string, Element[]>}
+   */
   captureTree(t = this) {
     const e = this.querySelectorAll("[data-dom]");
     let i = {};
@@ -196,10 +250,10 @@ class p extends HTMLElement {
    */
   /**
    * Tips: call event listeners in the mount(), register event for an HTMLElement or an array of HTMLElements
-   * @param { String } type
-   * @param { HTMLElement or HTMLElement[] } el
-   * @param { function } func
-   * @param { Object } params
+   * @param {string} type
+   * @param {HTMLElement|HTMLElement[]} el
+   * @param {Function} func
+   * @param {Object} params
    */
   on(t, e, i, s = null) {
     if (e != null) {
@@ -219,9 +273,9 @@ class p extends HTMLElement {
   }
   /**
    * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
-   * @param { String } type
-   * @param { HTMLElement } el
-   * @param { function } func
+   * @param {string} type
+   * @param {HTMLElement} el
+   * @param {Function} func
    */
   off(t, e, i) {
     if (e != null) {
@@ -238,9 +292,9 @@ class p extends HTMLElement {
   }
   /**
    * Emit a custom event
-   * @param { String } eventName
-   * @param { HTMLElement } el, by default the event is emit on document
-   * @param { Object } params
+   * @param {string} eventName
+   * @param {HTMLElement} el - by default the event is emit on document
+   * @param {Object} params
    */
   emit(t, e = document, i) {
     const s = new CustomEvent(t, {
@@ -250,10 +304,10 @@ class p extends HTMLElement {
   }
   /**
    * Call function of a component, from a component
-   * @param { String } func
-   * @param { Object } args
-   * @param { String } pieceName
-   * @param { String } pieceId
+   * @param {string} func
+   * @param {Object} args
+   * @param {string} pieceName
+   * @param {string} pieceId
    */
   call(t, e, i, s) {
     Object.keys(this.piecesManager.currentPieces).forEach((n) => {
@@ -263,22 +317,40 @@ class p extends HTMLElement {
     });
   }
   /**
-   * Dynamic loading of stylesheets from super()
+   * Load stylesheets dynamically from super()
+   * @param {boolean} [firstHit=true] - False if called after an update
+   * @returns {Promise<void>}
    */
   async loadStyles(t = !0) {
     if (t)
       for (let e = 0; e < this.stylesheets.length; e++)
         await this.stylesheets[e]();
   }
+  /**
+   * Check if log attribute is present
+   * @returns {boolean}
+   */
   get log() {
     return typeof this.getAttribute("log") == "string";
   }
+  /**
+   * Get component ID
+   * @returns {string|null}
+   */
   get cid() {
     return this.getAttribute("cid");
   }
+  /**
+   * Set component ID
+   * @param {string} cid
+   */
   set cid(t) {
     return this.setAttribute("cid", t);
   }
+  /**
+   * Get all attributes as string
+   * @returns {string}
+   */
   get properties() {
     return Object.values(this.attributes).map((t) => `${t.name}="${t.value}"`).join(" ");
   }

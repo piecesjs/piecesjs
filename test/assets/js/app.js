@@ -1,5 +1,4 @@
 import { load } from 'piecesjs';
-
 //
 // IMPORT components
 //

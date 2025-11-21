@@ -1,0 +1,147 @@
+.c-hero {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  color: white;
+  --progress: 10%;
+  display: grid;
+  place-items: center;
+}
+
+.c-hero_background {
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  bottom: -21px;
+  right: -21px;
+}
+
+.c-hero_content {
+  width: 400px;
+  margin: auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+
+  @media (max-width: 768px) {
+    width: calc(100% - 70px);
+  }
+}
+
+.c-hero_logo_wrap {
+  position: relative;
+  perspective: min(100vw, 100vh);
+  transform: scale3d(0.8, 0.8, 1);
+  opacity: 0;
+  transition:
+    transform 0s var(--ease),
+    opacity 0s var(--ease);
+
+  html.is-ready & {
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
+    transition-duration: 0.8s;
+    transition-delay: 1.6s;
+  }
+}
+
+.c-hero_content_logo {
+  position: relative;
+  aspect-ratio: 1/1;
+  width: 100%;
+  border-radius: 20px;
+  background-color: black;
+  z-index: 1;
+  border: 1px solid transparent;
+  background-image: linear-gradient(var(--gradient-angle), gray 0%, white 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  position: relative;
+  display: grid;
+  place-items: center;
+
+  html.is-ready & {
+    transform: rotateX(calc(var(--progress-y) * -10deg))
+      rotateY(calc(var(--progress-x) * 10deg)) scale3d(1, 1, 1);
+    opacity: 1;
+
+    @media (max-width: 768px) {
+      transform: scale3d(1, 1, 1) !important;
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: 20px;
+    padding: 0;
+    z-index: -1;
+    background: black;
+    mask-composite: exclude;
+  }
+
+  h1 {
+    font-size: 75px;
+    font-weight: normal;
+    margin-bottom: 0;
+    line-height: 1;
+  }
+
+  p {
+    font-size: 12px;
+    color: gray;
+    padding: 0 10px;
+    line-height: 1.2;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-wrap: balance;
+  }
+}
+
+.c-hero_content_links {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+
+  > a {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+    transition:
+      opacity 0s var(--ease),
+      transform 0s var(--ease);
+  }
+
+  html.is-ready & {
+    > a {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition-duration: 0.6s;
+      transition-delay: 2s;
+
+      &:nth-child(2) {
+        transition-delay: 2.1s;
+      }
+      &:nth-child(3) {
+        transition-delay: 2.2s;
+      }
+    }
+  }
+}
+
+.c-hero_background_canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

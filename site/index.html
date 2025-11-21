@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      piecesjs - A lightweight JavaScript framework using native web components
+    </title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/favicons/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="assets/favicons/safari-pinned-tab.svg"
+      color="#000000"
+    />
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="theme-color" content="#000000" />
+  </head>
+  <body style="opacity: 0">
+    <c-hero class="c-hero">
+      <div class="c-hero_background">
+        <canvas class="c-hero_background_canvas" data-dom="canvas"></canvas>
+      </div>
+      <div class="c-hero_content" data-dom="content">
+        <div class="c-hero_logo_wrap">
+          <div class="c-hero_content_logo">
+            <div>
+              <img src="assets/svg/symbol.svg" alt="piecesjs" />
+              <h1>piecesjs</h1>
+            </div>
+            <p>
+              A lightweight JavaScript framework using native web components
+            </p>
+          </div>
+        </div>
+        <div class="c-hero_content_links">
+          <a
+            href="https://github.com/piecesjs/piecesjs"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="c-button"
+            >GitHub</a
+          >
+          <a
+            href="https://www.npmjs.com/package/piecesjs"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="c-button"
+            >npm</a
+          >
+          <a
+            href="https://github.com/sponsors/piecesjs"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="c-button"
+            >Support</a
+          >
+        </div>
+      </div>
+    </c-hero>
+
+    <script type="module" src="assets/js/app.js"></script>
+
+    <!-- Common and global styles -->
+    <script type="module" src="assets/js/styles.js"></script>
+  </body>
+</html>

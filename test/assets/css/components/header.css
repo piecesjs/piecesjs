@@ -2,7 +2,5 @@
   display: block;
   padding: 20px;
   border-radius: 12px;
-  color: var(--offWhite);
-  background-color: var(--black);
-  /* background-color: darkred; */
+  border: 1px solid var(--black);
 }

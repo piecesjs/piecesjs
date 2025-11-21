@@ -1,0 +1,36 @@
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --bounce: cubic-bezier(0.17, 0.67, 0.3, 1.33);
+  --ease: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+html {
+  font-family: Arial;
+  color: var(--black);
+  font-family: 'Delight Regular';
+
+  ::selection {
+    background-color: var(--white);
+    color: var(--black);
+  }
+}
+
+body {
+  html.is-ready & {
+    opacity: 1 !important;
+  }
+}
+
+a {
+  color: currentColor;
+}
+
+@font-face {
+  font-family: 'Delight Regular';
+  src:
+    url('/assets/fonts/Delight-Regular.woff2') format('woff2'),
+    url('/assets/fonts/Delight-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
