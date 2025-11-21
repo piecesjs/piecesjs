@@ -175,11 +175,12 @@ export class Piece extends HTMLElement {
   emit(eventName: string, el?: Element | Document | Window, params?: any): void;
 
   /**
-   * Call function of a component, from a component
+   * Call function of a piece, from a piece
    * @param func - Method name to call
    * @param args - Arguments to pass
-   * @param pieceName - Name of the target component(s)
-   * @param pieceId - Specific component ID (optional)
+   * @param pieceName - Name of the target piece(s)
+   * @param pieceId - Specific piece ID (optional)
+   * @returns The return value of the called function
    */
   call(func: string, args?: any, pieceName?: string, pieceId?: string): any;
 

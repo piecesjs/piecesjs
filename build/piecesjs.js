@@ -303,7 +303,7 @@ class p extends HTMLElement {
     e.dispatchEvent(s);
   }
   /**
-   * Call function of a component, from a component
+   * Call function of a piece, from a piece
    * @param {string} func
    * @param {Object} args
    * @param {string} pieceName
