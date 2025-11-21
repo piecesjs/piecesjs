@@ -476,23 +476,27 @@ export class Piece extends HTMLElement {
    * @param {Object} args
    * @param {string} pieceName
    * @param {string} pieceId
+   * @returns {any} The return value of the called function
    */
   call(func, args, pieceName, pieceId) {
+    let callback;
     Object.keys(this.piecesManager.currentPieces).forEach((name) => {
       if (name == pieceName) {
         Object.keys(this.piecesManager.currentPieces[name]).forEach((id) => {
           if (pieceId != undefined) {
             if (id == pieceId) {
               let piece = this.piecesManager.currentPieces[name][id].piece;
-              piece[func](args);
+              callback = piece[func](args);
             }
           } else {
             let piece = this.piecesManager.currentPieces[name][id].piece;
-            piece[func](args);
+            callback = piece[func](args);
           }
         });
       }
     });
+
+    return callback;
   }
 
   /**

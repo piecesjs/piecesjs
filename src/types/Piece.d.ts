@@ -181,7 +181,7 @@ export class Piece extends HTMLElement {
    * @param pieceName - Name of the target component(s)
    * @param pieceId - Specific component ID (optional)
    */
-  call(func: string, args?: any, pieceName?: string, pieceId?: string): void;
+  call(func: string, args?: any, pieceName?: string, pieceId?: string): any;
 
   // Other
   /**

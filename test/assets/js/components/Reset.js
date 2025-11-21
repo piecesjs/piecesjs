@@ -13,7 +13,9 @@ class Reset extends Piece {
 
   resetCounter(e) {
     console.log('resetCounter', this.cid);
-    this.call('reset', {}, 'Counter', this.counterToReset);
+    let callback = this.call('reset', {}, 'Counter', this.counterToReset);
+
+    console.log(callback);
   }
 
   unmount() {}

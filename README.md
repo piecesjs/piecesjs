@@ -338,6 +338,8 @@ Call a function of any components, from any components
 this.call('increment', {}, 'Counter', 'myCounterComponentId');
 ```
 
+It returns the value returned by the called function. Usefull if you want to return a Promise 👀
+
 If no `pieceId` are specified, all occurrences of the component will be called.
 A `pieceId` can be set directly with an attribute `cid`
 

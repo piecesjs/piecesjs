@@ -98,16 +98,16 @@ class p extends HTMLElement {
         let s = i.attributes;
         for (let n = 0; n < s.length; n++)
           if (s[n].name.startsWith("data-events-")) {
-            const r = s[n].name.replace("data-events-", "");
-            let a = s[n].value;
+            const a = s[n].name.replace("data-events-", "");
+            let r = s[n].value;
             const l = s[n].value.split(",");
             if (l.length == 1)
-              typeof this[a] == "function" && this.on(r, i, this[a]);
+              typeof this[r] == "function" && this.on(a, i, this[r]);
             else if (l.length >= 2 && i.dataset.eventInit == null) {
-              a = l[0];
+              r = l[0];
               const c = l[1], u = l[2];
-              i.dataset.eventInit = !0, this.on(r, i, () => {
-                this.call(a, i, c, u);
+              i.dataset.eventInit = !0, this.on(a, i, () => {
+                this.call(r, i, c, u);
               });
             }
           }
@@ -145,15 +145,15 @@ class p extends HTMLElement {
       for (let s = 0; s < i.length; s++)
         if (i[s].name.startsWith("data-events-")) {
           const n = i[s].name.replace("data-events-", "");
-          let r = i[s].value;
-          const a = i[s].value.split(",");
-          if (a.length == 1)
-            typeof this[r] == "function" && this.off(n, e, this[r]);
-          else if (a.length >= 2 && e.dataset.eventInit == null) {
-            r = a[0];
-            const l = a[1], c = a[2];
+          let a = i[s].value;
+          const r = i[s].value.split(",");
+          if (r.length == 1)
+            typeof this[a] == "function" && this.off(n, e, this[a]);
+          else if (r.length >= 2 && e.dataset.eventInit == null) {
+            a = r[0];
+            const l = r[1], c = r[2];
             e.dataset.eventInit = !0, this.off(n, e, () => {
-              this.call(r, e, l, c);
+              this.call(a, e, l, c);
             });
           }
         }
@@ -259,16 +259,16 @@ class p extends HTMLElement {
     if (e != null) {
       const n = `${t}_${i.name}`;
       if (!this._boundListeners.has(n)) {
-        const a = i.bind(this);
+        const r = i.bind(this);
         this._boundListeners.set(n, {
           original: i,
-          bound: a
+          bound: r
         });
       }
-      const r = this._boundListeners.get(n).bound;
-      h(e) || Array.isArray(e) ? e.length > 0 && e.forEach((a) => {
-        s == null ? a.addEventListener(t, r) : a.addEventListener(t, () => r(s));
-      }) : s == null ? e.addEventListener(t, r) : e.addEventListener(t, () => r(s));
+      const a = this._boundListeners.get(n).bound;
+      h(e) || Array.isArray(e) ? e.length > 0 && e.forEach((r) => {
+        s == null ? r.addEventListener(t, a) : r.addEventListener(t, () => a(s));
+      }) : s == null ? e.addEventListener(t, a) : e.addEventListener(t, () => a(s));
     }
   }
   /**
@@ -284,10 +284,10 @@ class p extends HTMLElement {
         console.warn(`No bound listener found for ${s}`);
         return;
       }
-      const r = n.bound;
-      h(e) || Array.isArray(e) ? e.length > 0 && e.forEach((a) => {
-        a.removeEventListener(t, r);
-      }) : e.removeEventListener(t, r), this._boundListeners.delete(s);
+      const a = n.bound;
+      h(e) || Array.isArray(e) ? e.length > 0 && e.forEach((r) => {
+        r.removeEventListener(t, a);
+      }) : e.removeEventListener(t, a), this._boundListeners.delete(s);
     }
   }
   /**
@@ -308,13 +308,15 @@ class p extends HTMLElement {
    * @param {Object} args
    * @param {string} pieceName
    * @param {string} pieceId
+   * @returns {any} The return value of the called function
    */
   call(t, e, i, s) {
-    Object.keys(this.piecesManager.currentPieces).forEach((n) => {
-      n == i && Object.keys(this.piecesManager.currentPieces[n]).forEach((r) => {
-        s != null ? r == s && this.piecesManager.currentPieces[n][r].piece[t](e) : this.piecesManager.currentPieces[n][r].piece[t](e);
+    let n;
+    return Object.keys(this.piecesManager.currentPieces).forEach((a) => {
+      a == i && Object.keys(this.piecesManager.currentPieces[a]).forEach((r) => {
+        s != null ? r == s && (n = this.piecesManager.currentPieces[a][r].piece[t](e)) : n = this.piecesManager.currentPieces[a][r].piece[t](e);
       });
-    });
+    }), n;
   }
   /**
    * Load stylesheets dynamically from super()

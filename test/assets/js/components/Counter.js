@@ -29,6 +29,8 @@ class Counter extends Piece {
 
   reset() {
     this.value = 0;
+
+    return 'Reset done ✅';
   }
 
   unmount() {
