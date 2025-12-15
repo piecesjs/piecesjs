@@ -298,7 +298,10 @@ class Counter extends Piece {
   reset() {
     this.value = 0;
   }
-  increment() {
+  increment(event) {
+    // Get the event, useful to get event.currentTarget
+    console.log(event);
+
     this.value = parseInt(this.value) + 1;
   }
 

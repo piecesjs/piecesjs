@@ -181,16 +181,20 @@ export class Piece extends HTMLElement {
                   this.on(eventName, element, this[functionName]);
                 }
               } else {
+                const eventInitKey = `eventInit${eventName}`;
+
                 if (
                   params.length >= 2 &&
-                  element.dataset.eventInit == undefined
+                  element.dataset[eventInitKey] == undefined
                 ) {
+                  console.log('eventInitKey', eventInitKey);
+                  console.log('params', params);
                   functionName = params[0];
                   const pieceName = params[1];
                   const pieceId = params[2];
-                  element.dataset.eventInit = true;
-                  this.on(eventName, element, () => {
-                    this.call(functionName, element, pieceName, pieceId);
+                  element.dataset[eventInitKey] = true;
+                  this.on(eventName, element, (event) => {
+                    this.call(functionName, event, pieceName, pieceId);
                   });
                 }
               }
