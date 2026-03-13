@@ -59,6 +59,13 @@ export class Piece extends HTMLElement {
      * @type {Map<string, {original: Function, bound: Function}>}
      */
     this._boundListeners = new Map();
+
+    /**
+     * Store data-events handlers for proper cleanup
+     * @private
+     * @type {Array<{element: Element, eventName: string, handler: Function}>}
+     */
+    this._dataEventHandlers = [];
   }
 
   /**
@@ -187,15 +194,14 @@ export class Piece extends HTMLElement {
                   params.length >= 2 &&
                   element.dataset[eventInitKey] == undefined
                 ) {
-                  console.log('eventInitKey', eventInitKey);
-                  console.log('params', params);
                   functionName = params[0];
                   const pieceName = params[1];
                   const pieceId = params[2];
                   element.dataset[eventInitKey] = true;
-                  this.on(eventName, element, (event) => {
+                  const handler = (event) =>
                     this.call(functionName, event, pieceName, pieceId);
-                  });
+                  element.addEventListener(eventName, handler);
+                  this._dataEventHandlers.push({ element, eventName, handler });
                 }
               }
             }
@@ -246,31 +252,24 @@ export class Piece extends HTMLElement {
           for (let i = 0; i < attributes.length; i++) {
             if (attributes[i].name.startsWith('data-events-')) {
               const eventName = attributes[i].name.replace('data-events-', '');
-              let functionName = attributes[i].value;
+              const functionName = attributes[i].value;
               const params = attributes[i].value.split(',');
 
-              if (params.length == 1) {
-                if (typeof this[functionName] == 'function') {
-                  this.off(eventName, element, this[functionName]);
-                }
-              } else {
-                if (
-                  params.length >= 2 &&
-                  element.dataset.eventInit == undefined
-                ) {
-                  functionName = params[0];
-                  const pieceName = params[1];
-                  const pieceId = params[2];
-                  element.dataset.eventInit = true;
-                  this.off(eventName, element, () => {
-                    this.call(functionName, element, pieceName, pieceId);
-                  });
-                }
+              if (
+                params.length == 1 &&
+                typeof this[functionName] == 'function'
+              ) {
+                this.off(eventName, element, this[functionName]);
               }
             }
           }
         });
       }
+
+      this._dataEventHandlers.forEach(({ element, eventName, handler }) => {
+        element.removeEventListener(eventName, handler);
+      });
+      this._dataEventHandlers = [];
     }
 
     if (this.log) {

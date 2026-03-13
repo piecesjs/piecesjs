@@ -35,17 +35,17 @@
     <c-header log class="c-header">
       <h1>piecesjs</h1>
 
-      <button
-        class="c-button"
-        data-events-mouseenter="resetCounter,Reset,reset01"
-      >
-        Reset on click
+      <button class="c-button" data-events-click="reset,Counter,firstCounter">
+        Reset firstCounter on click
+      </button>
+      <button class="c-button" data-events-click="reset,Counter,secondCounter">
+        Reset secondCounter on click
       </button>
     </c-header>
 
     <!-- Components with reactive interaction, rendering in JS -->
     <c-counter cid="firstCounter" class="c-counter" value="2"></c-counter>
-    <c-counter class="c-counter" value="0"></c-counter>
+    <c-counter cid="secondCounter" class="c-counter" value="0"></c-counter>
 
     <c-reset cid="reset01" log>
       <button class="c-button" data-events-click="resetCounter">
@@ -53,8 +53,8 @@
       </button>
     </c-reset>
 
-    <c-reset>
-      <button class="c-button" data-events-mouseenter="resetCounter">
+    <c-reset cid="reset02">
+      <button class="c-button" data-events-mouseenter="reset,Counter">
         Reset on mouseenter
       </button>
     </c-reset>

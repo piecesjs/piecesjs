@@ -1,10 +1,10 @@
-const g = async (o, e, t = document) => {
-  t.getElementsByTagName(o).length > 0 && await e();
-}, h = (o) => {
+const v = async (o, e, s = document) => {
+  s.getElementsByTagName(o).length > 0 && await e();
+}, u = (o) => {
   var e = Object.prototype.toString.call(o);
   return typeof o == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof o.length == "number" && (o.length === 0 || typeof o[0] == "object" && o[0].nodeType > 0);
 };
-class m {
+class p {
   constructor() {
     this.loadedPiecesCount = 0, this.piecesCount = 0, this.currentPieces = {};
   }
@@ -23,7 +23,7 @@ class m {
     delete this.currentPieces[e.name][e.id];
   }
 }
-let p = new m();
+let g = new p();
 class b extends HTMLElement {
   /**
    * Creates a new Piece component
@@ -31,8 +31,8 @@ class b extends HTMLElement {
    * @param {{stylesheets?: Array<() => Promise<any>>}} [options={}] - Configuration options
    * @param {Array<() => Promise<any>>} [options.stylesheets=[]] - Array of dynamic stylesheet import functions
    */
-  constructor(e, { stylesheets: t = [] } = {}) {
-    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = p, this.stylesheets = t, this.updatedPiecesCount = this.piecesManager.piecesCount++, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map();
+  constructor(e, { stylesheets: s = [] } = {}) {
+    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = g, this.stylesheets = s, this.updatedPiecesCount = this.piecesManager.piecesCount++, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map(), this._dataEventHandlers = [];
   }
   /**
    * default function from native web components connectedCallback()
@@ -83,34 +83,34 @@ class b extends HTMLElement {
   privateMount(e) {
     if (this.log && console.log("✅ mount", this.name), e) {
       this.piecesManager.loadedPiecesCount++, this.domEventsElements = Array.from(this.querySelectorAll("*")).filter(
-        (i) => {
-          const s = i.attributes;
-          for (let n = 0; n < s.length; n++)
-            if (s[n].name.startsWith("data-events-"))
+        (t) => {
+          const n = t.attributes;
+          for (let i = 0; i < n.length; i++)
+            if (n[i].name.startsWith("data-events-"))
               return !0;
           return !1;
         }
       );
-      const t = this.attributes;
-      for (let i = 0; i < t.length; i++)
-        t[i].name.startsWith("data-events-") && this.domEventsElements.push(this);
-      this.domEventsElements && this.domEventsElements.forEach((i) => {
-        let s = i.attributes;
-        for (let n = 0; n < s.length; n++)
-          if (s[n].name.startsWith("data-events-")) {
-            const r = s[n].name.replace("data-events-", "");
-            let a = s[n].value;
-            const l = s[n].value.split(",");
+      const s = this.attributes;
+      for (let t = 0; t < s.length; t++)
+        s[t].name.startsWith("data-events-") && this.domEventsElements.push(this);
+      this.domEventsElements && this.domEventsElements.forEach((t) => {
+        let n = t.attributes;
+        for (let i = 0; i < n.length; i++)
+          if (n[i].name.startsWith("data-events-")) {
+            const r = n[i].name.replace("data-events-", "");
+            let a = n[i].value;
+            const l = n[i].value.split(",");
             if (l.length == 1)
-              typeof this[a] == "function" && this.on(r, i, this[a]);
+              typeof this[a] == "function" && this.on(r, t, this[a]);
             else {
               const c = `eventInit${r}`;
-              if (l.length >= 2 && i.dataset[c] == null) {
-                console.log("eventInitKey", c), console.log("params", l), a = l[0];
-                const u = l[1], d = l[2];
-                i.dataset[c] = !0, this.on(r, i, (f) => {
-                  this.call(a, f, u, d);
-                });
+              if (l.length >= 2 && t.dataset[c] == null) {
+                a = l[0];
+                const d = l[1], f = l[2];
+                t.dataset[c] = !0;
+                const h = (m) => this.call(a, m, d, f);
+                t.addEventListener(r, h), this._dataEventHandlers.push({ element: t, eventName: r, handler: h });
               }
             }
           }
@@ -143,24 +143,16 @@ class b extends HTMLElement {
     e || (this.piecesManager.removePiece({
       name: this.name,
       id: this.cid
-    }), this.domEventsElements && this.domEventsElements.forEach((t) => {
-      let i = t.attributes;
-      for (let s = 0; s < i.length; s++)
-        if (i[s].name.startsWith("data-events-")) {
-          const n = i[s].name.replace("data-events-", "");
-          let r = i[s].value;
-          const a = i[s].value.split(",");
-          if (a.length == 1)
-            typeof this[r] == "function" && this.off(n, t, this[r]);
-          else if (a.length >= 2 && t.dataset.eventInit == null) {
-            r = a[0];
-            const l = a[1], c = a[2];
-            t.dataset.eventInit = !0, this.off(n, t, () => {
-              this.call(r, t, l, c);
-            });
-          }
+    }), this.domEventsElements && this.domEventsElements.forEach((s) => {
+      let t = s.attributes;
+      for (let n = 0; n < t.length; n++)
+        if (t[n].name.startsWith("data-events-")) {
+          const i = t[n].name.replace("data-events-", ""), r = t[n].value;
+          t[n].value.split(",").length == 1 && typeof this[r] == "function" && this.off(i, s, this[r]);
         }
-    })), this.log && console.log("❌ unmount", this.name), this.unmount(e);
+    }), this._dataEventHandlers.forEach(({ element: s, eventName: t, handler: n }) => {
+      s.removeEventListener(t, n);
+    }), this._dataEventHandlers = []), this.log && console.log("❌ unmount", this.name), this.unmount(e);
   }
   /**
    * Called when component is unmounted - use it to remove event listeners
@@ -174,8 +166,8 @@ class b extends HTMLElement {
    * @param {string} oldValue
    * @param {string} newValue
    */
-  attributeChangedCallback(e, t, i) {
-    t !== i && (this[e] = i, this.privateUpdate());
+  attributeChangedCallback(e, s, t) {
+    s !== t && (this[e] = t, this.privateUpdate());
   }
   /**
    * Query selector shortcut - returns element, NodeList or null
@@ -183,9 +175,9 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element|NodeList|null}
    */
-  $(e, t = this) {
-    const i = t.querySelectorAll(e);
-    return i.length == 1 ? i[0] : i.length == 0 ? null : i;
+  $(e, s = this) {
+    const t = s.querySelectorAll(e);
+    return t.length == 1 ? t[0] : t.length == 0 ? null : t;
   }
   /**
    * Same as $ - query selector shortcut
@@ -193,9 +185,9 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element|NodeList|null}
    */
-  dom(e, t = this) {
-    const i = t.querySelectorAll(e);
-    return i.length == 1 ? i[0] : i.length == 0 ? null : i;
+  dom(e, s = this) {
+    const t = s.querySelectorAll(e);
+    return t.length == 1 ? t[0] : t.length == 0 ? null : t;
   }
   /**
    * Query by data-dom attribute
@@ -203,9 +195,9 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element|NodeList|null}
    */
-  domAttr(e, t = this) {
-    const i = t.querySelectorAll(`[data-dom="${e}"]`);
-    return i.length == 1 ? i[0] : i.length == 0 ? null : i;
+  domAttr(e, s = this) {
+    const t = s.querySelectorAll(`[data-dom="${e}"]`);
+    return t.length == 1 ? t[0] : t.length == 0 ? null : t;
   }
   /**
    * Query selector - always returns an array
@@ -213,8 +205,8 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element[]}
    */
-  $All(e, t = this) {
-    return Array.from(t.querySelectorAll(e));
+  $All(e, s = this) {
+    return Array.from(s.querySelectorAll(e));
   }
   /**
    * Same as $All - always returns an array
@@ -222,8 +214,8 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element[]}
    */
-  domAll(e, t = this) {
-    return Array.from(t.querySelectorAll(e));
+  domAll(e, s = this) {
+    return Array.from(s.querySelectorAll(e));
   }
   /**
    * Query by data-dom attribute - always returns an array
@@ -231,8 +223,8 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element[]}
    */
-  domAttrAll(e, t = this) {
-    return Array.from(t.querySelectorAll(`[data-dom="${e}"]`));
+  domAttrAll(e, s = this) {
+    return Array.from(s.querySelectorAll(`[data-dom="${e}"]`));
   }
   /**
    * Capture all elements with data-dom attribute as object tree
@@ -240,13 +232,13 @@ class b extends HTMLElement {
    * @returns {Object<string, Element[]>}
    */
   captureTree(e = this) {
-    const t = this.querySelectorAll("[data-dom]");
-    let i = {};
-    for (let s of t) {
-      const n = s.getAttribute("data-dom");
-      typeof i[n] > "u" && (i[n] = []), i[n].push(s);
+    const s = this.querySelectorAll("[data-dom]");
+    let t = {};
+    for (let n of s) {
+      const i = n.getAttribute("data-dom");
+      typeof t[i] > "u" && (t[i] = []), t[i].push(n);
     }
-    return i;
+    return t;
   }
   /**
    * Events Managment
@@ -258,20 +250,20 @@ class b extends HTMLElement {
    * @param {Function} func
    * @param {Object} params
    */
-  on(e, t, i, s = null) {
-    if (t != null) {
-      const n = `${e}_${i.name}`;
-      if (!this._boundListeners.has(n)) {
-        const a = i.bind(this);
-        this._boundListeners.set(n, {
-          original: i,
+  on(e, s, t, n = null) {
+    if (s != null) {
+      const i = `${e}_${t.name}`;
+      if (!this._boundListeners.has(i)) {
+        const a = t.bind(this);
+        this._boundListeners.set(i, {
+          original: t,
           bound: a
         });
       }
-      const r = this._boundListeners.get(n).bound;
-      h(t) || Array.isArray(t) ? t.length > 0 && t.forEach((a) => {
-        s == null ? a.addEventListener(e, r) : a.addEventListener(e, () => r(s));
-      }) : s == null ? t.addEventListener(e, r) : t.addEventListener(e, () => r(s));
+      const r = this._boundListeners.get(i).bound;
+      u(s) || Array.isArray(s) ? s.length > 0 && s.forEach((a) => {
+        n == null ? a.addEventListener(e, r) : a.addEventListener(e, () => r(n));
+      }) : n == null ? s.addEventListener(e, r) : s.addEventListener(e, () => r(n));
     }
   }
   /**
@@ -280,17 +272,17 @@ class b extends HTMLElement {
    * @param {HTMLElement} el
    * @param {Function} func
    */
-  off(e, t, i) {
-    if (t != null) {
-      const s = `${e}_${i.name}`, n = this._boundListeners.get(s);
-      if (!n) {
-        console.warn(`No bound listener found for ${s}`);
+  off(e, s, t) {
+    if (s != null) {
+      const n = `${e}_${t.name}`, i = this._boundListeners.get(n);
+      if (!i) {
+        console.warn(`No bound listener found for ${n}`);
         return;
       }
-      const r = n.bound;
-      h(t) || Array.isArray(t) ? t.length > 0 && t.forEach((a) => {
+      const r = i.bound;
+      u(s) || Array.isArray(s) ? s.length > 0 && s.forEach((a) => {
         a.removeEventListener(e, r);
-      }) : t.removeEventListener(e, r), this._boundListeners.delete(s);
+      }) : s.removeEventListener(e, r), this._boundListeners.delete(n);
     }
   }
   /**
@@ -299,11 +291,11 @@ class b extends HTMLElement {
    * @param {HTMLElement} el - by default the event is emit on document
    * @param {Object} params
    */
-  emit(e, t = document, i) {
-    const s = new CustomEvent(e, {
-      detail: i
+  emit(e, s = document, t) {
+    const n = new CustomEvent(e, {
+      detail: t
     });
-    t.dispatchEvent(s);
+    s.dispatchEvent(n);
   }
   /**
    * Call function of a piece, from a piece
@@ -313,13 +305,13 @@ class b extends HTMLElement {
    * @param {string} pieceId
    * @returns {any} The return value of the called function
    */
-  call(e, t, i, s) {
-    let n;
+  call(e, s, t, n) {
+    let i;
     return Object.keys(this.piecesManager.currentPieces).forEach((r) => {
-      r == i && Object.keys(this.piecesManager.currentPieces[r]).forEach((a) => {
-        s != null ? a == s && (n = this.piecesManager.currentPieces[r][a].piece[e](t)) : n = this.piecesManager.currentPieces[r][a].piece[e](t);
+      r == t && Object.keys(this.piecesManager.currentPieces[r]).forEach((a) => {
+        n != null ? a == n && (i = this.piecesManager.currentPieces[r][a].piece[e](s)) : i = this.piecesManager.currentPieces[r][a].piece[e](s);
       });
-    }), n;
+    }), i;
   }
   /**
    * Load stylesheets dynamically from super()
@@ -328,8 +320,8 @@ class b extends HTMLElement {
    */
   async loadStyles(e = !0) {
     if (e)
-      for (let t = 0; t < this.stylesheets.length; t++)
-        await this.stylesheets[t]();
+      for (let s = 0; s < this.stylesheets.length; s++)
+        await this.stylesheets[s]();
   }
   /**
    * Check if log attribute is present
@@ -362,6 +354,6 @@ class b extends HTMLElement {
 }
 export {
   b as Piece,
-  g as load,
-  p as piecesManager
+  v as load,
+  g as piecesManager
 };
