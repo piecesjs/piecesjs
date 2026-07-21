@@ -38,7 +38,6 @@ Compiled with [vitejs](https://vitejs.dev/).
 
 - [Introduction](#introduction)
 - [Main features](#main-features)
-- [Showcase](#showcase)
 - [Installation](#installation)
 - [TypeScript Support](#typescript-support)
 - [Create your first Piece](#create-your-first-piece)
@@ -49,6 +48,7 @@ Compiled with [vitejs](https://vitejs.dev/).
 - [Communication between components](#communication-between-components)
 - [PiecesManager](#piecesmanager)
 - [Methods, props and attributes](#memo)
+- [Showcase](#showcase)
 - [Support](#support)
 
 ## Installation
@@ -504,7 +504,7 @@ Enjoy and feel free to create a pull request!
 
 - [telhaclarke.com.au](http://telhaclarke.com.au/) - Greg Lallé
 - [iconic.house](https://iconic.house/) - index.studio / jcsuzanne
-- [https://fusinalab.com/](https://fusinalab.com/) - Francesco Michelini, Fabio Caretti & LaColonia
+- [fusinalab.com](https://fusinalab.com/) - Francesco Michelini, Fabio Caretti & LaColonia
 - [decathlonyestalgia.com](https://decathlonyestalgia.com) - index.studio / Quentin Hocdé
 - [artefakt.mov](https://artefakt.mov/) - Greg Lallé
 - [coutumes.com](https://coutumes.com/) - index.studio / jcsuzanne & Quentin Hocdé
