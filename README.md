@@ -38,6 +38,7 @@ Compiled with [vitejs](https://vitejs.dev/).
 
 - [Introduction](#introduction)
 - [Main features](#main-features)
+- [Showcase](#showcase)
 - [Installation](#installation)
 - [TypeScript Support](#typescript-support)
 - [Create your first Piece](#create-your-first-piece)
@@ -498,6 +499,16 @@ npm run dev
 ```
 
 Enjoy and feel free to create a pull request!
+
+## Showcase
+
+- [telhaclarke.com.au](http://telhaclarke.com.au/) - Greg Lallé
+- [iconic.house](https://iconic.house/) - index.studio / jcsuzanne
+- [https://fusinalab.com/](https://fusinalab.com/) - Francesco Michelini, Fabio Caretti & LaColonia
+- [decathlonyestalgia.com](https://decathlonyestalgia.com) - index.studio / Quentin Hocdé
+- [artefakt.mov](https://artefakt.mov/) - Greg Lallé
+- [coutumes.com](https://coutumes.com/) - index.studio / jcsuzanne & Quentin Hocdé
+- [design.cash.app](https://design.cash.app/) - index.studio / Quentin Hocdé
 
 ## Support
 
