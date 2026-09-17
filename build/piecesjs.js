@@ -1,10 +1,10 @@
-const v = async (o, e, s = document) => {
-  s.getElementsByTagName(o).length > 0 && await e();
-}, u = (o) => {
-  var e = Object.prototype.toString.call(o);
-  return typeof o == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(e) && typeof o.length == "number" && (o.length === 0 || typeof o[0] == "object" && o[0].nodeType > 0);
+const v = async (a, t, e = document) => {
+  e.getElementsByTagName(a).length > 0 && await t();
+}, d = (a) => {
+  var t = Object.prototype.toString.call(a);
+  return typeof a == "object" && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(t) && typeof a.length == "number" && (a.length === 0 || typeof a[0] == "object" && a[0].nodeType > 0);
 };
-class p {
+class f {
   constructor() {
     this.loadedPiecesCount = 0, this.piecesCount = 0, this.currentPieces = {};
   }
@@ -12,37 +12,43 @@ class p {
    * Add a piece to the manager
    * @param {{name: string, id: string, piece: import('./Piece').Piece}} piece - Piece data to add
    */
-  addPiece(e) {
-    typeof this.currentPieces[e.name] != "object" && (this.currentPieces[e.name] = {}), this.currentPieces[e.name][e.id] = e;
+  addPiece(t) {
+    typeof this.currentPieces[t.name] != "object" && (this.currentPieces[t.name] = {}), this.currentPieces[t.name][t.id] = t;
   }
   /**
    * Remove a piece from the manager
    * @param {{name: string, id: string}} piece - Piece data to remove
    */
-  removePiece(e) {
-    delete this.currentPieces[e.name][e.id];
+  removePiece(t) {
+    var e;
+    (e = this.currentPieces[t.name]) == null || delete e[t.id];
   }
 }
-let g = new p();
-class b extends HTMLElement {
+let p = new f();
+class g extends HTMLElement {
   /**
    * Creates a new Piece component
    * @param {string} [name] - Component name (defaults to class name if not provided)
    * @param {{stylesheets?: Array<() => Promise<any>>}} [options={}] - Configuration options
    * @param {Array<() => Promise<any>>} [options.stylesheets=[]] - Array of dynamic stylesheet import functions
    */
-  constructor(e, { stylesheets: s = [] } = {}) {
-    super(), this.name = e || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = g, this.stylesheets = s, this.updatedPiecesCount = this.piecesManager.piecesCount++, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map(), this._dataEventHandlers = [];
+  constructor(t, { stylesheets: e = [] } = {}) {
+    super(), this.name = t || this.constructor.name, this.template = document.createElement("template"), this.piecesManager = p, this.stylesheets = e, this.updatedPiecesCount = this.piecesManager.piecesCount++, this.innerHTML != "" && (this.baseHTML = this.innerHTML), this._boundListeners = /* @__PURE__ */ new Map(), this._dataEventHandlers = [], this._mounted = !1;
   }
   /**
    * default function from native web components connectedCallback()
    */
-  connectedCallback(e = !0) {
-    e && (typeof this.cid == "string" ? this.cid = this.cid : this.cid = `c${this.updatedPiecesCount}`, this.piecesManager.addPiece({
+  connectedCallback(t = !0) {
+    if (t && (typeof this.cid != "string" && (this.cid = `c${this.updatedPiecesCount}`), this.piecesManager.addPiece({
       name: this.name,
       id: this.cid,
       piece: this
-    })), this.privatePremount(e), this.baseHTML == null && (this.innerHTML = "", this.template.innerHTML = this.render() != null ? this.render() : "", this.appendChild(this.template.cloneNode(!0).content)), this.privateMount(e);
+    })), this.privatePremount(t), this.baseHTML == null) {
+      this.innerHTML = "";
+      const e = this.render();
+      this.template.innerHTML = e ?? "", this.appendChild(this.template.cloneNode(!0).content);
+    }
+    this.privateMount(t);
   }
   /**
    * Render HTML in the component
@@ -67,62 +73,75 @@ class b extends HTMLElement {
    * Lifecycle - step : 0
    * @param {boolean} firstHit - false if it's an update
    */
-  privatePremount(e = !0) {
-    this.baseHTML == null && (this.innerHTML = ""), this.log && console.log("🚧 premount", this.name), this.loadStyles(e), this.premount(e);
+  privatePremount(t = !0) {
+    this.baseHTML == null && (this.innerHTML = ""), this.log && console.log("🚧 premount", this.name), this.loadStyles(t), this.premount(t);
   }
   /**
    * Called before mounting (before render)
    * @param {boolean} [firstHit=true] - False if it's an update
    */
-  premount(e = !0) {
+  premount(t = !0) {
   }
   /**
    * Lifecycle - step : 1
    * @param {boolean} firstHit - false if it's an update
    */
-  privateMount(e) {
-    if (this.log && console.log("✅ mount", this.name), e) {
-      this.piecesManager.loadedPiecesCount++, this.domEventsElements = Array.from(this.querySelectorAll("*")).filter(
-        (t) => {
-          const n = t.attributes;
-          for (let i = 0; i < n.length; i++)
-            if (n[i].name.startsWith("data-events-"))
-              return !0;
-          return !1;
-        }
-      );
-      const s = this.attributes;
-      for (let t = 0; t < s.length; t++)
-        s[t].name.startsWith("data-events-") && this.domEventsElements.push(this);
-      this.domEventsElements && this.domEventsElements.forEach((t) => {
-        let n = t.attributes;
-        for (let i = 0; i < n.length; i++)
-          if (n[i].name.startsWith("data-events-")) {
-            const r = n[i].name.replace("data-events-", "");
-            let a = n[i].value;
-            const l = n[i].value.split(",");
-            if (l.length == 1)
-              typeof this[a] == "function" && this.on(r, t, this[a]);
-            else {
-              const c = `eventInit${r}`;
-              if (l.length >= 2 && t.dataset[c] == null) {
-                a = l[0];
-                const d = l[1], f = l[2];
-                t.dataset[c] = !0;
-                const h = (m) => this.call(a, m, d, f);
-                t.addEventListener(r, h), this._dataEventHandlers.push({ element: t, eventName: r, handler: h });
-              }
-            }
+  privateMount(t) {
+    this.log && console.log("✅ mount", this.name), t && this.piecesManager.loadedPiecesCount++, this._mounted = !0, this.privateBindEvents(), this.mount(t);
+  }
+  /**
+   * Bind data-events-* attributes of the piece and its descendants
+   */
+  privateBindEvents() {
+    const t = document.evaluate(
+      "descendant-or-self::*[@*[starts-with(name(), 'data-events-')]]",
+      this,
+      null,
+      XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+      null
+    );
+    this.domEventsElements = [];
+    for (let e = 0; e < t.snapshotLength; e++) {
+      const n = t.snapshotItem(e);
+      this.domEventsElements.push(n);
+      for (const s of n.attributes) {
+        if (!s.name.startsWith("data-events-")) continue;
+        const r = s.name.slice(12), o = s.value.split(",");
+        if (o.length == 1) {
+          const i = this[s.value];
+          typeof i == "function" && (this.on(r, n, i), this._dataEventHandlers.push({ element: n, eventName: r, handler: i }));
+        } else {
+          const i = `eventInit${r}`;
+          if (n.dataset[i] == null) {
+            const [l, u, h] = o;
+            n.dataset[i] = !0;
+            const c = (m) => this.call(l, m, u, h);
+            n.addEventListener(r, c), this._dataEventHandlers.push({
+              element: n,
+              eventName: r,
+              handler: c,
+              eventInitKey: i
+            });
           }
-      });
+        }
+      }
     }
-    this.mount(e);
+  }
+  /**
+   * Unbind everything registered by privateBindEvents
+   */
+  privateUnbindEvents() {
+    this._dataEventHandlers.forEach(
+      ({ element: t, eventName: e, handler: n, eventInitKey: s }) => {
+        s ? (t.removeEventListener(e, n), delete t.dataset[s]) : this.off(e, t, n);
+      }
+    ), this._dataEventHandlers = [];
   }
   /**
    * Called after mounting (after render) - use it to add event listeners
    * @param {boolean} [firstHit=true] - False if it's an update
    */
-  mount(e = !0) {
+  mount(t = !0) {
   }
   /**
    * Lifecycle - step : 2
@@ -139,26 +158,23 @@ class b extends HTMLElement {
    * Lifecycle - step : 3
    * @param {boolean} update
    */
-  privateUnmount(e = !1) {
-    e || (this.piecesManager.removePiece({
-      name: this.name,
-      id: this.cid
-    }), this.domEventsElements && this.domEventsElements.forEach((s) => {
-      let t = s.attributes;
-      for (let n = 0; n < t.length; n++)
-        if (t[n].name.startsWith("data-events-")) {
-          const i = t[n].name.replace("data-events-", ""), r = t[n].value;
-          t[n].value.split(",").length == 1 && typeof this[r] == "function" && this.off(i, s, this[r]);
-        }
-    }), this._dataEventHandlers.forEach(({ element: s, eventName: t, handler: n }) => {
-      s.removeEventListener(t, n);
-    }), this._dataEventHandlers = []), this.log && console.log("❌ unmount", this.name), this.unmount(e);
+  privateUnmount(t = !1) {
+    var e;
+    if (!t) {
+      this._mounted = !1;
+      const n = (e = this.piecesManager.currentPieces[this.name]) == null ? void 0 : e[this.cid];
+      (n == null ? void 0 : n.piece) === this && this.piecesManager.removePiece({
+        name: this.name,
+        id: this.cid
+      });
+    }
+    this.privateUnbindEvents(), this.log && console.log("❌ unmount", this.name), this.unmount(t);
   }
   /**
    * Called when component is unmounted - use it to remove event listeners
    * @param {boolean} [update=false] - True if called during an update
    */
-  unmount(e = !1) {
+  unmount(t = !1) {
   }
   /**
    * default function from native web components
@@ -166,8 +182,8 @@ class b extends HTMLElement {
    * @param {string} oldValue
    * @param {string} newValue
    */
-  attributeChangedCallback(e, s, t) {
-    s !== t && (this[e] = t, this.privateUpdate());
+  attributeChangedCallback(t, e, n) {
+    e !== n && (this[t] = n, this._mounted && this.privateUpdate());
   }
   /**
    * Query selector shortcut - returns element, NodeList or null
@@ -175,9 +191,9 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element|NodeList|null}
    */
-  $(e, s = this) {
-    const t = s.querySelectorAll(e);
-    return t.length == 1 ? t[0] : t.length == 0 ? null : t;
+  $(t, e = this) {
+    const n = e.querySelectorAll(t);
+    return n.length == 1 ? n[0] : n.length == 0 ? null : n;
   }
   /**
    * Same as $ - query selector shortcut
@@ -185,9 +201,9 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element|NodeList|null}
    */
-  dom(e, s = this) {
-    const t = s.querySelectorAll(e);
-    return t.length == 1 ? t[0] : t.length == 0 ? null : t;
+  dom(t, e = this) {
+    const n = e.querySelectorAll(t);
+    return n.length == 1 ? n[0] : n.length == 0 ? null : n;
   }
   /**
    * Query by data-dom attribute
@@ -195,9 +211,9 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element|NodeList|null}
    */
-  domAttr(e, s = this) {
-    const t = s.querySelectorAll(`[data-dom="${e}"]`);
-    return t.length == 1 ? t[0] : t.length == 0 ? null : t;
+  domAttr(t, e = this) {
+    const n = e.querySelectorAll(`[data-dom="${t}"]`);
+    return n.length == 1 ? n[0] : n.length == 0 ? null : n;
   }
   /**
    * Query selector - always returns an array
@@ -205,8 +221,8 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element[]}
    */
-  $All(e, s = this) {
-    return Array.from(s.querySelectorAll(e));
+  $All(t, e = this) {
+    return Array.from(e.querySelectorAll(t));
   }
   /**
    * Same as $All - always returns an array
@@ -214,8 +230,8 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element[]}
    */
-  domAll(e, s = this) {
-    return Array.from(s.querySelectorAll(e));
+  domAll(t, e = this) {
+    return Array.from(e.querySelectorAll(t));
   }
   /**
    * Query by data-dom attribute - always returns an array
@@ -223,22 +239,22 @@ class b extends HTMLElement {
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Element[]}
    */
-  domAttrAll(e, s = this) {
-    return Array.from(s.querySelectorAll(`[data-dom="${e}"]`));
+  domAttrAll(t, e = this) {
+    return Array.from(e.querySelectorAll(`[data-dom="${t}"]`));
   }
   /**
    * Capture all elements with data-dom attribute as object tree
    * @param {Element} [context=this] - Context element, this by default
    * @returns {Object<string, Element[]>}
    */
-  captureTree(e = this) {
-    const s = this.querySelectorAll("[data-dom]");
-    let t = {};
-    for (let n of s) {
-      const i = n.getAttribute("data-dom");
-      typeof t[i] > "u" && (t[i] = []), t[i].push(n);
+  captureTree(t = this) {
+    const e = t.querySelectorAll("[data-dom]");
+    let n = {};
+    for (let s of e) {
+      const r = s.getAttribute("data-dom");
+      typeof n[r] > "u" && (n[r] = []), n[r].push(s);
     }
-    return t;
+    return n;
   }
   /**
    * Events Managment
@@ -250,21 +266,18 @@ class b extends HTMLElement {
    * @param {Function} func
    * @param {Object} params
    */
-  on(e, s, t, n = null) {
-    if (s != null) {
-      const i = `${e}_${t.name}`;
-      if (!this._boundListeners.has(i)) {
-        const a = t.bind(this);
-        this._boundListeners.set(i, {
-          original: t,
-          bound: a
-        });
+  on(t, e, n, s = null) {
+    if (e == null) return;
+    let r = this._boundListeners.get(n);
+    r || (r = { bound: n.bind(this), wrappers: [] }, this._boundListeners.set(n, r));
+    const o = d(e) || Array.isArray(e) ? e : [e];
+    for (const i of o)
+      if (s == null)
+        i.addEventListener(t, r.bound);
+      else {
+        const l = () => r.bound(s);
+        i.addEventListener(t, l), r.wrappers.push({ item: i, type: t, wrapper: l });
       }
-      const r = this._boundListeners.get(i).bound;
-      u(s) || Array.isArray(s) ? s.length > 0 && s.forEach((a) => {
-        n == null ? a.addEventListener(e, r) : a.addEventListener(e, () => r(n));
-      }) : n == null ? s.addEventListener(e, r) : s.addEventListener(e, () => r(n));
-    }
   }
   /**
    * Tips: remove event listeners in the unmount(), unegister event for an HTMLElement or an array of HTMLElements
@@ -272,17 +285,25 @@ class b extends HTMLElement {
    * @param {HTMLElement} el
    * @param {Function} func
    */
-  off(e, s, t) {
-    if (s != null) {
-      const n = `${e}_${t.name}`, i = this._boundListeners.get(n);
-      if (!i) {
-        console.warn(`No bound listener found for ${n}`);
-        return;
-      }
-      const r = i.bound;
-      u(s) || Array.isArray(s) ? s.length > 0 && s.forEach((a) => {
-        a.removeEventListener(e, r);
-      }) : s.removeEventListener(e, r), this._boundListeners.delete(n);
+  off(t, e, n) {
+    if (e == null) return;
+    const s = [];
+    if (this._boundListeners.has(n))
+      s.push(this._boundListeners.get(n));
+    else
+      for (const [o, i] of this._boundListeners)
+        o.name === n.name && (s.push(i), this._boundListeners.delete(o));
+    if (s.length == 0) {
+      console.warn(`No bound listener found for ${t}_${n.name}`);
+      return;
+    }
+    const r = d(e) || Array.isArray(e) ? Array.from(e) : [e];
+    for (const o of s) {
+      for (const i of r)
+        i.removeEventListener(t, o.bound);
+      o.wrappers = o.wrappers.filter(
+        ({ item: i, type: l, wrapper: u }) => l !== t || !r.includes(i) ? !0 : (i.removeEventListener(t, u), !1)
+      );
     }
   }
   /**
@@ -291,11 +312,11 @@ class b extends HTMLElement {
    * @param {HTMLElement} el - by default the event is emit on document
    * @param {Object} params
    */
-  emit(e, s = document, t) {
-    const n = new CustomEvent(e, {
-      detail: t
+  emit(t, e = document, n) {
+    const s = new CustomEvent(t, {
+      detail: n
     });
-    s.dispatchEvent(n);
+    e.dispatchEvent(s);
   }
   /**
    * Call function of a piece, from a piece
@@ -305,23 +326,28 @@ class b extends HTMLElement {
    * @param {string} pieceId
    * @returns {any} The return value of the called function
    */
-  call(e, s, t, n) {
-    let i;
-    return Object.keys(this.piecesManager.currentPieces).forEach((r) => {
-      r == t && Object.keys(this.piecesManager.currentPieces[r]).forEach((a) => {
-        n != null ? a == n && (i = this.piecesManager.currentPieces[r][a].piece[e](s)) : i = this.piecesManager.currentPieces[r][a].piece[e](s);
-      });
-    }), i;
+  call(t, e, n, s) {
+    const r = (u, h) => Object.prototype.hasOwnProperty.call(u, h), { currentPieces: o } = this.piecesManager;
+    if (!r(o, n)) return;
+    const i = o[n];
+    if (s != null)
+      return r(i, s) ? i[s].piece[t](e) : void 0;
+    let l;
+    for (const u of Object.keys(i)) {
+      const h = i[u];
+      h && (l = h.piece[t](e));
+    }
+    return l;
   }
   /**
    * Load stylesheets dynamically from super()
    * @param {boolean} [firstHit=true] - False if called after an update
    * @returns {Promise<void>}
    */
-  async loadStyles(e = !0) {
-    if (e)
-      for (let s = 0; s < this.stylesheets.length; s++)
-        await this.stylesheets[s]();
+  async loadStyles(t = !0) {
+    if (t)
+      for (let e = 0; e < this.stylesheets.length; e++)
+        await this.stylesheets[e]();
   }
   /**
    * Check if log attribute is present
@@ -341,19 +367,19 @@ class b extends HTMLElement {
    * Set component ID
    * @param {string} cid
    */
-  set cid(e) {
-    return this.setAttribute("cid", e);
+  set cid(t) {
+    return this.setAttribute("cid", t);
   }
   /**
    * Get all attributes as string
    * @returns {string}
    */
   get properties() {
-    return Object.values(this.attributes).map((e) => `${e.name}="${e.value}"`).join(" ");
+    return Object.values(this.attributes).map((t) => `${t.name}="${t.value}"`).join(" ");
   }
 }
 export {
-  b as Piece,
+  g as Piece,
   v as load,
-  g as piecesManager
+  p as piecesManager
 };

@@ -38,7 +38,7 @@ class Manager {
    * @param {{name: string, id: string}} piece - Piece data to remove
    */
   removePiece(piece) {
-    delete this.currentPieces[piece.name][piece.id];
+    delete this.currentPieces[piece.name]?.[piece.id];
   }
 }
 

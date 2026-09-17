@@ -196,4 +196,6 @@ export class Piece extends HTMLElement {
   private privateMount(firstHit?: boolean): void;
   private privateUpdate(): void;
   private privateUnmount(update?: boolean): void;
+  private privateBindEvents(): void;
+  private privateUnbindEvents(): void;
 }

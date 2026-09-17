@@ -54,18 +54,25 @@ export class Piece extends HTMLElement {
     }
 
     /**
-     * Store bound event listeners for proper cleanup
+     * Store bound event listeners for proper cleanup, keyed by the original function
      * @private
-     * @type {Map<string, {original: Function, bound: Function}>}
+     * @type {Map<Function, {bound: Function, wrappers: Array<{item: EventTarget, type: string, wrapper: Function}>}>}
      */
     this._boundListeners = new Map();
 
     /**
      * Store data-events handlers for proper cleanup
      * @private
-     * @type {Array<{element: Element, eventName: string, handler: Function}>}
+     * @type {Array<{element: Element, eventName: string, handler: Function, eventInitKey?: string}>}
      */
     this._dataEventHandlers = [];
+
+    /**
+     * True between privateMount and a non-update privateUnmount
+     * @private
+     * @type {boolean}
+     */
+    this._mounted = false;
   }
 
   /**
@@ -74,9 +81,7 @@ export class Piece extends HTMLElement {
   connectedCallback(firstHit = true) {
     if (firstHit) {
       // Add the piece to the PiecesManager
-      if (typeof this.cid == 'string') {
-        this.cid = this.cid;
-      } else {
+      if (typeof this.cid != 'string') {
         this.cid = `c${this.updatedPiecesCount}`;
       }
 
@@ -91,7 +96,8 @@ export class Piece extends HTMLElement {
 
     if (this.baseHTML == undefined) {
       this.innerHTML = '';
-      this.template.innerHTML = this.render() != undefined ? this.render() : '';
+      const html = this.render();
+      this.template.innerHTML = html != undefined ? html : '';
       this.appendChild(this.template.cloneNode(true).content);
     }
 
@@ -153,64 +159,83 @@ export class Piece extends HTMLElement {
 
     if (firstHit) {
       this.piecesManager.loadedPiecesCount++;
-
-      this.domEventsElements = Array.from(this.querySelectorAll('*')).filter(
-        (element) => {
-          const attributes = element.attributes;
-          for (let i = 0; i < attributes.length; i++) {
-            if (attributes[i].name.startsWith('data-events-')) {
-              return true;
-            }
-          }
-          return false;
-        },
-      );
-
-      const attributes = this.attributes;
-
-      for (let i = 0; i < attributes.length; i++) {
-        if (attributes[i].name.startsWith('data-events-')) {
-          this.domEventsElements.push(this);
-        }
-      }
-
-      if (this.domEventsElements) {
-        this.domEventsElements.forEach((element) => {
-          let attributes = element.attributes;
-          for (let i = 0; i < attributes.length; i++) {
-            if (attributes[i].name.startsWith('data-events-')) {
-              const eventName = attributes[i].name.replace('data-events-', '');
-              let functionName = attributes[i].value;
-              const params = attributes[i].value.split(',');
-
-              if (params.length == 1) {
-                if (typeof this[functionName] == 'function') {
-                  this.on(eventName, element, this[functionName]);
-                }
-              } else {
-                const eventInitKey = `eventInit${eventName}`;
-
-                if (
-                  params.length >= 2 &&
-                  element.dataset[eventInitKey] == undefined
-                ) {
-                  functionName = params[0];
-                  const pieceName = params[1];
-                  const pieceId = params[2];
-                  element.dataset[eventInitKey] = true;
-                  const handler = (event) =>
-                    this.call(functionName, event, pieceName, pieceId);
-                  element.addEventListener(eventName, handler);
-                  this._dataEventHandlers.push({ element, eventName, handler });
-                }
-              }
-            }
-          }
-        });
-      }
     }
 
+    this._mounted = true;
+    // Bound on every mount: render() pieces replace their DOM on update
+    this.privateBindEvents();
+
     this.mount(firstHit);
+  }
+
+  /**
+   * Bind data-events-* attributes of the piece and its descendants
+   */
+  privateBindEvents() {
+    // XPath filters on attribute name prefix natively, which CSS selectors can't do
+    const snapshot = document.evaluate(
+      "descendant-or-self::*[@*[starts-with(name(), 'data-events-')]]",
+      this,
+      null,
+      XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+      null,
+    );
+
+    this.domEventsElements = [];
+
+    for (let i = 0; i < snapshot.snapshotLength; i++) {
+      const element = snapshot.snapshotItem(i);
+      this.domEventsElements.push(element);
+
+      for (const attribute of element.attributes) {
+        if (!attribute.name.startsWith('data-events-')) continue;
+
+        const eventName = attribute.name.slice('data-events-'.length);
+        const params = attribute.value.split(',');
+
+        if (params.length == 1) {
+          const handler = this[attribute.value];
+          if (typeof handler == 'function') {
+            this.on(eventName, element, handler);
+            this._dataEventHandlers.push({ element, eventName, handler });
+          }
+        } else {
+          const eventInitKey = `eventInit${eventName}`;
+
+          // The flag prevents a parent piece and a nested piece from binding the same element twice
+          if (element.dataset[eventInitKey] == undefined) {
+            const [functionName, pieceName, pieceId] = params;
+            element.dataset[eventInitKey] = true;
+            const handler = (event) =>
+              this.call(functionName, event, pieceName, pieceId);
+            element.addEventListener(eventName, handler);
+            this._dataEventHandlers.push({
+              element,
+              eventName,
+              handler,
+              eventInitKey,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Unbind everything registered by privateBindEvents
+   */
+  privateUnbindEvents() {
+    this._dataEventHandlers.forEach(
+      ({ element, eventName, handler, eventInitKey }) => {
+        if (eventInitKey) {
+          element.removeEventListener(eventName, handler);
+          delete element.dataset[eventInitKey];
+        } else {
+          this.off(eventName, element, handler);
+        }
+      },
+    );
+    this._dataEventHandlers = [];
   }
 
   /**
@@ -241,36 +266,20 @@ export class Piece extends HTMLElement {
    */
   privateUnmount(update = false) {
     if (!update) {
-      this.piecesManager.removePiece({
-        name: this.name,
-        id: this.cid,
-      });
+      this._mounted = false;
 
-      if (this.domEventsElements) {
-        this.domEventsElements.forEach((element) => {
-          let attributes = element.attributes;
-          for (let i = 0; i < attributes.length; i++) {
-            if (attributes[i].name.startsWith('data-events-')) {
-              const eventName = attributes[i].name.replace('data-events-', '');
-              const functionName = attributes[i].value;
-              const params = attributes[i].value.split(',');
-
-              if (
-                params.length == 1 &&
-                typeof this[functionName] == 'function'
-              ) {
-                this.off(eventName, element, this[functionName]);
-              }
-            }
-          }
+      // Another piece may have claimed this cid meanwhile (e.g. page transitions
+      // keeping both containers alive): only remove the entry if it's ours
+      const registered = this.piecesManager.currentPieces[this.name]?.[this.cid];
+      if (registered?.piece === this) {
+        this.piecesManager.removePiece({
+          name: this.name,
+          id: this.cid,
         });
       }
-
-      this._dataEventHandlers.forEach(({ element, eventName, handler }) => {
-        element.removeEventListener(eventName, handler);
-      });
-      this._dataEventHandlers = [];
     }
+
+    this.privateUnbindEvents();
 
     if (this.log) {
       console.log('❌ unmount', this.name);
@@ -293,6 +302,9 @@ export class Piece extends HTMLElement {
   attributeChangedCallback(property, oldValue, newValue) {
     if (oldValue === newValue) return;
     this[property] = newValue;
+
+    // Upgrades fire this before connectedCallback: the first mount handles it
+    if (!this._mounted) return;
 
     this.privateUpdate();
   }
@@ -366,7 +378,7 @@ export class Piece extends HTMLElement {
    * @returns {Object<string, Element[]>}
    */
   captureTree(context = this) {
-    const capture = this.querySelectorAll('[data-dom]');
+    const capture = context.querySelectorAll('[data-dom]');
     let allDOM = {};
     for (let dom of capture) {
       const domAttr = dom.getAttribute('data-dom');
@@ -390,37 +402,24 @@ export class Piece extends HTMLElement {
    * @param {Object} params
    */
   on(type, el, func, params = null) {
-    if (el != null) {
-      // Create unique key for this event listener
-      const key = `${type}_${func.name}`;
+    if (el == null) return;
 
-      // Create bound function if it doesn't exist
-      if (!this._boundListeners.has(key)) {
-        const boundFunc = func.bind(this);
-        this._boundListeners.set(key, {
-          original: func,
-          bound: boundFunc,
-        });
-      }
+    // Keyed by reference: two handlers sharing a name (or anonymous) stay distinct
+    let listener = this._boundListeners.get(func);
+    if (!listener) {
+      listener = { bound: func.bind(this), wrappers: [] };
+      this._boundListeners.set(func, listener);
+    }
 
-      const boundFunc = this._boundListeners.get(key).bound;
+    const items = isNodeList(el) || Array.isArray(el) ? el : [el];
 
-      if (isNodeList(el) || Array.isArray(el)) {
-        if (el.length > 0) {
-          el.forEach((item) => {
-            if (params == null) {
-              item.addEventListener(type, boundFunc);
-            } else {
-              item.addEventListener(type, () => boundFunc(params));
-            }
-          });
-        }
+    for (const item of items) {
+      if (params == null) {
+        item.addEventListener(type, listener.bound);
       } else {
-        if (params == null) {
-          el.addEventListener(type, boundFunc);
-        } else {
-          el.addEventListener(type, () => boundFunc(params));
-        }
+        const wrapper = () => listener.bound(params);
+        item.addEventListener(type, wrapper);
+        listener.wrappers.push({ item, type, wrapper });
       }
     }
   }
@@ -432,30 +431,42 @@ export class Piece extends HTMLElement {
    * @param {Function} func
    */
   off(type, el, func) {
-    if (el != null) {
-      // Get the bound version of the function
-      const key = `${type}_${func.name}`;
-      const listener = this._boundListeners.get(key);
+    if (el == null) return;
 
-      if (!listener) {
-        console.warn(`No bound listener found for ${key}`);
-        return;
-      }
-
-      const boundFunc = listener.bound;
-
-      if (isNodeList(el) || Array.isArray(el)) {
-        if (el.length > 0) {
-          el.forEach((item) => {
-            item.removeEventListener(type, boundFunc);
-          });
+    const listeners = [];
+    if (this._boundListeners.has(func)) {
+      listeners.push(this._boundListeners.get(func));
+    } else {
+      // Handlers re-created on each call (e.g. fn.bind(this)) never match by
+      // reference: fall back to the name, as keys used to be name-based
+      for (const [original, listener] of this._boundListeners) {
+        if (original.name === func.name) {
+          listeners.push(listener);
+          this._boundListeners.delete(original);
         }
-      } else {
-        el.removeEventListener(type, boundFunc);
+      }
+    }
+
+    if (listeners.length == 0) {
+      console.warn(`No bound listener found for ${type}_${func.name}`);
+      return;
+    }
+
+    const items =
+      isNodeList(el) || Array.isArray(el) ? Array.from(el) : [el];
+
+    for (const listener of listeners) {
+      for (const item of items) {
+        item.removeEventListener(type, listener.bound);
       }
 
-      // Clean up the stored reference
-      this._boundListeners.delete(key);
+      listener.wrappers = listener.wrappers.filter(
+        ({ item, type: wrapperType, wrapper }) => {
+          if (wrapperType !== type || !items.includes(item)) return true;
+          item.removeEventListener(type, wrapper);
+          return false;
+        },
+      );
     }
   }
 
@@ -482,22 +493,24 @@ export class Piece extends HTMLElement {
    * @returns {any} The return value of the called function
    */
   call(func, args, pieceName, pieceId) {
+    // Own keys only: names like "constructor" must not hit Object.prototype
+    const hasOwn = (object, key) =>
+      Object.prototype.hasOwnProperty.call(object, key);
+    const { currentPieces } = this.piecesManager;
+    if (!hasOwn(currentPieces, pieceName)) return;
+    const pieces = currentPieces[pieceName];
+
+    if (pieceId != undefined) {
+      if (!hasOwn(pieces, pieceId)) return;
+      return pieces[pieceId].piece[func](args);
+    }
+
     let callback;
-    Object.keys(this.piecesManager.currentPieces).forEach((name) => {
-      if (name == pieceName) {
-        Object.keys(this.piecesManager.currentPieces[name]).forEach((id) => {
-          if (pieceId != undefined) {
-            if (id == pieceId) {
-              let piece = this.piecesManager.currentPieces[name][id].piece;
-              callback = piece[func](args);
-            }
-          } else {
-            let piece = this.piecesManager.currentPieces[name][id].piece;
-            callback = piece[func](args);
-          }
-        });
-      }
-    });
+    for (const id of Object.keys(pieces)) {
+      // A previous call may have unmounted this piece
+      const entry = pieces[id];
+      if (entry) callback = entry.piece[func](args);
+    }
 
     return callback;
   }
@@ -509,6 +522,8 @@ export class Piece extends HTMLElement {
    */
   async loadStyles(firstHit = true) {
     if (firstHit) {
+      // Sequential on purpose: Vite dev injects CSS in resolution order, so
+      // parallel loading could reorder the cascade (prod keeps call order)
       for (let i = 0; i < this.stylesheets.length; i++) {
         await this.stylesheets[i]();
       }
