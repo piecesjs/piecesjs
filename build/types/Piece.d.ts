@@ -18,6 +18,10 @@ export class Piece extends HTMLElement {
   cid: string;
   template: HTMLTemplateElement;
   stylesheets: Array<() => Promise<any>>;
+  /**
+   * Resolves once the stylesheets of the first mount are loaded
+   */
+  stylesReady: Promise<void>;
   piecesManager: any;
   baseHTML?: string;
   updatedPiecesCount: number;

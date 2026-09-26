@@ -151,6 +151,15 @@ class Header extends Piece {
 customElements.define('c-header', Header);
 ```
 
+`piece.stylesReady` is a promise that resolves once these stylesheets are loaded. Use it to wait for styles before measuring layout:
+
+```js
+await load('c-header', () => import('/assets/js/components/Header.js'));
+await Promise.all(
+  Array.from(document.querySelectorAll('c-header'), (el) => el.stylesReady),
+);
+```
+
 ### Register and load dynamically your component
 
 ```js

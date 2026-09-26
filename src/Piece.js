@@ -40,6 +40,12 @@ export class Piece extends HTMLElement {
     this.stylesheets = stylesheets;
 
     /**
+     * Resolves once the stylesheets of the first mount are loaded
+     * @type {Promise<void>}
+     */
+    this.stylesReady = Promise.resolve();
+
+    /**
      * Counter for tracking component instances
      * @type {number}
      */
@@ -139,7 +145,9 @@ export class Piece extends HTMLElement {
       console.log('🚧 premount', this.name);
     }
 
-    this.loadStyles(firstHit);
+    const styles = this.loadStyles(firstHit);
+    // An update must not replace a first-hit promise that is still pending
+    if (firstHit) this.stylesReady = styles;
     this.premount(firstHit);
   }
   /**
